@@ -1,8 +1,9 @@
 // @id = ch.banana.script.rendicontofinanziario
-// @version = 1.0
 // @pubdate = 2013-12-10
 // @publisher = Banana.ch SA
 // @description = Rendiconto finanziario (art. 410 CC) 
+// @doctype = 110.100
+// @docproperties = CurateleTicino
 // @task = app.command
 // @outputformat = none
 // @inputdatasource = none
