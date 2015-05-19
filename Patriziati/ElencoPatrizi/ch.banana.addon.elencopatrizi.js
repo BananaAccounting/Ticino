@@ -18,7 +18,7 @@
 // @publisher = Banana.ch SA
 // @description = Elenco Patrizi
 // @task = app.command
-// @doctype = 400.130
+// @doctype = 400.130 
 // @docproperties = patriziati
 // @outputformat = none
 // @inputdatasource = none
@@ -30,7 +30,7 @@ var scriptVersion = "script v. 2015-05-19";
 var form = [];
 
 
-//Main function
+//Main function ss
 function exec() {
 	
 	if (!Banana.document) {
