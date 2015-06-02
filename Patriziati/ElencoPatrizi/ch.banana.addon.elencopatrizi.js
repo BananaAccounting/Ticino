@@ -26,8 +26,10 @@
 
 
 
-var scriptVersion = "script v. 2015-05-19";
-var form = [];
+var scriptVersion = "script v. 2015-06-02";
+var form = []; //used to store all the data taken from Banana document
+var mapCF = []; //map used to store CF's data (code/rows)
+var mapMember = []; //map used to store Member's data (code/rows)
 
 
 //Main function
@@ -37,25 +39,34 @@ function exec() {
 		return;
 	}
 	
-	//Clear old messages
-	Banana.document.clearMessages();
-
-	//Function call to create the report
-	var report = createCards(Banana.document, form);
+	//Function call to load all the values from Banana document
+	loadForm(Banana.document);
 	
-	//Print the report
-	var stylesheet = create_styleSheet();
-	Banana.Report.preview(report, stylesheet);	
+	//Show the user a dialog asking to insert a text. Return the inserted text or undefined if the user clicked cancel
+	var cardsToPrint = Banana.Ui.getText("Stampa schede", "Tutte le pagine/ Più pagine specifiche (es. 1;3;7) / Più pagine da-a (es. 1-3)", "Tutte");	
+	
+	//Check if the user has inserted some values
+	if (cardsToPrint) {
+		
+		//Function call to create maps that contain CF/Members card codes and rows 
+		createMaps(form, cardsToPrint);
+	
+		//Function call to create the report that contain all the cards selected
+		var report = printCard(Banana.document, form, mapCF, mapMember);
+
+		//Print the report
+		var stylesheet = create_styleSheet();
+		Banana.Report.preview(report, stylesheet);
+	} else { // terminate the script
+		return;
+	}
 }
 
 
-
-
-//The purpose of this function is to upload the data taken from the Banana document table
+//The purpose of this function is to store the data taken from the Banana document
 function loadForm(banDoc) {
+	//variable to access to the Banana document table
 	var contactsTable = banDoc.table("Contacts");
-	var code2List = []; //list used to check for "code2" duplicates
-	var idList = []; //list used to check for "id" duplicates
 	
 	//We read the Banana document table row by row
 	for (var j = 0; j < contactsTable.rowCount; j++) {
@@ -63,8 +74,8 @@ function loadForm(banDoc) {
 		
 		//If the row table is not completely empty we get the values
 		if (!tRow.isEmpty) {
+			var row = tRow.rowNr;
 			var code1 = tRow.value("Code1");
-			var code2 = tRow.value("Code2");
 			var id = tRow.value("RowId");
 			var belong = tRow.value("RowBelongTo");
 			var belong2 = tRow.value("RowBelongTo2");
@@ -79,220 +90,258 @@ function loadForm(banDoc) {
 			var birthDate = tRow.value("DateOfBirth");
 			var deathDate = tRow.value("DateOfDeath");
 			var memberVote = tRow.value("MemberVote");
+			var notes = tRow.value("Notes");
 			var archivedDate = tRow.value("ArchivedDate");
 			var archivedNotes = tRow.value("ArchivedNotes");
-			
-			var index = "";
-			
-			//Check if the card code, id and belong values exist
-			//To save the data and then to create the cards, these three values must exist
-			//The members without them will not be added to the report, and a message in Banana will be displayed
-			if (code2 && id && belong) {
-	
-				//Add the "id" value to the list
-				idList.push(id);
-				
-				//Check if it's a CF, then add "code2" value to the list
-				if (code2 === id) {
-					code2List.push(code2);
-					
-					//Check if there is a "code2" duplicate, then we remove it from the list and we add a message
-					//This because each CF must have a unique code2 value (card code number)
-					if (!checkIfArrayContainsDuplicate(code2List)) {
-						index = code2List.indexOf(code2);
-						if (index > -1) {
-							code2List.splice(index,1);
-						}
-						tRow.addMessage("Impossibile aggiungere la scheda. Il numero di scheda (Code2) <" + code2 +"> è già utilizzato per un altro fuoco.");
-					}
-				}
-				
-				//Check if there is an "id" duplicate, then we remove it from the list and we add a message
-				//This because each member (CF or not) must have a unique id value
-				if (!checkIfArrayContainsDuplicate(idList)) {
-					index = idList.indexOf(id);
-					if (index > -1) {
-						idList.splice(index,1);
-					}
-					tRow.addMessage("Impossibile aggiungere la scheda. Id <"+ id +"> già esistente.");
-				} else { //If everything is ok (no duplicates), we save the data into the form
-					form.push({
-						"Code1":code1,
-						"Code2":code2,
-						"RowId":id,
-						"RowBelongTo":belong,
-						"RowBelongTo2":belong2,
-						"Salutation":salutation,
-						"FirstName":firstName,
-						"MiddleName":middleName,
-						"FamilyName":familyName,
-						"Paternity":paternity,
-						"AddressStreet":addressStreet,
-						"AddressPostalCode":addressPostalCode,
-						"AddressLocality":addressLocality,
-						"DateOfBirth":birthDate,
-						"DateOfDeath":deathDate,
-						"MemberVote":memberVote,
-						"ArchivedDate":archivedDate,
-						"ArchivedNotes":archivedNotes
-					});
-				}
-			} else if (!code2 && !id && !belong) { //If the three vales (or one of them) do not exist, then we add a message and we don't save the data
-				tRow.addMessage("Impossibile aggiungere la scheda. <Code2,Id,Belong> mancanti.");		
-			} else if (!code2) {
-				tRow.addMessage("Impossibile aggiungere la scheda. <Code2> mancante.");
-			} else if (!id) {
-				tRow.addMessage("Impossibile aggiungere la scheda. <Id> mancante.");
-			} else if (!belong) {
-				tRow.addMessage("Impossibile aggiungere la scheda. <Belong> mancante.");
-			}
+
+			form.push({
+				"Row":row,
+				"Code1":code1,
+				"RowId":id,
+				"RowBelongTo":belong,
+				"RowBelongTo2":belong2,
+				"Salutation":salutation,
+				"FirstName":firstName,
+				"MiddleName":middleName,
+				"FamilyName":familyName,
+				"Paternity":paternity,
+				"AddressStreet":addressStreet,
+				"AddressPostalCode":addressPostalCode,
+				"AddressLocality":addressLocality,
+				"DateOfBirth":birthDate,
+				"DateOfDeath":deathDate,
+				"MemberVote":memberVote,
+				"Notes":notes,
+				"ArchivedDate":archivedDate,
+				"ArchivedNotes":archivedNotes
+			});
 		}
 	}
 }
 
 
+//The purpose of this function is to create two maps: one for CF and one for MEMBERS
+//Into these maps are stored the card code values and the rows values
+function createMaps(form, cardsToPrint) {
+
+	//Function call to get the codes inserted by the user, used to select which cards to create and print
+	var cfList = printChoice(form, cardsToPrint);
+	var cfRows = [];
+	var meRows = [];
+
+	//For each code, we get the CF and Members rows
+	for (var i = 0; i < cfList.length; i++) {
+		cfRows = getCF(form, cfList[i]);
+		meRows = getMembers(form, cfList[i]);
+
+		//We add values to the maps
+		if (cfList[i] !== cfList[i-1]) {
+			if (cfRows.length > 1) {
+				//We add a parameter to the mapCF because we want to know if it is already used or not
+				for (var j = 0; j < cfRows.length; j++) {
+					mapCF.push({ "CFcode":cfList[i], "CFrows":cfRows[j], "CFisUnique":"false" });
+				}
+			} else {
+				mapCF.push({ "CFcode":cfList[i], "CFrows":cfRows, "CFisUnique":"true" });
+			}
+
+			for (var j = 0; j < meRows.length; j++) {
+				mapMember.push({ "MemberCode":cfList[i], "MemberRows":meRows[j] });
+			}
+		} 
+	}
+}
 
 
-//The purpose of this function is to create the report, one card per page
-function createCards(banDoc, form) {
+//The purpose of this function is to create the cards
+function printCard(banDoc, form, mapCF, mapMember) {
+
 	var report = Banana.Report.newReport("Elenco Patrizi");
 	var table = report.addTable("table");
-	var cardCodeList = [];
 
-	//Load all data and add the footer
-	loadForm(banDoc);
+	//Add the footer to the report
 	addFooter(banDoc, report);
 
-	//We take a list of CF's card codes and order them
-	//This because we want to print the cards in ascending order
-	cardCodeList = getCardCodeList(form).sort(function(a,b) { return a - b; });
+	//TITLE and CF
+	for (var i = 0; i < mapCF.length; i++) {
+	
+		//We create the CF object with data stored into the mapCF
+		var objectCf = getObject(form, mapCF[i].CFrows);
+		var cntMembers = 0; //variable used to count the members
 
-	//For each "cardCode" we create the card, adding tiles, CF and any members
-	for (var i = 0; i < cardCodeList.length; i++) {
-
+		//Titles
+		//In this section we add titles/info about the group (card code)
 		tableRow = table.addRow();
-		tableRow.addCell(banDoc.info("AccountingDataBase", "Company"), "heading1 bold", 6);
+		tableRow.addCell(banDoc.info("AccountingDataBase", "Company"), "heading1 bold", 8);
 		
 		tableRow = table.addRow();
-		tableRow.addCell("Registro dei fuochi, dei patrizi e dei votanti", "heading2 bold", 6);
+		tableRow.addCell("Registro dei fuochi, dei patrizi e dei votanti", "heading2 bold", 8);
 		
 		tableRow = table.addRow();
-		tableRow.addCell("","",6);
+		tableRow.addCell("","",8);
 		
 		tableRow = table.addRow();
-		tableRow.addCell("Scheda n. ", "heading3", 1);
-		tableRow.addCell(cardCodeList[i], "heading3 bold", 1);
+		tableRow.addCell("Scheda n. ", "heading3", 2);
+		tableRow.addCell(objectCf.RowBelongTo, "heading3 bold", 1);
 		
 		tableRow = table.addRow();
-		tableRow.addCell("Scheda antecedente n. ", "heading3", 1);
+		tableRow.addCell("Scheda antecedente n. ", "heading3", 2);
 		
-		if (getValue(form, cardCodeList[i], "RowBelongTo2")) {
-			tableRow.addCell(getValue(form, cardCodeList[i], "RowBelongTo2"), "heading3 bold", 1);
+		if (objectCf.RowBelongTo2) {
+			tableRow.addCell(objectCf.RowBelongTo2, "heading3 bold", 1);
 		} else {
 			tableRow.addCell(" - ", "heading3 bold", 1);
 		}
 		
 		tableRow = table.addRow();
-		tableRow.addCell(" ", " ", 6);
+		tableRow.addCell(" ", " ", 8);
+
+
+		//CF
+		//In this section we add the CF of each group (card code)
+		tableRow = table.addRow();
+		tableRow.addCell("Cognome", "valueText valueTextTop valueTextLeft valueTextRight italic", 8);
 		
-		//We create a group of members with the current card code
-		var groupForm = getGroup(form, cardCodeList[i]);
+		tableRow = table.addRow();
+		tableRow.addCell(objectCf.FamilyName, "valueText bold valueTextLeft valueTextRight", 8);
+		
+		tableRow = table.addRow();
+		tableRow.addCell("Rappresentante del fuoco", "valueText valueTextTop valueTextLeft valueTextRight italic", 8);
+		
+		tableRow = table.addRow();
+		tableRow.addCell("Id","valueText valueTextLeft valueTextBottom italic", 1);
+		tableRow.addCell("Nome", "valueText valueTextRight valueTextBottom italic", 1);
+		tableRow.addCell("Data di nascita", "valueText valueTextRight valueTextBottom italic", 1);
+		tableRow.addCell("Indirizzo - Domicilio", "valueText valueTextRight valueTextBottom italic", 1);
+		tableRow.addCell("Succ.", "valueText valueTextRight valueTextBottom italic", 1);
+		tableRow.addCell("Osservazioni", "valueText valueTextRight valueTextBottom italic", 1);
+		tableRow.addCell("Voto", "valueText valueTextBottom valueTextRight italic", 1);
+		tableRow.addCell("Paternità", "valueText valueTextRight valueTextBottom italic", 1);
+		
+		tableRow = table.addRow();
+		tableRow.addCell(objectCf.RowId, "valueText valueTextLeft alignCenter", 1);
+		tableRow.addCell(objectCf.FirstName + " " + objectCf.MiddleName, "valueText bold valueTextRight", 1);
+		tableRow.addCell(Banana.Converter.toLocaleDateFormat(objectCf.DateOfBirth), "valueText valueTextRight", 1);
+		
+		if (objectCf.AddressStreet && objectCf.AddressPostalCode && objectCf.AddressLocality) {
+			tableRow.addCell(objectCf.AddressStreet + ", " + objectCf.AddressPostalCode + " " + objectCf.AddressLocality, "valueText valueTextRight", 1);
+		} else if (!objectCf.AddressStreet) {
+			tableRow.addCell(objectCf.AddressPostalCode + " " + objectCf.AddressLocality, "valueText valueTextRight", 1);
+		}
 
-		//For each member belonging to the same group, we check if it is a CF or a normal member
-		for (var j = 0; j < groupForm.length; j++) {
-			
-			//Is a CF
-			if (groupForm[j].Code2 === groupForm[j].RowId) {
+		tableRow.addCell(" ", " ", 1);
+		tableRow.addCell(objectCf.Notes, "valueText valueTextRight", 1);
+		
+		if (objectCf.MemberVote === "1") {
+			tableRow.addCell("Sì", "valueText alignCenter valueTextRight", 1);
+		}
+		
+		tableRow.addCell(objectCf.Paternity, "valueText valueTextRight", 1);
+		
+		if (objectCf.DateOfDeath && objectCf.ArchivedDate && objectCf.ArchivedNotes) {
+			tableRow = table.addRow();
+			tableRow.addCell("Decesso: " + Banana.Converter.toLocaleDateFormat(objectCf.DateOfDeath) + ", Archiviato: " + objectCf.ArchivedDate + " " + objectCf.ArchivedNotes, "valueText valueTextLeft valueTextRight", 8);
+		} else if (!objectCf.DateOfDeath && objectCf.ArchivedDate && objectCf.ArchivedNotes) {
+			tableRow = table.addRow();
+			tableRow.addCell("Archiviato: " + Banana.Converter.toLocaleDateFormat(objectCf.ArchivedDate) + " " + objectCf.ArchivedNotes, "valueText valueTextLeft valueTextRight", 8);
+		}
+		
+		tableRow = table.addRow();
+		tableRow.addCell("Altri membri del fuoco", "valueText valueTextTop valueTextLeft valueTextRight italic", 8);
+		
+		tableRow = table.addRow();
+		tableRow.addCell("Id","valueText valueTextLeft valueTextBottom italic", 1);
+		tableRow.addCell("Nome", "valueText valueTextRight valueTextBottom italic", 1);
+		tableRow.addCell("Data di nascita", "valueText valueTextRight valueTextBottom italic", 1);
+		tableRow.addCell("Indirizzo - Domicilio", "valueText valueTextRight valueTextBottom italic", 1);
+		tableRow.addCell("Succ.", "valueText valueTextRight valueTextBottom italic", 1);
+		tableRow.addCell("Osservazioni", "valueText valueTextRight valueTextBottom italic", 1);
+		tableRow.addCell("Voto", "valueText valueTextBottom valueTextRight italic", 1);
+		tableRow.addCell("Paternità", "valueText valueTextRight valueTextBottom italic", 1);
 
+
+		//MEMBERS
+		//In this section we add each member belonging to the same group (with the same card code)
+		for (var j = 0; j < mapMember.length; j++) {
+
+			//Check if the card code of the Member equals the card code of the CF, then the Member exist
+			if (mapMember[j].MemberCode === objectCf.RowBelongTo) {	//mapCF[i].CFcode
+
+				//If a Member exist we count it 
+				cntMembers++;
+
+				//We create the member object with data stored into the mapMember
+				var objectMember = getObject(form, mapMember[j].MemberRows);
+
+				//We add it to the card
 				tableRow = table.addRow();
-				tableRow.addCell("Cognome", "valueText valueTextTop valueTextLeft valueTextRight", 6);
+				tableRow.addCell(objectMember.RowId, "valueText valueTextLeft alignCenter", 1);
 				
-				tableRow = table.addRow();
-				tableRow.addCell(groupForm[j].FamilyName, "valueText bold valueTextLeft valueTextRight", 6);
-				
-				tableRow = table.addRow();
-				tableRow.addCell("Rappresentante del fuoco", "valueText valueTextTop valueTextLeft valueTextRight italic", 6);
-				
-				tableRow = table.addRow();
-				tableRow.addCell("Nome", "valueText valueTextLeft valueTextBottom", 1);
-				tableRow.addCell("Data di nascita", "valueText valueTextRight valueTextBottom", 1);
-				tableRow.addCell("Indirizzo - Domicilio", "valueText valueTextRight valueTextBottom", 1);
-				tableRow.addCell("Scheda succ.", "valueText valueTextRight valueTextBottom", 1);
-				tableRow.addCell("Osservazioni", "valueText valueTextRight valueTextBottom", 1);
-				tableRow.addCell("Diritto di voto", "valueText valueTextBottom valueTextRight", 1);
-				
-				tableRow = table.addRow();
-				tableRow.addCell(groupForm[j].FirstName, "valueText bold valueTextLeft valueTextRight", 1);
-				tableRow.addCell(Banana.Converter.toLocaleDateFormat(groupForm[j].DateOfBirth), "valueText valueTextRight", 1);
-				
-				if (groupForm[j].AddressStreet && groupForm[j].AddressPostalCode && groupForm[j].AddressLocality) {
-					tableRow.addCell(groupForm[j].AddressStreet + ", " + groupForm[j].AddressPostalCode + " " + groupForm[j].AddressLocality, "valueText valueTextRight", 1);
-				} else if (!groupForm[j].AddressStreet) {
-					tableRow.addCell(groupForm[j].AddressPostalCode + " " + groupForm[j].AddressLocality, "valueText valueTextRight", 1);
+				//If the family name of a member is different of that the CF, we add the family name of the member
+				if (objectMember.FamilyName !==  objectCf.FamilyName) {
+					tableRow.addCell(objectMember.FirstName + " " + objectMember.MiddleName + " " + objectMember.FamilyName, "valueText valueTextRight bold", 1);
+				} else {
+					tableRow.addCell(objectMember.FirstName + " " + objectMember.MiddleName, "valueText valueTextRight bold", 1);
 				}
-
+				
+				tableRow.addCell(Banana.Converter.toLocaleDateFormat(objectMember.DateOfBirth), "valueText valueTextRight", 1);
+				
+				if (objectMember.AddressStreet && objectMember.AddressPostalCode && objectMember.AddressLocality) {
+					tableRow.addCell(objectMember.AddressStreet + ", " + objectMember.AddressPostalCode + " " + objectMember.AddressLocality, "valueText valueTextRight", 1);
+				} else if (!objectMember.AddressStreet) {
+					tableRow.addCell(objectMember.AddressPostalCode + " " + objectMember.AddressLocality, "valueText valueTextRight", 1);
+				}
+				
 				tableRow.addCell(" ", " ", 1);
-				tableRow.addCell(groupForm[j].ArchivedNotes, "valueText valueTextRight", 1);
-				
-				if (groupForm[j].MemberVote === "1") {
-					tableRow.addCell("Sì", "valueText alignCenter valueTextRight", 1);
-				}
-
-				tableRow = table.addRow();
-				tableRow.addCell("Altri membri del fuoco", "valueText valueTextTop valueTextLeft valueTextRight italic", 6);
-				
-				tableRow = table.addRow();
-				tableRow.addCell("Nome", "valueText valueTextLeft valueTextBottom", 1);
-				tableRow.addCell("Data di nascita", "valueText valueTextRight valueTextBottom", 1);
-				tableRow.addCell("Indirizzo - Domicilio", "valueText valueTextRight valueTextBottom", 1);
-				tableRow.addCell("Scheda succ.", "valueText valueTextRight valueTextBottom", 1);
-				tableRow.addCell("Osservazioni", "valueText valueTextRight valueTextBottom", 1);
-				tableRow.addCell("Diritto di voto", "valueText valueTextBottom valueTextRight", 1);
-
-			//Is a member
-			} else if (groupForm[j].Code2 !== groupForm[j].RowId && groupForm[j].RowBelongTo === groupForm[j].Code2) {
-				tableRow = table.addRow();
-				tableRow.addCell(groupForm[j].FirstName, "valueText valueTextLeft", 1);
-				tableRow.addCell(Banana.Converter.toLocaleDateFormat(groupForm[j].DateOfBirth), "valueText valueTextRight", 1);
-				
-				if (groupForm[j].AddressStreet && groupForm[j].AddressPostalCode && groupForm[j].AddressLocality) {
-					tableRow.addCell(groupForm[j].AddressStreet + ", " + groupForm[j].AddressPostalCode + " " + groupForm[j].AddressLocality, "valueText valueTextRight", 1);
-				} else if (!groupForm[j].AddressStreet) {
-					tableRow.addCell(groupForm[j].AddressPostalCode + " " + groupForm[j].AddressLocality, "valueText valueTextRight", 1);
-				}
-				
-				tableRow.addCell(" ", " ", 1);
-				tableRow.addCell(groupForm[j].ArchivedNotes, "valueText valueTextRight", 1);
+				tableRow.addCell(objectMember.Notes, "valueText valueTextRight", 1);
 					
-				if (groupForm[j].MemberVote === "1") {
+				if (objectMember.MemberVote === "1") {
 					tableRow.addCell("Sì", "valueText alignCenter valueTextRight", 1);
 				} else {
 					tableRow.addCell("No", "valueText alignCenter valueTextRight", 1);
 				}
-			}
-
-			//Print empty row if there are not members
-			if (groupForm.length === 1) {
-				tableRow = table.addRow();
-				tableRow.addCell("-", "valueText alignCenter valueTextLeft", 1);
-				tableRow.addCell("-", "valueText valueTextRight alignCenter", 1);
-				tableRow.addCell("-", "valueText valueTextRight alignCenter", 1);
-				tableRow.addCell(" ", " ", 1);
-				tableRow.addCell("-", "valueText valueTextRight alignCenter", 1);
-				tableRow.addCell("-", "valueText alignCenter alignCenter valueTextRight", 1);
+				
+				tableRow.addCell(objectMember.Paternity, "valueText valueTextRight", 1);
+				
+				if (objectMember.DateOfDeath && objectMember.ArchivedDate && objectMember.ArchivedNotes) {
+					tableRow = table.addRow();
+					tableRow.addCell("Decesso: " + Banana.Converter.toLocaleDateFormat(objectMember.DateOfDeath) + ", Archiviato: " + objectMember.ArchivedDate + " " + objectMember.ArchivedNotes, "valueText valueTextLeft valueTextRight", 8);
+				} else if (!objectMember.DateOfDeath && objectMember.ArchivedDate && objectMember.ArchivedNotes) {
+					tableRow = table.addRow();
+					tableRow.addCell("Archiviato: " + Banana.Converter.toLocaleDateFormat(objectMember.ArchivedDate) + " " + objectMember.ArchivedNotes, "valueText valueTextLeft valueTextRight", 8);
+				}
 			}
 		}
-		
-		tableRow = table.addRow();
-		tableRow.addCell("", "valueTextTop", 6);
-		
+
+		//If there are no members we add an empty row to the table
+		if (cntMembers == 0) { 
+			tableRow = table.addRow();
+			tableRow.addCell("-", "valueText alignCenter valueTextLeft", 1);
+			tableRow.addCell("-", "valueText valueTextRight alignCenter", 1);
+			tableRow.addCell("-", "valueText valueTextRight alignCenter", 1);
+			tableRow.addCell(" ", " ", 1);
+			tableRow.addCell("-", "valueText valueTextRight alignCenter", 1);
+			tableRow.addCell("-", "valueText alignCenter valueTextRight", 1);
+			tableRow.addCell("-", "valueText valueTextRight alignCenter", 1);
+			tableRow.addCell("-", "valueText valueTextRight alignCenter", 1);
+		}
+
 		//We add the date of last saved
 		tableRow = table.addRow();
-		var dateLastSaved = tableRow.addCell();
-		dateLastSaved.addParagraph("Aggiornato al: " + Banana.Converter.toLocaleDateFormat(banDoc.info("Base", "DateLastSaved")), "valueText", 6);
-		
+		tableRow.addCell(" ", "valueTextTop", 11);
+		tableRow = table.addRow();
+		tableRow.addCell("Documento Banana aggiornato al: " + Banana.Converter.toLocaleDateFormat(banDoc.info("Base", "DateLastSaved")), "valueText", 11);
+
+		//Check if there are card codes used several times, then we add a warning message on the card page
+		if (mapCF[i].CFisUnique === "false") {
+			tableRow = table.addRow();
+			tableRow.addCell("Attenzione: numero di scheda <" + objectCf.RowBelongTo + "> utilizzato in più schede.", "warningMsg", 8);
+			tableRow = table.addRow();
+			tableRow.addCell("A tutte queste schede sono aggiunti gli eventuali membri.", "warningMsg", 8);
+		}
+
 		//Add a page break after each card
-		if (i < cardCodeList.length-1) {
+		if (i < mapCF.length - 1) {
 			tableRow = table.addRow();
 			var a = tableRow.addCell();
 			a.addPageBreak();
@@ -302,63 +351,98 @@ function createCards(banDoc, form) {
 }
 
 
-
-
-//The purpose of this function is to check if an array of elements contains duplicates
-function checkIfArrayContainsDuplicate(array) {
-	//array.sort();  //alphabetical sort (1,10,100,3,43)
-	array.sort(function(a,b) { return a - b; });  //numerical sort (1,3,10,43,100)
-	for (var i = 1; i < array.length; i++) {
-		if (array[i-1] === array[i]) {
-			return false;
-		}
-	}
-	return true;
-}
-
-
-
-
-//The purpose of this function is to create a group of elements with the same cardCode
-function getGroup(form, cardCode) {
-	var formGroup = [];
+//The purpose of this function is to return a list of CF's rows
+function getCF(form, cardNumber) {
+	var rowNumberCfList = [];
 	for (var i = 0; i < form.length; i++) {
-		if (form[i].Code2 === cardCode) {
-			formGroup.push(form[i]);
+		if (form[i].RowId === form[i].RowBelongTo && form[i].RowBelongTo === cardNumber) {
+			var nRow = form[i].Row;
+			rowNumberCfList.push(nRow);
 		}
 	}
-	return formGroup;
+	return rowNumberCfList;
 }
 
 
-
-
-//The purpose of this function is to return a specific field value of the form
-function getValue(source, cardCode, field) {
-	var searchCode = cardCode.trim();
-	for (var i = 0; i < source.length; i++) {
-		if (source[i].Code2 === searchCode) {
-			return source[i][field];
+//The purpose of this function is to return a list of Members' rows
+function getMembers(form, cardNumber) {
+	var rowNumberMemberList = [];
+	var nRow = "";
+	for (var i = 0; i < form.length; i++) {
+		if (form[i].RowId !== form[i].RowBelongTo && form[i].RowBelongTo === cardNumber) {
+			nRow = form[i].Row;
+			rowNumberMemberList.push(nRow);
 		}
 	}
-	throw "Couldn't find object with card code: " + cardCode;
+	return rowNumberMemberList;
 }
 
 
+//The purpose of this function is to let the usce choose which card to print
+function printChoice(form, cardsToPrint) {
 
-
-//The purpose of this function is to return a list of the CF's card codes 
-function getCardCodeList(form) {
 	var cardCodeList = [];
-	for (var i = 0; i < form.length; i++) {
-		if (form[i].Code2 && form[i].RowId && form[i].Code2 === form[i].RowId) { //is a CF
-			cardCodeList.push(form[i].Code2);
+	
+	//We create the card for the given card codes list from the dialog window
+	if (cardsToPrint === "Tutte") { //all cards
+		var tmpList = getCardCodeList(form).sort(function(a,b) { return a - b; });
+		for (var i = 0; i < tmpList.length; i++) {
+			cardCodeList.push(tmpList[i]);
+		}	
+	} else if (cardsToPrint.indexOf(";") > -1) { // List of values divided by ;
+		cardCodeList = cardsToPrint.split(";");
+	} else { // - or single card value
+		if (cardsToPrint.indexOf("-") > -1) { // Range of cards: from x to y
+			var beginIndex = cardsToPrint.indexOf("-") - 1;
+			var lastIndex = cardsToPrint.indexOf("-") + 1;
+			var tmpList = getCardCodeList(form).sort(function(a,b) { return a - b; });
+			
+			for (var i = 0; i < tmpList.length; i++) {
+				if (tmpList[i] >= cardsToPrint[beginIndex] && tmpList[i] <= cardsToPrint[lastIndex]) {
+					cardCodeList.push(tmpList[i]);
+				}
+			}
+		} else { // single value
+			cardCodeList = cardsToPrint;
 		}
 	}
 	return cardCodeList;
 }
 
 
+//The purpose of this function is to return a specific object of the form
+function getObject(source, row) {
+	for(var i = 0; i < source.length; i++){
+		if(source[i].Row == row){
+			return source[i];
+		}
+	}
+	throw "Couldn't find object with row: " + row;
+}
+
+
+//The purpose of this function is to return a specific field value of the form
+function getValue(source, cardCode, field) {
+	var searchCode = cardCode.trim();
+	for (var i = 0; i < source.length; i++) {
+		if (source[i].RowBelongTo == searchCode) {
+			return source[i][field];
+		}
+	}
+	throw "Couldn't find value with card code: " + cardCode;
+}
+
+
+//The purpose of this function is to return a list of the CF's card codes 
+function getCardCodeList(form) {
+	var cardCodeList = [];
+	for (var i = 0; i < form.length; i++) {
+		if (form[i].RowBelongTo && form[i].RowId && form[i].RowBelongTo === form[i].RowId) { //is a CF
+			cardCodeList.push(form[i].RowBelongTo);
+		}
+	}
+	return cardCodeList;
+}
 
 
 //The purpose of this function is to add a Footer to the report
@@ -366,8 +450,6 @@ function addFooter(banDoc, report) {
 	report.getFooter().addClass("footer");
 	report.getFooter().addText("Banana Accounting, v. " + banDoc.info("Base", "ProgramVersion") + ", " + scriptVersion, "footer");
 }
-
-
 
 
 //The purpose of this function is to create styles for the report print
@@ -393,6 +475,12 @@ function create_styleSheet() {
 	style = stylesheet.addStyle(".valueText");
 	style.setAttribute("font-size", "11px");
 	style.setAttribute("padding-bottom", "5px"); 
+
+	//Warning message.
+	style = stylesheet.addStyle(".warningMsg");
+	style.setAttribute("font-weight", "bold");
+	style.setAttribute("color", "red");
+	style.setAttribute("font-size", "11");
 
 	//Border
 	style = stylesheet.addStyle(".valueTextRight");
@@ -424,6 +512,10 @@ function create_styleSheet() {
 	//Alignment
 	style = stylesheet.addStyle(".alignCenter");
 	style.setAttribute("text-align", "center");
+
+	//Table
+	style = stylesheet.addStyle("table");
+	style.setAttribute("width", "100%");
 
 	return stylesheet;
 }
