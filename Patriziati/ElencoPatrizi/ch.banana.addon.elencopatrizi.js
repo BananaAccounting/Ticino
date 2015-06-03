@@ -26,10 +26,11 @@
 
 
 
-var scriptVersion = "script v. 2015-06-02";
+var scriptVersion = "script v. 2015-06-03";
 var form = []; //used to store all the data taken from Banana document
 var mapCF = []; //map used to store CF's data (code/rows)
 var mapMember = []; //map used to store Member's data (code/rows)
+var cfNotFound = []; //list of code nod found
 
 
 //Main function
@@ -43,22 +44,23 @@ function exec() {
 	loadForm(Banana.document);
 	
 	//Show the user a dialog asking to insert a text. Return the inserted text or undefined if the user clicked cancel
-	var cardsToPrint = Banana.Ui.getText("Stampa schede", "Tutte le pagine/ Più pagine specifiche (es. 1;3;7) / Più pagine da-a (es. 1-3)", "Tutte");	
-	
+	var cardsToPrint = Banana.Ui.getText("Stampa schede", "0 (tutte le pagine) / Pagine multiple (es. 1;3;7)", "0");
+
 	//Check if the user has inserted some values
 	if (cardsToPrint) {
-		
+
 		//Function call to create maps that contain CF/Members card codes and rows 
 		createMaps(form, cardsToPrint);
-	
+
 		//Function call to create the report that contain all the cards selected
 		var report = printCard(Banana.document, form, mapCF, mapMember);
 
 		//Print the report
 		var stylesheet = create_styleSheet();
 		Banana.Report.preview(report, stylesheet);
-	} else { // terminate the script
-		return;
+
+	} else {
+		return; //Terminate the script execution
 	}
 }
 
@@ -157,6 +159,16 @@ function createMaps(form, cardsToPrint) {
 function printCard(banDoc, form, mapCF, mapMember) {
 
 	var report = Banana.Report.newReport("Elenco Patrizi");
+
+	//Card codes not found are displayed at the end of the report
+	if (cfNotFound.length > 0) {
+		for (var k = 0; k < cfNotFound.length; k++) {
+			report.addParagraph("Numero di scheda <" + cfNotFound[k] + "> non trovato.", "warningMsg");
+		}
+		report.addPageBreak();
+	}
+	
+	//Table with CF/Members data
 	var table = report.addTable("table");
 
 	//Add the footer to the report
@@ -378,32 +390,38 @@ function getMembers(form, cardNumber) {
 }
 
 
-//The purpose of this function is to let the usce choose which card to print
-function printChoice(form, cardsToPrint) {
-
-	var cardCodeList = [];
+//The purpose of this function is to let the user choose which card to print
+//We also check if the selected cards exist 
+function printChoice(form, cardsToCheck) {
 	
+	var cardCodeList = [];
+
+	//We get the full list of all card codes and we sort them
+	var tmpList = getCardCodeList(form).sort(function(a,b) { return a - b; });
+
 	//We create the card for the given card codes list from the dialog window
-	if (cardsToPrint === "Tutte") { //all cards
-		var tmpList = getCardCodeList(form).sort(function(a,b) { return a - b; });
+	if (cardsToCheck === "0") { //All cards
 		for (var i = 0; i < tmpList.length; i++) {
 			cardCodeList.push(tmpList[i]);
-		}	
-	} else if (cardsToPrint.indexOf(";") > -1) { // List of values divided by ;
-		cardCodeList = cardsToPrint.split(";");
-	} else { // - or single card value
-		if (cardsToPrint.indexOf("-") > -1) { // Range of cards: from x to y
-			var beginIndex = cardsToPrint.indexOf("-") - 1;
-			var lastIndex = cardsToPrint.indexOf("-") + 1;
-			var tmpList = getCardCodeList(form).sort(function(a,b) { return a - b; });
-			
-			for (var i = 0; i < tmpList.length; i++) {
-				if (tmpList[i] >= cardsToPrint[beginIndex] && tmpList[i] <= cardsToPrint[lastIndex]) {
-					cardCodeList.push(tmpList[i]);
+		}		
+	} else {
+		if (cardsToCheck.indexOf(";") > -1) { //List of values divided by ";"
+			cardCodeList = cardsToCheck.split(";");
+		} else {
+			cardCodeList = cardsToCheck.split(" "); //Single values
+		}
+
+		//Card codes that do not exist are removed from the list
+		for (var i = 0; i < cardCodeList.length; i++) {
+			if (tmpList.indexOf(cardCodeList[i]) < 0) { //not contained
+
+				cfNotFound.push(cardCodeList[i]); //Add the not found code to the list
+				var index = cardCodeList.indexOf(cardCodeList[i]);
+				if (index > -1) {
+					cardCodeList.splice(index,1); //remove card code
+					i--;
 				}
 			}
-		} else { // single value
-			cardCodeList = cardsToPrint;
 		}
 	}
 	return cardCodeList;
