@@ -18,7 +18,7 @@
 // @publisher = Banana.ch SA
 // @description = Elenco Patrizi
 // @task = app.command
-// @doctype = 400.130
+// @doctype = 400.*
 // @docproperties = patriziati
 // @outputformat = none
 // @inputdatasource = none
