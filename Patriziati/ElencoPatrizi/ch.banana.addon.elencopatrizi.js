@@ -160,7 +160,7 @@ function printCard(banDoc, form, mapCF, mapMember) {
 
 	var report = Banana.Report.newReport("Elenco Patrizi");
 
-	//Card codes not found are displayed at the end of the report
+	//Card codes not found are displayed at the beginning of the report
 	if (cfNotFound.length > 0) {
 		for (var k = 0; k < cfNotFound.length; k++) {
 			report.addParagraph("Numero di scheda <" + cfNotFound[k] + "> non trovato.", "warningMsg");
