@@ -26,11 +26,11 @@
 
 
 
-var scriptVersion = "script v. 2015-06-03";
+var scriptVersion = "script v. 2015-06-05";
 var form = []; //used to store all the data taken from Banana document
 var mapCF = []; //map used to store CF's data (code/rows)
 var mapMember = []; //map used to store Member's data (code/rows)
-var cfNotFound = []; //list of code nod found
+var cfNotFound = []; //list of code not found
 
 
 //Main function
@@ -39,33 +39,45 @@ function exec() {
 	if (!Banana.document) {
 		return;
 	}
+
+	//Clear old messages
+	Banana.document.clearMessages();
 	
 	//Function call to load all the values from Banana document
 	loadForm(Banana.document);
 	
 	//Show the user a dialog asking to insert a text. Return the inserted text or undefined if the user clicked cancel
-	var cardsToPrint = Banana.Ui.getText("Stampa schede", "0 (tutte le pagine) / Pagine multiple (es. 1;3;7)", "0");
+	var cardsToPrint = Banana.Ui.getText("Stampa schede", "Tutte le pagine (lasciare vuoto) / Schede multiple (es. 1,3,7)", "");
 
-	//Check if the user has inserted some values
-	if (cardsToPrint) {
+	//Check if the user has inserted some values or blank
+	if (cardsToPrint || cardsToPrint === "") {
 
 		//Function call to create maps that contain CF/Members card codes and rows 
 		createMaps(form, cardsToPrint);
 
-		//Function call to create the report that contain all the cards selected
-		var report = printCard(Banana.document, form, mapCF, mapMember);
+		//Only if we have at least one valid CF we create the report
+		if (mapCF.length > 0) {
 
-		//Print the report
-		var stylesheet = create_styleSheet();
-		Banana.Report.preview(report, stylesheet);
+			//Function call to create the report that contain all the cards selected
+			var report = printCard(Banana.document, form, mapCF, mapMember);
 
-	} else {
+			//Print the report
+			var stylesheet = create_styleSheet();
+			Banana.Report.preview(report, stylesheet);
+		}
+
+		//Check if there are codes not found, then print them as a message
+		if (cfNotFound.length > 0) {
+			addMessageCodesNotFound(Banana.document);
+		}
+
+	} else { //User clicked cancel
 		return; //Terminate the script execution
 	}
 }
 
 
-//The purpose of this function is to store the data taken from the Banana document
+//The purpose of this function is to store the data taken from the Banana document's table
 function loadForm(banDoc) {
 	//variable to access to the Banana document table
 	var contactsTable = banDoc.table("Contacts");
@@ -124,6 +136,7 @@ function loadForm(banDoc) {
 
 //The purpose of this function is to create two maps: one for CF and one for MEMBERS
 //Into these maps are stored the card code values and the rows values
+//These data are used to create the cards
 function createMaps(form, cardsToPrint) {
 
 	//Function call to get the codes inserted by the user, used to select which cards to create and print
@@ -155,19 +168,11 @@ function createMaps(form, cardsToPrint) {
 }
 
 
-//The purpose of this function is to create the cards
+//The purpose of this function is to create the cards and print the report
 function printCard(banDoc, form, mapCF, mapMember) {
 
 	var report = Banana.Report.newReport("Elenco Patrizi");
 
-	//Card codes not found are displayed at the beginning of the report
-	if (cfNotFound.length > 0) {
-		for (var k = 0; k < cfNotFound.length; k++) {
-			report.addParagraph("Numero di scheda <" + cfNotFound[k] + "> non trovato.", "warningMsg");
-		}
-		report.addPageBreak();
-	}
-	
 	//Table with CF/Members data
 	var table = report.addTable("table");
 
@@ -347,9 +352,7 @@ function printCard(banDoc, form, mapCF, mapMember) {
 		//Check if there are card codes used several times, then we add a warning message on the card page
 		if (mapCF[i].CFisUnique === "false") {
 			tableRow = table.addRow();
-			tableRow.addCell("Attenzione: numero di scheda <" + objectCf.RowBelongTo + "> utilizzato in più schede.", "warningMsg", 8);
-			tableRow = table.addRow();
-			tableRow.addCell("A tutte queste schede sono aggiunti gli eventuali membri.", "warningMsg", 8);
+			tableRow.addCell("Errore: numero di scheda <" + objectCf.RowBelongTo + "> utilizzato più volte.", "warningMsg", 8);
 		}
 
 		//Add a page break after each card
@@ -376,7 +379,7 @@ function getCF(form, cardNumber) {
 }
 
 
-//The purpose of this function is to return a list of Members' rows
+//The purpose of this function is to return a list of the Members' rows
 function getMembers(form, cardNumber) {
 	var rowNumberMemberList = [];
 	var nRow = "";
@@ -390,8 +393,8 @@ function getMembers(form, cardNumber) {
 }
 
 
-//The purpose of this function is to let the user choose which card to print
-//We also check if the selected cards exist 
+//The purpose of this function is to return the list of codes used to create the report
+//It also checks if the cards selectet by the user exist
 function printChoice(form, cardsToCheck) {
 	
 	var cardCodeList = [];
@@ -400,13 +403,13 @@ function printChoice(form, cardsToCheck) {
 	var tmpList = getCardCodeList(form).sort(function(a,b) { return a - b; });
 
 	//We create the card for the given card codes list from the dialog window
-	if (cardsToCheck === "0") { //All cards
+	if (cardsToCheck === "") { //All cards
 		for (var i = 0; i < tmpList.length; i++) {
 			cardCodeList.push(tmpList[i]);
 		}		
 	} else {
-		if (cardsToCheck.indexOf(";") > -1) { //List of values divided by ";"
-			cardCodeList = cardsToCheck.split(";");
+		if (cardsToCheck.indexOf(",") > -1) { //List of values divided by ";"
+			cardCodeList = cardsToCheck.split(",");
 		} else {
 			cardCodeList = cardsToCheck.split(" "); //Single values
 		}
@@ -425,6 +428,14 @@ function printChoice(form, cardsToCheck) {
 		}
 	}
 	return cardCodeList;
+}
+
+
+//The purpose of this function is to print a message for each code not found
+function addMessageCodesNotFound(banDoc) {
+	for (var i = 0; i < cfNotFound.length; i++) {
+		banDoc.addMessage("Scheda numero <" + cfNotFound[i] + "> inesistente.");
+	}
 }
 
 
@@ -463,7 +474,7 @@ function getCardCodeList(form) {
 }
 
 
-//The purpose of this function is to add a Footer to the report
+//The purpose of this function is to add a footer to the report
 function addFooter(banDoc, report) {
 	report.getFooter().addClass("footer");
 	report.getFooter().addText("Banana Accounting, v. " + banDoc.info("Base", "ProgramVersion") + ", " + scriptVersion, "footer");
