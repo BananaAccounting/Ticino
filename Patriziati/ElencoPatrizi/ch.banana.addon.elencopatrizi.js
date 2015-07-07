@@ -347,7 +347,7 @@ function printCard(banDoc, form, mapCF, mapMember) {
 		tableRow = table.addRow();
 		tableRow.addCell(" ", "valueTextTop", 11);
 		tableRow = table.addRow();
-		tableRow.addCell("Documento Banana aggiornato al: " + Banana.Converter.toLocaleDateFormat(banDoc.info("Base", "DateLastSaved")), "valueText", 11);
+		tableRow.addCell("Dati aggiornati al: " + Banana.Converter.toLocaleDateFormat(banDoc.info("Base", "DateLastSaved")), "valueText", 11);
 
 		//Check if there are card codes used several times, then we add a warning message on the card page
 		if (mapCF[i].CFisUnique === "false") {
