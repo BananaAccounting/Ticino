@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-// @id = ch.banana.addon.elencopatrizi
+// @id = schedepatrizi
 // @api = 1.0
 // @pubdate = 2015-05-19
 // @publisher = Banana.ch SA
-// @description = Elenco Patrizi
+// @description = Schede Patrizi
 // @task = app.command
 // @doctype = 400.*
 // @docproperties = patriziati
@@ -26,7 +26,7 @@
 
 
 
-var scriptVersion = "script v. 2015-06-05";
+var scriptVersion = "script v. 2015-08-10";
 var form = []; //used to store all the data taken from Banana document
 var mapCF = []; //map used to store CF's data (code/rows)
 var mapMember = []; //map used to store Member's data (code/rows)
@@ -171,7 +171,7 @@ function createMaps(form, cardsToPrint) {
 //The purpose of this function is to create the cards and print the report
 function printCard(banDoc, form, mapCF, mapMember) {
 
-	var report = Banana.Report.newReport("Elenco Patrizi");
+	var report = Banana.Report.newReport("Schede Patrizi");
 
 	//Table with CF/Members data
 	var table = report.addTable("table");
