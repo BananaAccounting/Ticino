@@ -26,7 +26,7 @@
 
 
 
-var scriptVersion = "script v. 2015-08-10";
+var scriptVersion = "script v. 2015-08-11";
 
 //Main function
 function exec() {
@@ -91,7 +91,7 @@ function printFullCatalog(banDoc, form, catalogHeader) {
 	tableRow.addCell("Nazione", "alignCenter valueTitle", 1);
 	tableRow.addCell("Paternità", "alignCenter valueTitle", 1);
 	tableRow.addCell("Nascita", "alignCenter valueTitle", 1);
-	tableRow.addCell("Decesso", "alignCenter valueTitle", 1);
+	//tableRow.addCell("Decesso", "alignCenter valueTitle", 1);
 	tableRow.addCell("Voto", "alignCenter valueTitle", 1);
 	tableRow.addCell("Note", "alignCenter valueTitle", 1);
 
@@ -112,7 +112,7 @@ function printFullCatalog(banDoc, form, catalogHeader) {
 		tableRow.addCell(form[i]["Country"], "alignLeft valueText", 1);
 		tableRow.addCell(form[i]["Paternity"], "alignLeft valueText", 1);
 		tableRow.addCell(Banana.Converter.toLocaleDateFormat(form[i]["DateOfBirth"]), "alignCenter valueText", 1);
-		tableRow.addCell(Banana.Converter.toLocaleDateFormat(form[i]["DateOfDeath"]), "alignCenter valueText", 1);
+		//tableRow.addCell(Banana.Converter.toLocaleDateFormat(form[i]["DateOfDeath"]), "alignCenter valueText", 1);
 		
 		if (form[i]["MemberVote"] === "1") {
 			tableRow.addCell("Sì", "alignCenter valueText", 1);
@@ -121,7 +121,11 @@ function printFullCatalog(banDoc, form, catalogHeader) {
 		}
 
 		tableRow.addCell(form[i]["Notes"], "alignLeft valueText", 1);
-	}	
+	}
+
+	var date = new Date();
+	report.addParagraph(" ");
+	report.addParagraph("Data di stampa: " + Banana.Converter.toLocaleDateFormat(date));	
 
 	//Add the footer to the report
 	addFooter(banDoc, report);
@@ -160,7 +164,7 @@ function printVotersCatalog(banDoc, form, catalogHeader) {
 	tableRow.addCell("Nazione", "alignCenter valueTitle", 1);
 	tableRow.addCell("Paternità", "alignCenter valueTitle", 1);
 	tableRow.addCell("Nascita", "alignCenter valueTitle", 1);
-	tableRow.addCell("Decesso", "alignCenter valueTitle", 1);
+	//tableRow.addCell("Decesso", "alignCenter valueTitle", 1);
 	tableRow.addCell("Voto", "alignCenter valueTitle", 1);
 	tableRow.addCell("Note", "alignCenter valueTitle", 1);
 
@@ -185,11 +189,15 @@ function printVotersCatalog(banDoc, form, catalogHeader) {
 			tableRow.addCell(form[i]["Country"], "alignLeft valueText", 1);
 			tableRow.addCell(form[i]["Paternity"], "alignLeft valueText", 1);
 			tableRow.addCell(Banana.Converter.toLocaleDateFormat(form[i]["DateOfBirth"]), "alignCenter valueText", 1);
-			tableRow.addCell(Banana.Converter.toLocaleDateFormat(form[i]["DateOfDeath"]), "alignCenter valueText", 1);
+			//tableRow.addCell(Banana.Converter.toLocaleDateFormat(form[i]["DateOfDeath"]), "alignCenter valueText", 1);
 			tableRow.addCell(form[i]["MemberVote"], "alignCenter valueText", 1);
 			tableRow.addCell(form[i]["Notes"], "alignLeft valueText", 1);
 		}
-	}	
+	}
+
+	var date = new Date();
+	report.addParagraph(" ");
+	report.addParagraph("Data di stampa: " + Banana.Converter.toLocaleDateFormat(date));	
 
 	//Add the footer to the report
 	addFooter(banDoc, report);
@@ -273,7 +281,7 @@ function loadForm(banDoc, catalogSorting) {
 	
 	if (catalogSorting === "Ordina per cognome") { //Sort by family name
 		form.sort(function(a, b) { 
-			return sortByFamilyName(a, b); 
+			return sortByName(a, b); 
 		});
 	} else if (catalogSorting === "Ordina per scheda") { //Sort by tab number
 		form.sort(function(a, b) { 
@@ -287,26 +295,47 @@ function loadForm(banDoc, catalogSorting) {
 }
 
 
-//The purpose of this function is to sort the form by the family name
-function sortByFamilyName(a, b) {	
-	var textA = a.FamilyName.toLowerCase();
-	var textB = b.FamilyName.toLowerCase();
+//The purpose of this function is to sort the form by the name
+function sortByName(a, b) {
 	
+	var textA = a.FamilyName.toLowerCase() + "$" + a.FirstName.toLowerCase() + "$" + a.MiddleName.toLowerCase();
+	var textB = b.FamilyName.toLowerCase() + "$" + b.FirstName.toLowerCase() + "$" + b.MiddleName.toLowerCase();
+
 	if (textA < textB) { //sort string ascending
 		return -1;
-	}
-	if (textA > textB) {
+	} else if (textA > textB) {
 		return 1;
 	}
 	return 0; //default return value (no sorting)	
 }
 
 
-//The purpose of this function is to sort the form by tab number
+//The purpose of this function is to sort the form by tab number and name
 function sortByRowBelongTo(a, b) {
-	var textA = a.RowBelongTo;
-	var textB = b.RowBelongTo;
-	return textA - textB;
+
+	if (Number(a.RowBelongTo) > Number(b.RowBelongTo)) {
+        return 1;
+    } else if (Number(a.RowBelongTo) < Number(b.RowBelongTo)) {
+        return -1;
+    }
+
+    if (a.RowId === a.RowBelongTo && b.RowId === b.RowBelongTo) {
+	    if (Number(a.RowBelongTo) > Number(b.RowBelongTo)) {
+	        return -1;
+	    } else if (Number(a.RowBelongTo) < Number(b.RowBelongTo)) {
+	        return 1;
+	    }
+    }
+
+    var textA = a.FamilyName + "$" + a.FirstName + "$" + a.MiddleName;
+    var textB = b.FamilyName + "$" + b.FirstName + "$" + b.MiddleName;
+    
+    if (textA < textB) { //sort string ascending
+		return -1;
+	} else if (textA > textB) {
+		return 1;
+	}
+	return 0;
 }
 
 
@@ -375,8 +404,8 @@ function createStyleSheet() {
 	//Table
 	style = stylesheet.addStyle("table");
 	style.setAttribute("width", "100%");
-	//stylesheet.addStyle("table.table td", "border: thin solid black");
-	stylesheet.addStyle("table.table td", "border: thin dashed black;");
+	stylesheet.addStyle("table.table td", "border: thin solid black");
+	//stylesheet.addStyle("table.table td", "border: thin dashed black;");
 
 
 	return stylesheet;
