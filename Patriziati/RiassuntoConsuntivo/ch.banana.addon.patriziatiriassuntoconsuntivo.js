@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.addon.patriziatoriassuntoconsuntivo
 // @api = 1.0
-// @pubdate = 2015-08-24
+// @pubdate = 2015-08-25
 // @publisher = Banana.ch SA
 // @description = Riassunto del consuntivo
 // @task = app.command
@@ -29,52 +29,66 @@
 //This is the function that loads our parameterized structure.
 //We create objects by adding some parameters that will be used to extract informations from Banana and to determine their behavior and purpose.
 //The parameters are:
-// - id		 	  : this is a UNIQUE id for each object contained in the structure
-// - type 	     : used to differentiate the TYPE of object (text, debit, credit, sum);
-// - description : used to specify the description text of the object
-// - value       : (ONLY for type "text") this will contain the information values taken from Banana -> File Properties
-// - code		  : (ONLY for type "debit/credit") this is the GR1 code contained in Banana;
-// - sum		     : (ONLY for type "sum") used to sum/subtract objects amounts to calculate totals.
+// - id		 	  : this is a UNIQUE id for each object contained in the structure;
+// - type 	     : used to differentiate the TYPE of object (title, text, debit, credit, sum, separator, temp, checkifzero);
+// - description : used to specify the description text of the object;
+// - value       : (ONLY for type "text") this will contain the information values taken from Banana -> File Properties;
+// - code		  : (ONLY for type "debit/credit/temp/checkifzero") this will contain the group id contained in Banana;
+// - sum		     : (ONLY for type "sum/temp/checkifzero"") used to sum/subtract objects amounts to calculate totals.
 function load_form(param) {
 
 	var form = [];
 
-   form.push({"id":"CE", "type":"text", "description":"Conto economico", "value":""});
+   form.push({"id":"CE", "type":"title", "description":"Conto economico"});
 
    form.push({"id":"A", "type":"debit", "description":"Spese operative", "code":"30;31;33;35;36;37"});
    form.push({"id":"B", "type":"credit", "description":"Ricavi operativi", "code":"40;41;42;43;45;46;47"});
    form.push({"id":"C", "type":"sum", "description":"Risultato operativo", "sum":"B;-A"});
+   form.push({"id":"", "type":"separator"});
 
    form.push({"id":"D", "type":"debit", "description":"Spese finanziarie", "code":"34"});
    form.push({"id":"E", "type":"credit", "description":"Ricavi finanziari", "code":"44"});
    form.push({"id":"F", "type":"sum", "description":"Risultato finanziario", "sum":"E;-D"});
+   form.push({"id":"", "type":"separator"});
 
    form.push({"id":"G", "type":"sum", "description":"Risultato ordinario", "sum":"C;F"});
+   form.push({"id":"", "type":"separator"});
 
    form.push({"id":"H", "type":"debit", "description":"Spese straordinarie", "code":"38"});
    form.push({"id":"I", "type":"credit", "description":"Ricavi straordinari", "code":"48"});
    form.push({"id":"L", "type":"sum", "description":"Risultato straordinario", "sum":"I;-H"});
+   form.push({"id":"C", "type":"separator"});
 
    form.push({"id":"M", "type":"sum", "description":"Risultato d'esercizio", "sum":"G;L"});
 
+   // Control amounts
+   form.push({"id":"TB11", "type":"temp", "description":"Risultato d'esercizio da contabilità", "code":"02"});
+   form.push({"id":"TB12", "type":"checkifzero", "description":"Errore: differenza risultato d'esercizio con contabiltà", "sum":"M;TB11"});
+   form.push({"id":"TB21", "type":"checkifzero", "description":"Errore: differenza addebiti/accrediti interni in contabilità", "code":"39;49"});
+   form.push({"id":"", "type":"separator"});
 
-   form.push({"id":"CI", "type":"text", "description":"Conto degli investimenti", "value":""});
+   form.push({"id":"CI", "type":"title", "description":"Conto degli investimenti"});
 
-   form.push({"id":"N", "type":"debit", "description":"Uscite per investimenti", "code":"5;-59"});
-   form.push({"id":"O", "type":"credit", "description":"Entrate per investimenti", "code":"6;-69"});
+   form.push({"id":"N", "type":"debit", "description":"Uscite per investimenti", "code":"5"});
+   form.push({"id":"O", "type":"credit", "description":"Entrate per investimenti", "code":"6"});
    form.push({"id":"P", "type":"sum", "description":"Investimenti netti", "sum":"N;-O"});
+   form.push({"id":"TB31", "type":"temp", "description":"Investimenti netti da contabilità", "code":"03"});
+   form.push({"id":"TB32", "type":"checkifzero", "description":"Errore: differenza investimenti netti", "sum":"P;-TB31"});
+   form.push({"id":"", "type":"separator"});
 
-
-   form.push({"id":"CC", "type":"text", "description":"Conto di chiusura", "value":""});
+   form.push({"id":"CC", "type":"title", "description":"Conto di chiusura"});
 
    form.push({"id":"P2", "type":"sum", "description":"Investimenti netti", "sum":"P"});
+   form.push({"id":"", "type":"separator"});
 
    form.push({"id":"Q", "type":"debit", "description":"Ammortamenti ordinari", "code":"33;365;366"});
    form.push({"id":"R", "type":"debit", "description":"Ammortamenti straordinari", "code":"383;385;389"});
    form.push({"id":"M2", "type":"sum", "description":"Risultato d'esercizio", "sum":"M"});
    form.push({"id":"S", "type":"sum", "description":"Autofinanziamento", "sum":"Q;R;M2"});
+   form.push({"id":"", "type":"separator"});
 
    form.push({"id":"T", "type":"sum", "description":"Risultato totale", "sum":"P;-S"});
+
 
    param.form = form;
 }
@@ -113,17 +127,48 @@ function exec(string) {
 function create_report(banDoc, startDate, endDate, isTest) {
 
 	var param = {
-      "reportName":"Riassunto del consuntivo",												//Save the report's name
-		"bananaVersion":"Banana Accounting, v. " + banDoc.info("Base", "ProgramVersion"), 	//Save the version of Banana Accounting used
-      "scriptVersion": "Script v. " + Banana.script.getParamValue("pubdate"), 											//Save the version of the script
-      "company":banDoc.info("AccountingDataBase","Company"), 								//Save the company name
-      "curertYear": banDoc.info("AccountingDataBase", "ClosureDate").substr(0,4)
+      "reportName":"Riassunto del consuntivo", //Save the report's name
+//      "reportName":"Riassunto del preventivo", //Save the report's name
+      "bananaVersion":"Banana Accounting, v. " + banDoc.info("Base", "ProgramVersion"), //Save the version of Banana Accounting used
+      "scriptVersion": "Script v. " + Banana.script.getParamValue("pubdate"),	//Save the version of the script
+      "company":banDoc.info("AccountingDataBase","Company"), //Save the company name
+      "currentYear": banDoc.info("AccountingDataBase", "ClosureDate").substr(0,4), //Save the current year
+      "previos": banDoc.info("AccountingDataBase", "ClosureDate").substr(0,4), //Save the current year
    };
+
+   var banDocPrev = null;
+   var banDocPrevFileName = banDoc.info("AccountingDataBase","FileNamePreviousYear");
+   if (banDocPrevFileName.length > 0) {
+      banDocPrev = Banana.application.openDocument(banDocPrevFileName);
+   }
+
+   var banDocPrev2 = null;
+   if (banDocPrev) {
+      var banDocPrev2FileName = banDocPrev.info("AccountingDataBase","FileNamePreviousYear");
+      if (banDocPrev2FileName.length > 0) {
+         banDocPrev2 = Banana.application.openDocument(banDocPrev2FileName);
+      }
+   }
+
+   // Consuntivo
+   param.columns = [
+      {"header":"Cons. " + param.currentYear, "value":"currentBalance"},
+      {"header":"Prev. " + param.currentYear, "value":"budgetBalance"},
+      {"header":"Cons. " + (param.currentYear-1), "value":"previousBalance"}
+   ] //Save the columns to print
+
+   // Preventivo
+//   param.columns = [
+//      {"header":"Cons. " + param.currentYear, "value":"currentBalance"},
+//      {"header":"Prev. " + (param.currentYear-1), "value":"previousBalance"},
+//      {"header":"Prev. " + (param.currentYear-2), "value":"previous2Balance"}
+//   ] //Save the columns to print
+
 
 	//Loading data and calculate the totals
 	load_form(param);
-   load_form_balances(banDoc, param.form);
-   calc_form_totals(param.form, ["currentBalance", "budgetBalance"]);
+   load_form_balances(banDoc, banDocPrev, banDocPrev2, param.form);
+   calc_form_totals(param.form, param.columns);
 	
 	//Create a report.
 	var report = Banana.Report.newReport(param.reportName);
@@ -150,174 +195,71 @@ function create_report(banDoc, startDate, endDate, isTest) {
 	var styleValueTotal = "valueTotal";
 	var styleValueTitle = "valueTitle";
 	var styleValueTitle1 = "valueTitle1";
-			
+   var styleWarningMsg = "warningMsg";
+
 	//Begin printing the report...
 	
 	//Title
    report.addParagraph(param.company, styleHeading2);
-   report.addParagraph(param.reportName + " " + param.curertYear, styleHeading1);
-
-	//Table with basic informations
-	var table = report.addTable("table");		
+   report.addParagraph(param.reportName + " " + param.currentYear, styleHeading1);
 
    var formatAmount = Banana.Converter.toLocaleNumberFormat;
-				
+
+	//Table with basic informations
+   var table = report.addTable("table");
+
+   // Headers
    tableRow = table.addRow();
    tableRow.addCell("");
-   tableRow.addCell("Consuntivo", styleTableHeader);
-   tableRow.addCell("Preventivo", styleTableHeader);
+   for (var i in param.columns) {
+      tableRow.addCell(param.columns[i].header, styleTableHeader);
+   }
 
-   tableRow = table.addRow();
-   tableRow.addCell(get_value(param.form, "CE", "description"), styleHeading2);
-   tableRow.addCell("");
-   tableRow.addCell("");
-
-   tableRow = table.addRow();
-   tableRow.addCell(get_value(param.form, "A", "description"), styleDescription);
-   tableRow.addCell(formatAmount(get_value(param.form, "A", "currentBalance")), styleValueAmount);
-   tableRow.addCell(formatAmount(get_value(param.form, "A", "budgetBalance")), styleValueAmount);
-
-   tableRow = table.addRow();
-   tableRow.addCell(get_value(param.form, "B", "description"), styleDescription);
-   tableRow.addCell(formatAmount(get_value(param.form, "B", "currentBalance")), styleValueAmount);
-   tableRow.addCell(formatAmount(get_value(param.form, "B", "budgetBalance")), styleValueAmount);
-
-   tableRow = table.addRow();
-   tableRow.addCell(get_value(param.form, "C", "description"), styleHeading4);
-   tableRow.addCell(formatAmount(get_value(param.form, "C", "currentBalance")), styleValueAmount);
-   tableRow.addCell(formatAmount(get_value(param.form, "C", "budgetBalance")), styleValueAmount);
-
-   tableRow = table.addRow();
-   tableRow.addCell("");
-   tableRow.addCell("");
-
-   tableRow = table.addRow();
-   tableRow.addCell(get_value(param.form, "D", "description"), styleDescription);
-   tableRow.addCell(formatAmount(get_value(param.form, "D", "currentBalance")), styleValueAmount);
-   tableRow.addCell(formatAmount(get_value(param.form, "D", "budgetBalance")), styleValueAmount);
-
-   tableRow = table.addRow();
-   tableRow.addCell(get_value(param.form, "E", "description"), styleDescription);
-   tableRow.addCell(formatAmount(get_value(param.form, "E", "currentBalance")), styleValueAmount);
-   tableRow.addCell(formatAmount(get_value(param.form, "E", "budgetBalance")), styleValueAmount);
-
-   tableRow = table.addRow();
-   tableRow.addCell(get_value(param.form, "F", "description"), styleHeading4);
-   tableRow.addCell(formatAmount(get_value(param.form, "F", "currentBalance")), styleValueAmount);
-   tableRow.addCell(formatAmount(get_value(param.form, "F", "budgetBalance")), styleValueAmount);
-
-   tableRow = table.addRow();
-   tableRow.addCell("");
-   tableRow.addCell("");
-
-   tableRow = table.addRow();
-   tableRow.addCell(get_value(param.form, "G", "description"), styleHeading4);
-   tableRow.addCell(formatAmount(get_value(param.form, "G", "currentBalance")), styleValueAmount);
-   tableRow.addCell(formatAmount(get_value(param.form, "G", "budgetBalance")), styleValueAmount);
-
-   tableRow = table.addRow();
-   tableRow.addCell("");
-   tableRow.addCell("");
-
-   tableRow = table.addRow();
-   tableRow.addCell(get_value(param.form, "H", "description"), styleDescription);
-   tableRow.addCell(formatAmount(get_value(param.form, "H", "currentBalance")), styleValueAmount);
-   tableRow.addCell(formatAmount(get_value(param.form, "H", "budgetBalance")), styleValueAmount);
-
-   tableRow = table.addRow();
-   tableRow.addCell(get_value(param.form, "I", "description"), styleDescription);
-   tableRow.addCell(formatAmount(get_value(param.form, "I", "currentBalance")), styleValueAmount);
-   tableRow.addCell(formatAmount(get_value(param.form, "I", "budgetBalance")), styleValueAmount);
-
-   tableRow = table.addRow();
-   tableRow.addCell(get_value(param.form, "L", "description"), styleHeading4);
-   tableRow.addCell(formatAmount(get_value(param.form, "L", "currentBalance")), styleValueAmount);
-   tableRow.addCell(formatAmount(get_value(param.form, "L", "budgetBalance")), styleValueAmount);
-
-   tableRow = table.addRow();
-   tableRow.addCell("");
-   tableRow.addCell("");
-
-   tableRow = table.addRow();
-   tableRow.addCell(get_value(param.form, "M", "description"), styleHeading4);
-   tableRow.addCell(formatAmount(get_value(param.form, "M", "currentBalance")), styleValueAmount);
-   tableRow.addCell(formatAmount(get_value(param.form, "M", "budgetBalance")), styleValueAmount);
-
-   tableRow = table.addRow();
-   tableRow.addCell("");
-   tableRow.addCell("");
-
-
-   tableRow = table.addRow();
-   tableRow.addCell(get_value(param.form, "CI", "description"), styleHeading2);
-   tableRow.addCell("");
-
-   tableRow = table.addRow();
-   tableRow.addCell(get_value(param.form, "N", "description"), styleDescription);
-   tableRow.addCell(formatAmount(get_value(param.form, "N", "currentBalance")), styleValueAmount);
-   tableRow.addCell(formatAmount(get_value(param.form, "N", "budgetBalance")), styleValueAmount);
-
-   tableRow = table.addRow();
-   tableRow.addCell(get_value(param.form, "O", "description"), styleDescription);
-   tableRow.addCell(formatAmount(get_value(param.form, "O", "currentBalance")), styleValueAmount);
-   tableRow.addCell(formatAmount(get_value(param.form, "O", "budgetBalance")), styleValueAmount);
-
-   tableRow = table.addRow();
-   tableRow.addCell(get_value(param.form, "P", "description"), styleHeading4);
-   tableRow.addCell(formatAmount(get_value(param.form, "P", "currentBalance")), styleValueAmount);
-   tableRow.addCell(formatAmount(get_value(param.form, "P", "budgetBalance")), styleValueAmount);
-
-   tableRow = table.addRow();
-   tableRow.addCell("");
-   tableRow.addCell("");
-
-
-   tableRow = table.addRow();
-   tableRow.addCell(get_value(param.form, "CC", "description"), styleHeading2);
-   tableRow.addCell("");
-
-   tableRow = table.addRow();
-   tableRow.addCell(get_value(param.form, "P2", "description"), styleDescription);
-   tableRow.addCell(formatAmount(get_value(param.form, "P2", "currentBalance")), styleValueAmount);
-   tableRow.addCell(formatAmount(get_value(param.form, "P2", "budgetBalance")), styleValueAmount);
-
-   tableRow = table.addRow();
-   tableRow.addCell("");
-   tableRow.addCell("");
-
-   tableRow = table.addRow();
-   tableRow.addCell(get_value(param.form, "Q", "description"), styleDescription);
-   tableRow.addCell(formatAmount(get_value(param.form, "Q", "currentBalance")), styleValueAmount);
-   tableRow.addCell(formatAmount(get_value(param.form, "Q", "budgetBalance")), styleValueAmount);
-
-   tableRow = table.addRow();
-   tableRow.addCell(get_value(param.form, "R", "description"), styleDescription);
-   tableRow.addCell(formatAmount(get_value(param.form, "R", "currentBalance")), styleValueAmount);
-   tableRow.addCell(formatAmount(get_value(param.form, "R", "budgetBalance")), styleValueAmount);
-
-   tableRow = table.addRow();
-   tableRow.addCell(get_value(param.form, "M2", "description"), styleDescription);
-   tableRow.addCell(formatAmount(get_value(param.form, "M2", "currentBalance")), styleValueAmount);
-   tableRow.addCell(formatAmount(get_value(param.form, "M2", "budgetBalance")), styleValueAmount);
-
-   tableRow = table.addRow();
-   tableRow.addCell(get_value(param.form, "S", "description"), styleHeading4);
-   tableRow.addCell(formatAmount(get_value(param.form, "S", "currentBalance")), styleValueAmount);
-   tableRow.addCell(formatAmount(get_value(param.form, "S", "budgetBalance")), styleValueAmount);
-
-   tableRow = table.addRow();
-   tableRow.addCell("");
-   tableRow.addCell("");
-
-
-   tableRow = table.addRow();
-   tableRow.addCell(get_value(param.form, "T", "description"), styleHeading2);
-   tableRow.addCell(formatAmount(get_value(param.form, "T", "currentBalance")), styleValueAmount);
-   tableRow.addCell(formatAmount(get_value(param.form, "T", "budgetBalance")), styleValueAmount);
-
-
-
-
+   // Rows
+   for (var i in param.form) {
+      var formObjId = param.form[i].id;
+      if (param.form[i].type === "title") {
+         tableRow = table.addRow();
+         tableRow.addCell(get_value(param.form, formObjId, "description"), styleHeading2);
+         for (var i in param.columns) {
+            tableRow.addCell("");
+         }
+      } else if (param.form[i].type === "sum") {
+         tableRow = table.addRow();
+         tableRow.addCell(get_value(param.form, formObjId, "description"), styleHeading4);
+         for (var i in param.columns) {
+            tableRow.addCell(formatAmount(get_value(param.form, formObjId, param.columns[i].value)), styleValueAmount);
+         }
+      } else if (param.form[i].type === "credit" || param.form[i].type === "debit") {
+         tableRow = table.addRow();
+         tableRow.addCell(get_value(param.form, formObjId, "description"), styleDescription);
+         for (var i in param.columns) {
+            tableRow.addCell(formatAmount(get_value(param.form, formObjId, param.columns[i].value)), styleValueAmount);
+         }
+      } else if (param.form[i].type === "text") {
+         tableRow = table.addRow();
+         tableRow.addCell(get_value(param.form, formObjId, "description"), styleDescription);
+         for (var i in param.columns) {
+            tableRow.addCell(formatAmount(get_value(param.form, formObjId, param.columns[i].value)), styleValueText);
+         }
+      } else if (param.form[i].type === "separator") {
+         tableRow = table.addRow();
+         for (var i in param.columns) {
+            tableRow.addCell("");
+         }
+      } else if (param.form[i].type === "temp") {
+         // Don't print
+      } else if (param.form[i].type === "checkifzero") {
+         if (!Banana.SDecimal.isZero(get_value(param.form, formObjId, "currentBalance")) ||
+             !Banana.SDecimal.isZero(get_value(param.form, formObjId, "budgetBalance"))) {
+            tableRow = table.addRow(styleWarningMsg);
+            tableRow.addCell(get_value(param.form, formObjId, "description"), styleHeading4);
+            for (var i in param.columns) {
+               tableRow.addCell(formatAmount(get_value(param.form, formObjId, param.columns[i].value)), styleValueAmount);
+            }
+         }
+      }
+   }
 
    //check_totals(param.form, "4.27", "4.28;4.29;4.30", report, isTest);
 	
@@ -326,8 +268,6 @@ function create_report(banDoc, startDate, endDate, isTest) {
 		
 	return report;
 }
-
-
 
 
 //The purpose of this function is to verify two sums.
@@ -368,16 +308,13 @@ function check_totals(source, valuesList1, valuesList2, report, isTest) {
 }
 
 
-
-
 //The purpose of this function is to verify if the balance from Banana euquals the report total
 function check_balance(banDoc, form, report, isTest) {
 }
 
 
-
 //The purpose of this function is to calculate the vatTaxable and vatAmount balances, then load these values into the structure
-function load_form_balances(banDoc, form) {
+function load_form_balances(banDoc, banDocPrev, banDocPrev2, form) {
    var accounts = banDoc.table("Accounts");
    if (!accounts) {
 		return;
@@ -388,14 +325,26 @@ function load_form_balances(banDoc, form) {
          var groupSelector = "Gr=" + form[i].code.replace(/;/g,'|');
          var balance = banDoc.currentBalance(groupSelector).balance;
          var budget = banDoc.budgetBalance(groupSelector).balance;
+         var previousBalance = banDocPrev ? banDocPrev.currentBalance(groupSelector).balance : "";
+         var previousBudget = banDocPrev ? banDocPrev.budgetBalance(groupSelector).balance : "";
+         var previous2Balance = banDocPrev2 ? banDocPrev2.currentBalance(groupSelector).balance : "";
+         var previous2Budget = banDocPrev2 ? banDocPrev2.budgetBalance(groupSelector).balance : "";
 
          if (form[i].type === "credit") {
             balance = Banana.SDecimal.invert(balance);
             budget = Banana.SDecimal.invert(budget);
+            previousBalance = Banana.SDecimal.invert(previousBalance);
+            previousBudget = Banana.SDecimal.invert(previousBudget);
+            previous2Balance = Banana.SDecimal.invert(previous2Balance);
+            previous2Budget = Banana.SDecimal.invert(previous2Budget);
          }
 
          form[i].currentBalance = balance;
          form[i].budgetBalance = budget;
+         form[i].previousBalance = previousBalance;
+         form[i].previousBudgetBalance = previousBudget;
+         form[i].previous2Balance = previous2Balance;
+         form[i].previous2BudgetBalance = previous2Budget;
       }
    }
 }
@@ -414,7 +363,7 @@ function calc_form_total(form, id, fields) {
 	
 	var valueObj = get_object(form, id);
 	
-	if (valueObj[fields[0]]) { //first field is present
+   if (valueObj[fields[0].value]) { //first field is present
 		return; //calc already done, return
 	}
 	
@@ -436,8 +385,8 @@ function calc_form_total(form, id, fields) {
 			//Calulate recursively
 			calc_form_total(form, entry, fields);  
 			
-		    for (var j = 0; j < fields.length; j++) {
-				var fieldName = fields[j];
+          for (var j = 0; j < fields.length; j++) {
+            var fieldName = fields[j].value;
 				var fieldValue = get_value(form, entry, fieldName);
 				if (fieldValue) {
 					if (isNegative) {
