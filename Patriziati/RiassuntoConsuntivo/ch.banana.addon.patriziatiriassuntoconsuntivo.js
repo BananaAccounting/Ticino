@@ -62,9 +62,9 @@ function load_form(param) {
    form.push({"id":"M", "type":"sum", "description":"Risultato d'esercizio", "sum":"G;L"});
 
    // Control amounts
-   form.push({"id":"TB11", "type":"temp", "description":"Risultato d'esercizio da contabilità", "code":"02"});
-   form.push({"id":"TB12", "type":"checkifzero", "description":"Errore: differenza risultato d'esercizio con contabiltà", "sum":"M;TB11"});
-   form.push({"id":"TB21", "type":"checkifzero", "description":"Errore: differenza addebiti/accrediti interni in contabilità", "code":"39;49"});
+   form.push({"id":"TB11", "type":"hidden", "description":"Risultato d'esercizio da contabilità", "code":"02"});
+   form.push({"id":"TB12", "type":"errorifnotzero", "description":"Errore: differenza risultato d'esercizio con contabiltà", "sum":"M;TB11"});
+   form.push({"id":"TB21", "type":"errorifnotzero", "description":"Errore: differenza addebiti/accrediti interni in contabilità", "code":"39;49"});
    form.push({"id":"", "type":"separator"});
 
    form.push({"id":"CI", "type":"title", "description":"Conto degli investimenti"});
@@ -72,8 +72,8 @@ function load_form(param) {
    form.push({"id":"N", "type":"debit", "description":"Uscite per investimenti", "code":"5"});
    form.push({"id":"O", "type":"credit", "description":"Entrate per investimenti", "code":"6"});
    form.push({"id":"P", "type":"sum", "description":"Investimenti netti", "sum":"N;-O"});
-   form.push({"id":"TB31", "type":"temp", "description":"Investimenti netti da contabilità", "code":"03"});
-   form.push({"id":"TB32", "type":"checkifzero", "description":"Errore: differenza investimenti netti", "sum":"P;-TB31"});
+   form.push({"id":"TB31", "type":"hidden", "description":"Investimenti netti da contabilità", "code":"03"});
+   form.push({"id":"TB32", "type":"errorifnotzero", "description":"Errore: differenza investimenti netti", "sum":"P;-TB31"});
    form.push({"id":"", "type":"separator"});
 
    form.push({"id":"CC", "type":"title", "description":"Conto di chiusura"});
@@ -247,9 +247,9 @@ function create_report(banDoc, startDate, endDate, isTest) {
          for (var i in param.columns) {
             tableRow.addCell("");
          }
-      } else if (param.form[i].type === "temp") {
+      } else if (param.form[i].type === "hidden") {
          // Don't print
-      } else if (param.form[i].type === "checkifzero") {
+      } else if (param.form[i].type === "errorifnotzero") {
          if (!Banana.SDecimal.isZero(get_value(param.form, formObjId, "currentBalance")) ||
              !Banana.SDecimal.isZero(get_value(param.form, formObjId, "budgetBalance"))) {
             tableRow = table.addRow(styleWarningMsg);
