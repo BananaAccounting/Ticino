@@ -1,5 +1,5 @@
 // @id = ch.banana.script.rendicontofinanziario
-// @pubdate = 2013-12-10
+// @pubdate = 2015-01-12
 // @publisher = Banana.ch SA
 // @description = Rendiconto finanziario (art. 410 CC) 
 // @doctype = 110.100
@@ -471,8 +471,11 @@ function exec(string) {
       	
     tableRow = tableRisolve.addRow();
     tableRow.addCell("4.");
-    tableRow.addCell("Contro la presente decisione può essere inoltrato reclamo alla Camera di protezione del Tribunale d'appello, Via Bossi 2a, 6901 Lugano, entro 30 giorni dall'intimazione.", "testo");
-      	
+    tableRow.addCell("Contro la presente decisione può essere inoltrato reclamo alla Camera di protezione del Tribunale d'appello,", "testo");
+    tableRow = tableRisolve.addRow();
+    tableRow.addCell("");
+    tableRow.addCell("Via Bossi 2a, 6901 Lugano, entro 30 giorni dall'intimazione.", "testo");
+
     tableRow = tableRisolve.addRow();
     tableRow.addCell("5.");
     tableRow.addCell("Intimazione e comunicazione", "testo");
@@ -546,7 +549,7 @@ function exec(string) {
     
     tableRow = tableIstruzioni.addRow();
     tableRow.addCell("1.");
-    tableRow.addCell("Il rendiconto, debitamente firmato, deve essere trasmesso con i documenti giustificativi, che risaranno restituiti, all'Autorità regionale di protezione entro il mese di febbraio, salvo proroga autorizzata, in tante copie quante richieste dalla stessa autorità.", "testo");
+    tableRow.addCell("Il rendiconto, debitamente firmato, deve essere trasmesso con i documenti giustificativi, che risaranno restituiti, all'Autorità regionale di protezione entro il mese di febbraio, salvo proroga autorizzata, in tante copie quante richieste dalla stessa autorità.", "testoNormale");
 
     tableRowEmpty = tableIstruzioni.addRow();
 	tableRowEmpty.addCell(" ");
