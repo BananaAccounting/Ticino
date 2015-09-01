@@ -88,8 +88,8 @@ function load_form(param) {
 
    // Control amounts
    form.push({"id":"TB11", "type":"hidden", "description":"Risultato d'esercizio da contabilità", "account":"Gr=02"});
-   form.push({"id":"TB12", "type":"checkifzero", "description":"Errore: differenza risultato d'esercizio con contabiltà", "sum":"M;-TB11"});
-   form.push({"id":"TB21", "type":"checkifzero", "description":"Errore: differenza addebiti/accrediti interni in contabilità", "account":"Gr=39|49"});
+   form.push({"id":"TB12", "type":"testifzero", "description":"Errore: differenza risultato d'esercizio con contabiltà", "sum":"M;-TB11"});
+   form.push({"id":"TB21", "type":"testifzero", "description":"Errore: differenza tra addebiti/accrediti interni in contabilità", "account":"Gr=39|49"});
    form.push({"id":"", "type":"empty"});
 
 
@@ -202,28 +202,30 @@ function create_report(banDoc, startDate, endDate, isTest) {
 	//Adding a footer.
 	add_footer(report, param);
 	
-	//Variables used for the report's style.
-	var styleDescription = "description";
+   //Variables used for the report's style.
+   var styleAccount= "account";
+   var styleDescription = "description";
    var stylePageHeader1 = "pageHeader1";
    var stylePageHeader2 = "pageHeader2";
-	var styleHorizontalLine = "horizontalLine";
+   var styleHorizontalLine = "horizontalLine";
    var styleHeader = "header";
-	var styleValueAmount = "valueAmount";
-	var styleValueDate = "valueDate";
-	var styleValueText = "valueText";
-	var styleValueTotal = "valueTotal";
+   var styleValueAmount = "valueAmount";
+   var styleValueDate = "valueDate";
+   var styleValueText = "valueText";
+   var styleValueTotal = "valueTotal";
    var stlyeLevel1 = "level1";
    var stlyeLevel2 = "level2";
    var stlyeLevel3 = "level3";
 
 
-	//Begin printing the report...
-	
-	//Title
-   report.addParagraph(param.company, stylePageHeader1);
-   report.addParagraph(param.reportName + " " + param.currentYear, stylePageHeader2);
+   //Begin printing the report...
 
-	//Table with basic informations
+   //Title
+   var pageHeader = report.getHeader();
+   pageHeader.addParagraph(param.company, stylePageHeader1);
+   pageHeader.addParagraph(param.reportName + " " + param.currentYear, stylePageHeader2);
+
+   //Table with basic informations
    var table = report.addTable("table");
 
    // Rows
@@ -233,8 +235,18 @@ function create_report(banDoc, startDate, endDate, isTest) {
       var columnValues = formObj.values ? formObj.values : param.amountColumns(formObj, rowIndex, param.rounding.decimals);
       var tableRow = null;
 
-      if (param.form[i].type === "title") {
+      if (param.form[i].type === "header") {
+         tableRow = table.getHeader().addRow("headerRow");
+         if (param.printId)
+            tableRow.addCell();
+         tableRow.addCell(formObj["description"], styleDescription);
+         for (var c in columnValues) {
+            tableRow.addCell(columnValues[c], styleHeader);
+         }
+      } else if (param.form[i].type === "title") {
          tableRow = table.addRow("titleRow");
+         if (param.printId)
+            tableRow.addCell();
          tableRow.addCell(formObj["description"], styleDescription);
          for (var c in columnValues) {
             tableRow.addCell("");
@@ -242,6 +254,8 @@ function create_report(banDoc, startDate, endDate, isTest) {
          rowIndex++;
       } else if (param.form[i].type === "text") {
          tableRow = table.addRow("textRow");
+         if (param.printId)
+            tableRow.addCell();
          tableRow.addCell(formObj["description"], styleDescription);
          for (var c in columnValues) {
             tableRow.addCell(columnValues[c], styleValueText);
@@ -249,6 +263,8 @@ function create_report(banDoc, startDate, endDate, isTest) {
          rowIndex++;
       } else if (param.form[i].type === "amount") {
          tableRow = table.addRow("amountRow");
+         if (param.printId)
+            tableRow.addCell(formObj["id"], styleAccount);
          tableRow.addCell(formObj["description"], styleDescription);
          for (var c in columnValues) {
             tableRow.addCell(columnValues[c], styleValueAmount);
@@ -256,6 +272,8 @@ function create_report(banDoc, startDate, endDate, isTest) {
          rowIndex++;
       } else if (param.form[i].type === "total") {
          tableRow = table.addRow("totalRow");
+         if (param.printId)
+            tableRow.addCell(formObj["id"], styleAccount);
          tableRow.addCell(formObj["description"], styleDescription);
          for (var c in columnValues) {
             tableRow.addCell(columnValues[c], styleValueAmount);
@@ -263,12 +281,23 @@ function create_report(banDoc, startDate, endDate, isTest) {
          rowIndex++;
       } else if (param.form[i].type === "empty") {
          tableRow = table.addRow("emptyRow");
+         if (param.printId)
+            tableRow.addCell();
+         tableRow.addCell();
+         for (var c in columnValues) {
+            tableRow.addCell("");
+         }
+      } else if (param.form[i].type === "pagebreak") {
+         tableRow = table.addRow("pagebreakRow");
+         if (param.printId)
+            tableRow.addCell();
+         tableRow.addCell();
          for (var c in columnValues) {
             tableRow.addCell("");
          }
       } else if (param.form[i].type === "hidden") {
          // Don't print
-      } else if (param.form[i].type === "checkifzero") {
+      } else if (param.form[i].type === "testifzero") {
          var printRow = false;
          for (var c in columnValues) {
             if (!Banana.SDecimal.isZero(columnValues[c])) {
@@ -279,24 +308,31 @@ function create_report(banDoc, startDate, endDate, isTest) {
 
          if (printRow) {
             tableRow = table.addRow("warningRow");
+            if (param.printId)
+               tableRow.addCell();
             tableRow.addCell(formObj["description"]);
             for (var c in columnValues) {
                var cell = tableRow.addCell(columnValues[c], styleValueAmount);
             }
          }
+      } else {
+         tableRow = table.addRow("warningRow");
+         tableRow.addCell("invalid_row_type: " + param.form[i].type);
+         if (param.printId)
+            tableRow.addCell();
+         tableRow.addCell();
+         for (var c in columnValues) {
+            var cell = tableRow.addCell(columnValues[c], styleValueAmount);
+         }
       }
 
+
       for (var s in formObj.styles) {
-          tableRow.addClass(formObj.styles[s]);
+         tableRow.addClass(formObj.styles[s]);
       }
    }
 
-   //check_totals(param.form, "4.27", "4.28;4.29;4.30", report, isTest);
-	
-	//Verification of the balance values
-   //check_balance(banDoc, param.form, report, isTest);
-		
-	return report;
+   return report;
 }
 
 
