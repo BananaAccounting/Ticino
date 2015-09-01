@@ -63,25 +63,6 @@ function load_form(banDoc, param) {
    var form = [];
    param.form = form;
 
-   form.push({"id":"", "type":"header", "description":"", "values":["Preventivo", "Preventivo", "Consuntivo"]});
-   form.push({"id":"", "type":"header", "description":"", "values":[param.currentYear, param.previousYear, param.previous2Year]});
-
-   form.push({"id":"CE", "type":"title", "description":"BILANCIO"});
-
-   form.push({"id":"CE", "type":"title", "description":"ATTIVI"});
-   fill_form(banDoc, form, "1", param.subtotalLevel);
-
-   form.push({"id":"", "type":"empty"});
-
-   form.push({"id":"CE", "type":"title", "description":"PASSIVI"});
-   fill_form(banDoc, form, "2", param.subtotalLevel);
-
-
-   if (param.subtotalLevel > 1)
-      form.push({"id":"", "type":"pagebreak"});
-   else
-      form.push({"id":"", "type":"empty"});
-
 
    form.push({"id":"CE", "type":"title", "description":"CONTO ECONOMICO"});
 
