@@ -63,6 +63,8 @@ function load_form(banDoc, param) {
    var form = [];
    param.form = form;
 
+   form.push({"id":"", "type":"header", "description":"", "values":["Preventivo", "Preventivo", "Consuntivo"]});
+   form.push({"id":"", "type":"header", "description":"", "values":[param.currentYear, param.previousYear, param.previous2Year]});
 
    form.push({"id":"CE", "type":"title", "description":"CONTO ECONOMICO"});
 
