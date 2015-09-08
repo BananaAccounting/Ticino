@@ -408,6 +408,16 @@ function load_form_balances(banDoc, banDocPrev, banDocPrev2, form) {
       return;
    }
 
+   var detailList = [
+         "opening", "debit", "credit", "total", "balance",
+         "openingCurrency", "openingDebit", "openingCredit", "totalCurrency", "balanceCurrency"
+         ];
+
+   var emptyAmounts = {};
+   for (var a in detailList) {
+      emptyAmounts[a] = "";
+   }
+
    for (var i in form) {
       var formObj = form[i];
 
@@ -416,10 +426,10 @@ function load_form_balances(banDoc, banDocPrev, banDocPrev2, form) {
 
          formObj.currentBalance = banDoc.currentBalance(formObj.account);
          formObj.currentBudget = banDoc.budgetBalance(formObj.account);
-         formObj.previousBalance = banDocPrev ? banDocPrev.currentBalance(formObj.account) : null;
-         formObj.previousBudget = banDocPrev ? banDocPrev.budgetBalance(formObj.account) : null;
-         formObj.previous2Balance = banDocPrev2 ? banDocPrev2.currentBalance(formObj.account) : null;
-         formObj.previous2Budget = banDocPrev2 ? banDocPrev2.budgetBalance(formObj.account) : null;
+         formObj.previousBalance = banDocPrev ? banDocPrev.currentBalance(formObj.account) : emptyAmounts;
+         formObj.previousBudget = banDocPrev ? banDocPrev.budgetBalance(formObj.account) : emptyAmounts;
+         formObj.previous2Balance = banDocPrev2 ? banDocPrev2.currentBalance(formObj.account) : emptyAmounts;
+         formObj.previous2Budget = banDocPrev2 ? banDocPrev2.budgetBalance(formObj.account) : emptyAmounts;
 
          // Invert sign if requested by param
          var invertSign = false;
@@ -438,11 +448,8 @@ function load_form_balances(banDoc, banDocPrev, banDocPrev2, form) {
                      "currentBalance", "currentBudget", "previousBalance", "previousBudget",
                      "previous2Balance", "previous2Budget"
                   ];
-            var detailList = [
-                     "amount", "opening", "debit", "credit", "total", "balance",
-                     "openingCurrency", "openingDebit", "openingCredit", "totalCurrency", "balanceCurrency"
-                  ];
-             for (var group in groupList) {
+
+            for (var group in groupList) {
                var groupName = groupList[group];
                for (var detail in detailList) {
                   var detailName = detailList[detail];
