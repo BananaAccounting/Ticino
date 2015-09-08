@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-// @id = schedepatrizi
+// @id = ch.banana.app.patriziato.schedepatrizi
 // @api = 1.0
-// @pubdate = 2015-05-19
+// @pubdate = 2015-09-08
 // @publisher = Banana.ch SA
 // @description = Schede Patrizi
 // @task = app.command
@@ -26,7 +26,7 @@
 
 
 
-var scriptVersion = "script v. 2015-08-10";
+var scriptVersion = "script v. 2015-09-08";
 var form = []; //used to store all the data taken from Banana document
 var mapCF = []; //map used to store CF's data (code/rows)
 var mapMember = []; //map used to store Member's data (code/rows)

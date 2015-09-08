@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-// @id = ch.banana.addon.patriziatipreventivopersubtotali
+// @id = ch.banana.app.patriziato.consuntivopersubtotali
 // @api = 1.0
-// @pubdate = 2015-09-01
+// @pubdate = 2015-09-08
 // @publisher = Banana.ch SA
-// @description = Preventivo per subtotali
+// @description = Consuntivo per subtotali
 // @task = app.command
-// @doctype = *
+// @doctype = 100.*
 // @docproperties = patriziato
 // @outputformat = none
 // @inputdatasource = none
@@ -56,15 +56,32 @@
 function load_form(banDoc, param) {
 
    // The name of report
-   param.reportName = "Preventivo per subtotali"
+   param.reportName = "Consuntivo per subtotali"
 
 
    // The parameter form define the content of the report
    var form = [];
    param.form = form;
 
-   form.push({"id":"", "type":"header", "description":"", "values":["Preventivo", "Preventivo", "Consuntivo"]});
-   form.push({"id":"", "type":"header", "description":"", "values":[param.currentYear, param.previousYear, param.previous2Year]});
+   form.push({"id":"", "type":"header", "description":"", "values":["Consuntivo", "Preventivo", "Consuntivo"]});
+   form.push({"id":"", "type":"header", "description":"", "values":[param.currentYear, param.currentYear, param.previousYear]});
+
+   form.push({"id":"CE", "type":"title", "description":"BILANCIO"});
+
+   form.push({"id":"CE", "type":"title", "description":"ATTIVI"});
+   fill_form(banDoc, form, "1", param.subtotalLevel);
+
+   form.push({"id":"", "type":"empty"});
+
+   form.push({"id":"CE", "type":"title", "description":"PASSIVI"});
+   fill_form(banDoc, form, "2", param.subtotalLevel);
+
+
+   if (param.subtotalLevel > 1)
+      form.push({"id":"", "type":"pagebreak"});
+   else
+      form.push({"id":"", "type":"empty"});
+
 
    form.push({"id":"CE", "type":"title", "description":"CONTO ECONOMICO"});
 
@@ -112,9 +129,10 @@ function load_form(banDoc, param) {
    param.amountColumns = function(formObj, rowIndex, decimals) {
       try {
          var values = [];
+         var value =
+               values.push(Banana.Converter.toLocaleNumberFormat(formObj["currentBalance"]["amount"], decimals));
          values.push(Banana.Converter.toLocaleNumberFormat(formObj["currentBudget"]["amount"], decimals));
-         values.push(Banana.Converter.toLocaleNumberFormat(formObj["previousBudget"]["amount"], decimals));
-         values.push(Banana.Converter.toLocaleNumberFormat(formObj["previous2Balance"]["amount"], decimals));
+         values.push(Banana.Converter.toLocaleNumberFormat(formObj["previousBalance"]["amount"], decimals));
          return values;
       } catch (err) {
          return ["error","error","error"];

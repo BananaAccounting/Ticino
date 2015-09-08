@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-// @id = catalogopatrizi
+// @id = ch.banana.app.patriziato.catalogopatrizi
 // @api = 1.0
-// @pubdate = 2015-08-05
+// @pubdate = 2015-09-08
 // @publisher = Banana.ch SA
 // @description = Catalogo Patrizi
 // @task = app.command

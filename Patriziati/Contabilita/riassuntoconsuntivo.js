@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-// @id = ch.banana.addon.patriziatoriassuntoconsuntivo
+// @id = ch.banana.app.patriziato.riassuntoconsuntivo
 // @api = 1.0
-// @pubdate = 2015-08-31
+// @pubdate = 2015-09-08
 // @publisher = Banana.ch SA
 // @description = Riassunto del consuntivo
 // @task = app.command
-// @doctype = *
+// @doctype = 100.*
 // @docproperties = patriziato
 // @outputformat = none
 // @inputdatasource = none
