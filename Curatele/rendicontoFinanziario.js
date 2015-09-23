@@ -18,7 +18,7 @@
 // @publisher = Banana.ch SA
 // @description = Rendiconto finanziario (art. 410 CC) - II
 // @task = app.command
-// @doctype = 100.100
+// @doctype = *.*
 // @docproperties = ticino
 // @outputformat = none
 // @inputdataform = none
@@ -29,7 +29,6 @@
 //Global variables
 var param = {};
 var form = [];
-var messaggioAvviso = "";
 
 
 //The purpose of this function is to get and load all the parameters saved into the .ac2 
@@ -77,7 +76,7 @@ function loadParam() {
 		"scriptVersion":"script v. 2015-09-21 (TEST VERSION)",
 		"pageCounterText":"Pagina",
 		"rounding" : 2,	
-		"formatNumber":true,
+		"formatNumber":true
 	};
 
 	loadOsservazioni();
@@ -97,52 +96,43 @@ function loadForm() {
 				"description" : tRow.value("Description"),
 				"bClass" : tRow.value("BClass"),
 				"gr" : tRow.value("Gr"),
-				"opening" : tRow.value("Opening"),
-				"balance" : tRow.value("Balance"),
-				//"balance" : Banana.document.currentBalance(tRow.value("Account")).balance,
+				"opening" : Banana.document.currentBalance(tRow.value("Account"), param.startDate, param.endDate).opening,
+				"balance" : Banana.document.currentBalance(tRow.value("Account"), param.startDate, param.endDate).balance,
 				"docNumero" : tRow.value("DocNumero"),
 				"particellaNumero" : tRow.value("ParticellaNumero"),
 				"valoreStima" : tRow.value("ValoreStima")
 			});
 		}
 	}
-}
 
-
-//The purpose of this function is to get all the texts of the "osservazioni" tag from the table "Testi" and add them to the parameters 
-function loadOsservazioni() {
-	var ossParam = [];
-	var table = Banana.document.table("Testi");
-	for (var i = 0; i < table.rowCount; i++) {
-		var tRow = table.row(i);
-		
-		if (tRow.value("RowId") === "_oss" && tRow.value("Testo")) {
-			ossParam.push({"testo" : tRow.value("Testo")});
+	//Contabilita semplice...
+	if (Banana.document.table('Accounts') && Banana.document.table('Categories')) {
+		var tableCategories = Banana.document.table("Categories");
+		for (var i = 0; i < tableCategories.rowCount; i++) {
+			var tRow = tableCategories.row(i);
+			if (tRow.value("Account")) { //We take only the rows with an existing account number/text
+				form.push({
+					"account" : tRow.value("Account"),
+					"group" : tRow.value("Group"),
+					"description" : tRow.value("Description"),
+					"bClass" : tRow.value("BClass"),
+					"gr" : tRow.value("Gr"),
+					"opening" : Banana.document.currentBalance(tRow.value("Account"), param.startDate, param.endDate).opening,
+					"balance" : Banana.document.currentBalance(tRow.value("Account"), param.startDate, param.endDate).balance,
+					"docNumero" : tRow.value("DocNumero"),
+					"particellaNumero" : tRow.value("ParticellaNumero"),
+					"valoreStima" : tRow.value("ValoreStima")
+				});
+			}
 		}
 	}
-	param.ossParam = ossParam;
-}
-
-
-//The purpose of this function is to get all the texts of the "allegati" tag from the table "Testi" and add them to the parameters 
-function loadAllegati() {
-	var allParam = [];
-	var table = Banana.document.table("Testi");
-	for (var i = 0; i < table.rowCount; i++) {
-		var tRow = table.row(i);
-		
-		if (tRow.value("RowId") === "_all" && tRow.value("Testo")) {
-			allParam.push({"testo" : tRow.value("Testo")});
-		}
-	}
-	param.allParam = allParam;
 }
 
 
 //The purpose of this function is to do some operations before the values are converted
 function postProcess() {
 	
-	//Richiama la funzione di verifica: in caso di errore viene visualizzato un messaggio sul rendiconto
+	//Chiamata della funzione di verifica
 	flagError = verificaImporti();
 }
 
@@ -319,9 +309,9 @@ function printReport() {
 		}
 	}
 
-	//Cerca tutti i PASSIVI - DEBITI (Gr=2) con saldo POSITIVO (il capitale proprio viene escluso)
+	//Cerca tutti i PASSIVI - DEBITI (Gr=20) con saldo POSITIVO (il capitale proprio viene escluso)
 	for (var i = 0; i < form.length; i++) {
-		if (getObject(form, form[i].account).gr === "2" && getObject(form, form[i].account).account !== "290" && Banana.SDecimal.sign(getObject(form, form[i].account).balance) > 0) {
+		if (getObject(form, form[i].account).gr === "20" && Banana.SDecimal.sign(getObject(form, form[i].account).balance) > 0) {
 
 			tableRow = tableAttivo.addRow();
 			tableRow.addCell("                      ");
@@ -346,9 +336,13 @@ function printReport() {
 	tableRow.addCell(getObject(form, "totAttivo").balance, "intestazioneStyle Right", 2);
 	report.addParagraph(" ");	
 
-	//Se la funzione di verifica trova un errore, viene visualizzato un messaggio sul rendiconto
+	//Se la funzione di verifica trova un errore, viene visualizzato un messaggio sul rendiconto in prima pagina
 	if (flagError) {
-		report.addParagraph(messaggioAvviso, "warning");
+		for (var i = 0; i < form.length; i++) {
+			if (form[i]["warningMessage"]) {
+				report.addParagraph(form[i]["warningMessage"], "warning");
+			}
+		}
 	}
 	report.addPageBreak();
 
@@ -372,11 +366,11 @@ function printReport() {
 	tableRow3.addCell("Importo (CHF)","intestazioneStyle");
 	tableRow3.addCell("Documento giustificativo","intestazioneStyle");
 	
-	//Cerca tutti i PASSIVI - DEBITI (Gr=2) con saldo NEGATIVO escludendo il Capitale Proprio (conto 290)
+	//Cerca tutti i PASSIVI - DEBITI (Gr=20) con saldo NEGATIVO escludendo il Capitale Proprio (conto 290)
 	tableRow = tablePassivo.addRow();
 	tableRow.addCell("Debiti", " ",4);
 	for (var i = 0; i < form.length; i++) {
-		if (getObject(form, form[i].account).gr === "2" && getObject(form, form[i].account).account !== "290" && Banana.SDecimal.sign(getObject(form, form[i].account).balance) < 0) {
+		if (getObject(form, form[i].account).gr === "20" && Banana.SDecimal.sign(getObject(form, form[i].account).balance) < 0) {
 			//Aggiunge riga alla tabella
 			tableRow = tablePassivo.addRow();
 			tableRow.addCell("             ");
@@ -476,7 +470,7 @@ function printReport() {
 	// 9.	MOVIMENTI FINANZIARI
 	//------------------------------------------------------------------------------//	
 	//Salvataggio del saldo di apertura della sostanza netta
-	var aperturaSostNetta = Banana.document.table('Accounts').findRowByValue('Group','00').value('Opening');
+	var aperturaSostNetta = Banana.document.currentBalance("Gr=0", param.startDate, param.endDate).opening;
 	
 	//Creazione della tabella per la stampa della data dei movimenti finanziari
 	var tableDataMovimentiFinanziari = report.addTable("table");
@@ -605,10 +599,10 @@ function printReport() {
 	// 11.	RETRO PAGINA FIRME
 	//------------------------------------------------------------------------------//
 	var paragraph = report.addParagraph("","bordoSinistraSopra");
-	paragraph.addText("L'Autorità Regionale di Protezione no. ", "testoNormale");
+	paragraph.addText("L'Autorità Regionale di Protezione no. " + param._arn, "testoNormale");
 
 	var paragraph1 = report.addParagraph("","bordoSinistra");
-	paragraph1.addText("di ", "testoNormale");	
+	paragraph1.addText("di " + param._ard, "testoNormale");	
 
 	var paragraph2 = report.addParagraph("","bordoSinistra");
 	paragraph2.addText("nella seduta del ", "testoNormale");
@@ -840,7 +834,7 @@ function printReport() {
 	tableRowEmpty.addCell(" ");
 
     tableRow = tableIstruzioni.addRow();
-    tableRow.addCell("11");
+    tableRow.addCell("11.");
     tableRow.addCell("Gli ammortamenti ipotecari o di altri debiti non vanno iscritti alle uscite come spesa di esercizio in quanto alla diminuzione di liquidità corrisponde una identica diminuzione del debito.", "testoNormaleBold");
 
     //Norme legali
@@ -875,18 +869,15 @@ function printReport() {
 	// 13.	CREAZIONE/STAMPA DEL REPORT
 	//------------------------------------------------------------------------------//
 	//Creazione degli stili utilizzati per la stampa
-	var stylesheet = CreaStyleSheet1();
+	var stylesheet = createStyleSheet();
 
-	//Verifica degli importi: in caso di errore viene chiesto all'utente se continuare o meno
-	if (verificaImporti()) {
+	//In caso di errore viene chiesto all'utente se continuare o meno con la stampa del report
+	if (flagError) {
 		if(Banana.Ui.showQuestion("", "ATTENZIONE! Differenza tra Sostanza netta e Risultato d'esercizio. Continuare?")){
-			messaggioAvviso = "ATTENZIONE! Differenza tra Sostanza netta e Risultato d'esercizio.";
-
 			//Stampa il rendiconto finanziario con un messaggio di avviso
 			Banana.Report.preview(report, stylesheet);
 		}
-	} else if (!verificaGr()) {
-
+	} else {
 	 	//Stampa il rendiconto finanziario
 		Banana.Report.preview(report, stylesheet);
 	}
@@ -895,63 +886,95 @@ function printReport() {
 }
 
 
-//The purpose of this function is to calculate all the totals required for creation of the report
+//The purpose of this function is to get all the texts of the "osservazioni" tag from the table "Testi" and add them to the parameters 
+function loadOsservazioni() {
+	var ossParam = [];
+	var table = Banana.document.table("Testi");
+	for (var i = 0; i < table.rowCount; i++) {
+		var tRow = table.row(i);
+		
+		if (tRow.value("RowId") === "_oss" && tRow.value("Testo")) {
+			ossParam.push({"testo" : tRow.value("Testo")});
+		}
+	}
+	param.ossParam = ossParam;
+}
+
+
+//The purpose of this function is to get all the texts of the "allegati" tag from the table "Testi" and add them to the parameters 
+function loadAllegati() {
+	var allParam = [];
+	var table = Banana.document.table("Testi");
+	for (var i = 0; i < table.rowCount; i++) {
+		var tRow = table.row(i);
+		
+		if (tRow.value("RowId") === "_all" && tRow.value("Testo")) {
+			allParam.push({"testo" : tRow.value("Testo")});
+		}
+	}
+	param.allParam = allParam;
+}
+
+
+//The purpose of this function is to calculate all the totals and save them into the form
 function calcTotals() {
-	var totaleBeniMobili = "";
-	var totaleBeniImmobili = "";
-	var totaleAttivo = "";
-	var totaleDebiti = "";
-	var totaleCapitale = "";
-	var totalePassivo = "";
-	var totaleSostanzaNetta = "";
-	var totaleUsciteGenerali = "";
-	var totaleUscitePatrimoniali = "";
-	var totaleUscite = "";
-	var totaleEntrateGenerali = "";
-	var totaleEntratePatrimoniali = "";
-	var totaleEntrate = "";
-	var risultatoEsercizio = "";
 
-	for (var i = 0; i < form.length; i++) {
+	var totaleBeniMobili = Banana.document.currentBalance("Gr=10", param.startDate, param.endDate).balance;
+	var totaleBeniImmobili = Banana.document.currentBalance("Gr=11", param.startDate, param.endDate).balance;
+	var totaleDebiti = Banana.document.currentBalance("Gr=20", param.startDate, param.endDate).balance;
+	var totaleCapitale = Banana.document.currentBalance("Gr=29", param.startDate, param.endDate).balance;
+	
+	
 
-		if (getObject(form, form[i].account).gr === "10") {
-			totaleBeniMobili = Banana.SDecimal.add(totaleBeniMobili, getObject(form, form[i].account).balance);
-			totaleAttivo = Banana.SDecimal.add(totaleAttivo, getObject(form, form[i].account).balance);
-		}
-		else if (getObject(form, form[i].account).gr === "11") {
-			totaleBeniImmobili = Banana.SDecimal.add(totaleBeniImmobili, getObject(form, form[i].account).balance);
-			totaleAttivo = Banana.SDecimal.add(totaleAttivo, getObject(form, form[i].account).balance);
-		}
-		else if (getObject(form, form[i].account).gr === "20") {
-			totaleDebiti = Banana.SDecimal.add(totaleDebiti, getObject(form, form[i].account).balance);
-			totalePassivo = Banana.SDecimal.add(totalePassivo, getObject(form, form[i].account).balance);
-		}
-		else if (getObject(form, form[i].account).gr === "29") {
-			totaleCapitale = Banana.SDecimal.add(totaleCapitale, getObject(form, form[i].account).balance);
-			totalePassivo = Banana.SDecimal.add(totalePassivo, getObject(form, form[i].account).balance);
-		}
-		else if (getObject(form, form[i].account).gr === "30") {
-			totaleUsciteGenerali = Banana.SDecimal.add(totaleUsciteGenerali, getObject(form, form[i].account).balance);
-			totaleUscite = Banana.SDecimal.add(totaleUscite, getObject(form, form[i].account).balance);
-		}
-		else if (getObject(form, form[i].account).gr === "31") {
-			totaleUscitePatrimoniali = Banana.SDecimal.add(totaleUscitePatrimoniali, getObject(form, form[i].account).balance);
-			totaleUscite = Banana.SDecimal.add(totaleUscite, getObject(form, form[i].account).balance);
-		}
-		else if (getObject(form, form[i].account).gr === "40") {
-			totaleEntrateGenerali = Banana.SDecimal.add(totaleEntrateGenerali, getObject(form, form[i].account).balance);
-			totaleEntrate = Banana.SDecimal.add(totaleEntrate, getObject(form, form[i].account).balance);
-		}
-		else if (getObject(form, form[i].account).gr === "41") {
-			totaleEntratePatrimoniali = Banana.SDecimal.add(totaleEntratePatrimoniali, getObject(form, form[i].account).balance);
-			totaleEntrate = Banana.SDecimal.add(totaleEntrate, getObject(form, form[i].account).balance);
-		}
+	//Se semplice non GR ma GrCat
+	if (Banana.document.table('Accounts') && Banana.document.table('Categories')) {
 
 	}
+	else {
+		var totaleUsciteGenerali = Banana.document.currentBalance("Gr=30", param.startDate, param.endDate).total;
+		var totaleUscitePatrimoniali = Banana.document.currentBalance("Gr=31", param.startDate, param.endDate).total;
+		var totaleEntrateGenerali = Banana.document.currentBalance("Gr=40", param.startDate, param.endDate).total;
+		var totaleEntratePatrimoniali = Banana.document.currentBalance("Gr=41", param.startDate, param.endDate).total;
+	}
 
-	totaleSostanzaNetta = Banana.SDecimal.add(totaleAttivo, totalePassivo);
-	risultatoEsercizio =  Banana.SDecimal.add(totaleUscite, totaleEntrate);
+	
 
+
+
+
+	//Calcolo i totali
+	var totaleAttivo = Banana.SDecimal.add(totaleBeniMobili, totaleBeniImmobili);
+	//var totalePassivo = Banana.document.currentBalance("Gr=20", param.startDate, param.endDate).balance;
+	
+	var totalePassivo = Banana.SDecimal.add(totaleDebiti, totaleCapitale);
+	var totaleSostanzaNetta = Banana.SDecimal.add(totaleAttivo, totalePassivo);
+
+
+
+
+
+	
+	// var totaleSostanzaNetta = Banana.document.currentBalance("BClass=1|2", param.startDate, param.endDate).balance;
+	// Banana.console.log("BClass=1|2 " + totaleSostanzaNetta);
+	// Banana.console.log("uno " + Banana.document.currentBalance("BClass=1", param.startDate, param.endDate).balance);
+	// Banana.console.log("due " + Banana.document.currentBalance("BClass=2", param.startDate, param.endDate).balance);
+
+	// Banana.console.log("totaleAttivo " + totaleAttivo);
+	// Banana.console.log("totalePassivo " + totalePassivo);
+
+
+
+
+
+	var totaleUscite = Banana.SDecimal.add(totaleUsciteGenerali, totaleUscitePatrimoniali);
+	var totaleEntrate = Banana.SDecimal.add(totaleEntrateGenerali, totaleEntratePatrimoniali);
+	var risultatoEsercizio = Banana.SDecimal.add(totaleUscite, totaleEntrate);
+
+
+
+
+
+	//Alla fine salvo tutto nel form. Attenzione che nel caso della contabilita semplice devo invertire i valori del CE
 	//Save the totals into the form, so they can be used
 	form.push({"account":"totBeniMobili", "balance":totaleBeniMobili});
 	form.push({"account":"totBeniImmobili", "balance":totaleBeniImmobili});
@@ -967,6 +990,7 @@ function calcTotals() {
 	form.push({"account":"totEntratePatrimoniali", "balance":totaleEntratePatrimoniali});
 	form.push({"account":"totEntrate", "balance":totaleEntrate});
 	form.push({"account":"risEsercizio", "balance":risultatoEsercizio});
+
 }
 
 
@@ -995,22 +1019,23 @@ function getObject(form, account) {
 }
 
 
-//Funzione che verifica che non vi sia una differenza tra CONTI e CATEGORIE.
+//Funzione che verifica che non vi sia una differenza tra risultato d'esecizio da bilancio e risultato d'esercizio da conto economico
 function verificaImporti() {
-	var aperturaSostNetta = Banana.document.table('Accounts').findRowByValue('Group','00').value('Opening'); //0.00
-	var utilePerditaEsercizio = getObject(form, "risEsercizio").balance;									 //-2566.21
-	var saldoSostnetta = getObject(form, "totSostanzaNetta").balance;										 //-2566.21
-	var totale = Banana.SDecimal.add(aperturaSostNetta, utilePerditaEsercizio);								 //2566.21
+	var aperturaSostNetta = Banana.document.currentBalance("Gr=0", param.startDate, param.endDate).opening;
+	var utilePerditaEsercizio = Banana.SDecimal.invert(getObject(form, "risEsercizio").balance); //Cambio segno (contabilità doppia!)
+	var saldoSostnetta = getObject(form, "totSostanzaNetta").balance;
+	var totale = Banana.SDecimal.add(aperturaSostNetta, utilePerditaEsercizio);
 
-
-
-	// Banana.console.log(aperturaSostNetta);
-	// Banana.console.log(utilePerditaEsercizio);
-	// Banana.console.log(saldoSostnetta);
-	 Banana.console.log(totale);
+	Banana.console.log(aperturaSostNetta);
+	Banana.console.log(utilePerditaEsercizio);
+	Banana.console.log(totale);
+	Banana.console.log(saldoSostnetta);
 
 	if(totale != saldoSostnetta) {
-		messaggioAvviso = "ATTENZIONE! Differenze tra Sostanza netta e Risultato d'esercizio"
+		var messaggioAvviso = "ATTENZIONE! Differenze tra Sostanza netta e Risultato d'esercizio"
+
+		form.push({"warningMessage" : messaggioAvviso});
+
 		return true;
 	}
 }
@@ -1063,7 +1088,7 @@ function addFooter(report) {
 
 
 //Creazione degli stili
-function CreaStyleSheet1() {
+function createStyleSheet() {
 
 	//------------------------------------------------------------------------------//
 	// GENERALI
