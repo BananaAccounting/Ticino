@@ -94,7 +94,7 @@ function loadForm() {
 				"account" : tRow.value("Account"),
 				"group" : tRow.value("Group"),
 				"description" : tRow.value("Description"),
-				"bClass" : tRow.value("BClass"),
+				//"bClass" : tRow.value("BClass"),
 				"gr" : tRow.value("Gr"),
 				"opening" : Banana.document.currentBalance(tRow.value("Account"), param.startDate, param.endDate).opening,
 				"balance" : Banana.document.currentBalance(tRow.value("Account"), param.startDate, param.endDate).balance,
@@ -104,27 +104,24 @@ function loadForm() {
 			});
 		}
 	}
-
 	//Contabilita semplice...
 	if (Banana.document.table('Accounts') && Banana.document.table('Categories')) {
 		var tableCategories = Banana.document.table("Categories");
 		for (var i = 0; i < tableCategories.rowCount; i++) {
 			var tRow = tableCategories.row(i);
-			if (tRow.value("Account")) { //We take only the rows with an existing account number/text
+			if (tRow.value("Category")) { //We take only the rows with an existing account number/text
 				form.push({
-					"account" : tRow.value("Account"),
 					"group" : tRow.value("Group"),
+					"account" : tRow.value("Category"), //the value of category is used as account value
 					"description" : tRow.value("Description"),
-					"bClass" : tRow.value("BClass"),
 					"gr" : tRow.value("Gr"),
-					"opening" : Banana.document.currentBalance(tRow.value("Account"), param.startDate, param.endDate).opening,
-					"balance" : Banana.document.currentBalance(tRow.value("Account"), param.startDate, param.endDate).balance,
-					"docNumero" : tRow.value("DocNumero"),
-					"particellaNumero" : tRow.value("ParticellaNumero"),
-					"valoreStima" : tRow.value("ValoreStima")
+					//Se fosse necessario avere i saldi, usare la funzione  "Banana.document.currentBalance("GrC=numero_gr").balance"
 				});
 			}
 		}
+		// for (var i = 0; i < form.length; i++) {
+		// 	Banana.console.log(JSON.stringify(form[i], "", ""));
+		// }
 	}
 }
 
@@ -470,7 +467,8 @@ function printReport() {
 	// 9.	MOVIMENTI FINANZIARI
 	//------------------------------------------------------------------------------//	
 	//Salvataggio del saldo di apertura della sostanza netta
-	var aperturaSostNetta = Banana.document.currentBalance("Gr=0", param.startDate, param.endDate).opening;
+	//var aperturaSostNetta = Banana.document.currentBalance("Gr=0", param.startDate, param.endDate).opening;
+	//var aperturaSostNetta = Banana.document.table('Accounts').findRowByValue('Group','00').value('Opening');
 	
 	//Creazione della tabella per la stampa della data dei movimenti finanziari
 	var tableDataMovimentiFinanziari = report.addTable("table");
@@ -530,7 +528,8 @@ function printReport() {
 
 	tableRow8 = tableMovimentiFinanziari.addRow();
 	tableRow8.addCell("Riportare sostanza netta anno precedente (o inventario)", " ", 2);
-	tableRow8.addCell(Banana.Converter.toLocaleNumberFormat(aperturaSostNetta), "Amount");
+	//tableRow8.addCell(Banana.Converter.toLocaleNumberFormat(aperturaSostNetta), "Amount");
+	tableRow8.addCell(getObject(form, "totSostanzaNettaApertura").balance, "Amount");
 
 	tableRow9 = tableMovimentiFinanziari.addRow();
 	tableRow9.addCell("Ev. modifiche e/o rettifiche, da precisare nelle osservazioni", " ", 3);
@@ -919,58 +918,78 @@ function loadAllegati() {
 //The purpose of this function is to calculate all the totals and save them into the form
 function calcTotals() {
 
-	var totaleBeniMobili = Banana.document.currentBalance("Gr=10", param.startDate, param.endDate).balance;
-	var totaleBeniImmobili = Banana.document.currentBalance("Gr=11", param.startDate, param.endDate).balance;
-	var totaleDebiti = Banana.document.currentBalance("Gr=20", param.startDate, param.endDate).balance;
-	var totaleCapitale = Banana.document.currentBalance("Gr=29", param.startDate, param.endDate).balance;
-	
-	
+	//getObject(form, form[i].account).
 
-	//Se semplice non GR ma GrCat
+	var totaleBeniMobili = "";
+	var totalePassivo = "";
+	var totaleBeniMobiliApertura = "";
+	var totalePassivoApertura = "";
+
+	//Calcolo tot ATTIVO e PASSIVO
+	for (var i = 0; i < form.length; i++) {
+
+		//Calcolo attivi => Gr=10 > 0 ; Gr=20 > 0
+		if (getObject(form, form[i].account).gr === "10" && Banana.SDecimal.sign(getObject(form, form[i].account).balance) > 0) {
+			totaleBeniMobili = Banana.SDecimal.add(totaleBeniMobili, getObject(form, form[i].account).balance);
+			totaleBeniMobiliApertura = Banana.SDecimal.add(totaleBeniMobiliApertura, getObject(form, form[i].account).opening);
+		}
+		else if (getObject(form, form[i].account).gr === "20" && Banana.SDecimal.sign(getObject(form, form[i].account).balance) > 0) {
+			totaleBeniMobili = Banana.SDecimal.add(totaleBeniMobili, getObject(form, form[i].account).balance);
+			totaleBeniMobiliApertura = Banana.SDecimal.add(totaleBeniMobiliApertura, getObject(form, form[i].account).opening);
+		}
+
+		//Calcolo passivi => Gr=20 < 0 ; Gr=10 < 0
+		else if (getObject(form, form[i].account).gr === "20" && Banana.SDecimal.sign(getObject(form, form[i].account).balance) < 0) {
+			totalePassivo = Banana.SDecimal.add(totalePassivo, getObject(form, form[i].account).balance);
+			totalePassivoApertura = Banana.SDecimal.add(totalePassivoApertura, getObject(form, form[i].account).opening);
+		}
+		else if (getObject(form, form[i].account).gr === "10" && Banana.SDecimal.sign(getObject(form, form[i].account).balance) < 0) {
+			totalePassivo = Banana.SDecimal.add(totalePassivo, getObject(form, form[i].account).balance);
+			totalePassivoApertura = Banana.SDecimal.add(totalePassivoApertura, getObject(form, form[i].account).opening);
+		}
+	}
+
+	var totaleBeniImmobili = Banana.document.currentBalance("Gr=11", param.startDate, param.endDate).balance;			//tot attivi beni immobili
+	var totaleBeniImmobiliApertura = Banana.document.currentBalance("Gr=11", param.startDate, param.endDate).opening;
+
+	//Contabilità semplice
 	if (Banana.document.table('Accounts') && Banana.document.table('Categories')) {
+		var totaleUsciteGenerali = Banana.document.currentBalance("GrC=30", param.startDate, param.endDate).total;		//tot costi generali
+		totaleUsciteGenerali = Banana.SDecimal.invert(totaleUsciteGenerali);
 
-	}
-	else {
-		var totaleUsciteGenerali = Banana.document.currentBalance("Gr=30", param.startDate, param.endDate).total;
-		var totaleUscitePatrimoniali = Banana.document.currentBalance("Gr=31", param.startDate, param.endDate).total;
-		var totaleEntrateGenerali = Banana.document.currentBalance("Gr=40", param.startDate, param.endDate).total;
-		var totaleEntratePatrimoniali = Banana.document.currentBalance("Gr=41", param.startDate, param.endDate).total;
-	}
+		var totaleUscitePatrimoniali = Banana.document.currentBalance("GrC=31", param.startDate, param.endDate).total;	//tot costi patrimoniali
+		totaleUscitePatrimoniali = Banana.SDecimal.invert(totaleUscitePatrimoniali);
 
+		var totaleEntrateGenerali = Banana.document.currentBalance("GrC=40", param.startDate, param.endDate).total;		//tot ricavi generali
+		var totaleEntratePatrimoniali = Banana.document.currentBalance("GrC=41", param.startDate, param.endDate).total;	//tot ricavi patrimoniali
 	
+	}
+	//Contabilità doppia
+	else {
+		var totaleUsciteGenerali = Banana.document.currentBalance("Gr=30", param.startDate, param.endDate).total;		//tot costi generali
+		var totaleUscitePatrimoniali = Banana.document.currentBalance("Gr=31", param.startDate, param.endDate).total;	//tot costi patrimoniali
+		
+		var totaleEntrateGenerali = Banana.document.currentBalance("Gr=40", param.startDate, param.endDate).total;		//tot ricavi generali
+		totaleEntrateGenerali = Banana.SDecimal.invert(totaleEntrateGenerali);
 
-
-
+		var totaleEntratePatrimoniali = Banana.document.currentBalance("Gr=41", param.startDate, param.endDate).total;	//tot ricavi patrimoniali
+		totaleEntratePatrimoniali = Banana.SDecimal.invert(totaleEntratePatrimoniali);
+	}
 
 	//Calcolo i totali
-	var totaleAttivo = Banana.SDecimal.add(totaleBeniMobili, totaleBeniImmobili);
-	//var totalePassivo = Banana.document.currentBalance("Gr=20", param.startDate, param.endDate).balance;
+	var totaleAttivo = Banana.SDecimal.add(totaleBeniMobili, totaleBeniImmobili);				//tot attivi
+	var totaleSostanzaNetta = Banana.SDecimal.add(totaleAttivo, totalePassivo);					//attivi + passivi
+	var totaleUscite = Banana.SDecimal.add(totaleUsciteGenerali, totaleUscitePatrimoniali);		//tot costi
+	var totaleEntrate = Banana.SDecimal.add(totaleEntrateGenerali, totaleEntratePatrimoniali);	//tot ricavi
+	var risultatoEsercizio = Banana.SDecimal.subtract(totaleEntrate, totaleUscite);				//risultato d'esecitzio
 	
-	var totalePassivo = Banana.SDecimal.add(totaleDebiti, totaleCapitale);
-	var totaleSostanzaNetta = Banana.SDecimal.add(totaleAttivo, totalePassivo);
-
-
-
-
-
+	//var totaleSostanzaNettaApertura = Banana.SDecimal.add(totaleBeniMobiliApertura, totalePassivoApertura);
+	//totaleSostanzaNettaApertura = Banana.SDecimal.add(totaleSostanzaNettaApertura, totalePassivoApertura);
 	
-	// var totaleSostanzaNetta = Banana.document.currentBalance("BClass=1|2", param.startDate, param.endDate).balance;
-	// Banana.console.log("BClass=1|2 " + totaleSostanzaNetta);
-	// Banana.console.log("uno " + Banana.document.currentBalance("BClass=1", param.startDate, param.endDate).balance);
-	// Banana.console.log("due " + Banana.document.currentBalance("BClass=2", param.startDate, param.endDate).balance);
-
-	// Banana.console.log("totaleAttivo " + totaleAttivo);
-	// Banana.console.log("totalePassivo " + totalePassivo);
-
-
-
-
-
-	var totaleUscite = Banana.SDecimal.add(totaleUsciteGenerali, totaleUscitePatrimoniali);
-	var totaleEntrate = Banana.SDecimal.add(totaleEntrateGenerali, totaleEntratePatrimoniali);
-	var risultatoEsercizio = Banana.SDecimal.add(totaleUscite, totaleEntrate);
-
-
+	var totaleSostanzaNettaApertura = Banana.SDecimal.add(totaleBeniMobiliApertura, totaleBeniImmobiliApertura);
+	totaleSostanzaNettaApertura = Banana.SDecimal.add(totaleSostanzaNettaApertura, totalePassivoApertura);
+	//var totaleSostanzaNettaApertura = Banana.document.table('Accounts').findRowByValue('Group','00').value('Opening');
+	
 
 
 
@@ -979,10 +998,9 @@ function calcTotals() {
 	form.push({"account":"totBeniMobili", "balance":totaleBeniMobili});
 	form.push({"account":"totBeniImmobili", "balance":totaleBeniImmobili});
 	form.push({"account":"totAttivo", "balance":totaleAttivo});
-	form.push({"account":"totDebiti", "balance":totaleDebiti});
-	form.push({"account":"totCapitale", "balance":totaleCapitale});
 	form.push({"account":"totPassivo", "balance":totalePassivo});
 	form.push({"account":"totSostanzaNetta", "balance":totaleSostanzaNetta});
+	form.push({"account":"totSostanzaNettaApertura", "balance":totaleSostanzaNettaApertura});
 	form.push({"account":"totUsciteGenerali", "balance":totaleUsciteGenerali});
 	form.push({"account":"totUscitePatrimoniali", "balance":totaleUscitePatrimoniali});
 	form.push({"account":"totUscite", "balance":totaleUscite});
@@ -990,6 +1008,10 @@ function calcTotals() {
 	form.push({"account":"totEntratePatrimoniali", "balance":totaleEntratePatrimoniali});
 	form.push({"account":"totEntrate", "balance":totaleEntrate});
 	form.push({"account":"risEsercizio", "balance":risultatoEsercizio});
+
+	// Banana.console.log(totaleBeniMobili);
+	// Banana.console.log(totaleBeniImmobili);
+	// Banana.console.log(totaleAttivo);
 
 }
 
@@ -1021,18 +1043,27 @@ function getObject(form, account) {
 
 //Funzione che verifica che non vi sia una differenza tra risultato d'esecizio da bilancio e risultato d'esercizio da conto economico
 function verificaImporti() {
-	var aperturaSostNetta = Banana.document.currentBalance("Gr=0", param.startDate, param.endDate).opening;
-	var utilePerditaEsercizio = Banana.SDecimal.invert(getObject(form, "risEsercizio").balance); //Cambio segno (contabilità doppia!)
+	
+	if (Banana.document.table('Accounts') && Banana.document.table('Categories')) {
+		var utilePerditaEsercizio = getObject(form, "risEsercizio").balance;
+	} else {
+		var utilePerditaEsercizio = Banana.SDecimal.invert(getObject(form, "risEsercizio").balance); //Cambio segno (contabilità doppia!)
+	}
+
+	var aperturaSostNetta = Banana.document.table('Accounts').findRowByValue('Group','00').value('Opening');
 	var saldoSostnetta = getObject(form, "totSostanzaNetta").balance;
 	var totale = Banana.SDecimal.add(aperturaSostNetta, utilePerditaEsercizio);
 
-	Banana.console.log(aperturaSostNetta);
-	Banana.console.log(utilePerditaEsercizio);
-	Banana.console.log(totale);
-	Banana.console.log(saldoSostnetta);
+	Banana.console.log("aperturaSostanzaNetta " + aperturaSostNetta);
+	Banana.console.log("utilePerditaEsercizio " + utilePerditaEsercizio);
+	Banana.console.log("totale " + totale);
+	Banana.console.log("saldoSostnetta " + saldoSostnetta);
+	Banana.console.log(totale + " =? " + saldoSostnetta);
 
 	if(totale != saldoSostnetta) {
-		var messaggioAvviso = "ATTENZIONE! Differenze tra Sostanza netta e Risultato d'esercizio"
+		var messaggioAvviso = "ATTENZIONE! Differenze. [Sostanza netta]: <" + saldoSostnetta + ">, [Apertura sost.netta + u/p esercizio]: <" + totale +">";
+
+		Banana.console.log(getObject(form, "totSostanzaNetta").balance);
 
 		form.push({"warningMessage" : messaggioAvviso});
 
