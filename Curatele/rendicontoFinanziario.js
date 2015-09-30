@@ -1,87 +1,196 @@
-// @id = ch.banana.script.rendicontofinanziario
-// @pubdate = 2015-01-12
-// @publisher = Banana.ch SA
-// @description = Rendiconto finanziario (art. 410 CC) 
-// @doctype = 110.100
-// @docproperties = CurateleTicino
-// @task = app.command
-// @outputformat = none
-// @inputdatasource = none
-// @includejs = 
-// @timeout = -1
+// Copyright [2015] [Banana.ch SA - Lugano Switzerland]
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 //
+// @id = ch.banana.script.rendicontofinanziario
+// @api = 1.0
+// @pubdate = 2015-09-21
+// @publisher = Banana.ch SA
+// @description = Rendiconto finanziario (art. 410 CC) - II
+// @task = app.command
+// @doctype = *.*
+// @docproperties = ticino
+// @outputformat = none
+// @inputdataform = none
+// @timeout = -1
 
+
+
+//Global variables
+var param = {};
+var form = [];
+
+
+//The purpose of this function is to get and load all the parameters saved into the .ac2 
+//In order to create the report some others parameters are stored here 
+function loadParam() {
+
+	param = {
+		//Parameters saved into the informations
+		"headerLeft" : Banana.document.info("Base","HeaderLeft"),
+		"headerRight" : Banana.document.info("Base","HeaderRight"),
+		"startDate" : Banana.document.info("AccountingDataBase","OpeningDate"),
+		"endDate" : Banana.document.info("AccountingDataBase","ClosureDate"),
+		"company" : Banana.document.info("AccountingDataBase","Company"),
+		"courtesy" : Banana.document.info("AccountingDataBase","Courtesy"),
+		"name" : Banana.document.info("AccountingDataBase","Name"),
+		"familyName" : Banana.document.info("AccountingDataBase","FamilyName"),
+		"address1" : Banana.document.info("AccountingDataBase","Address1"),
+		"address2" : Banana.document.info("AccountingDataBase","Address2"),
+		"zip" : Banana.document.info("AccountingDataBase","Zip"),
+		"city" : Banana.document.info("AccountingDataBase","City"),
+		"state" : Banana.document.info("AccountingDataBase","State"),
+		"country" : Banana.document.info("AccountingDataBase","Country"),
+		"web" : Banana.document.info("AccountingDataBase","Web"),
+		"email" : Banana.document.info("AccountingDataBase","Email"),
+		"phone" : Banana.document.info("AccountingDataBase","Phone"),
+		"mobile" : Banana.document.info("AccountingDataBase","Mobile"),
+		"fax" : Banana.document.info("AccountingDataBase","Fax"),
+		"fiscalNumber" : Banana.document.info("AccountingDataBase","FiscalNumber"),
+		"vatNumber" : Banana.document.info("AccountingDataBase","VatNumber"),
+		
+		//Parameters saved into the table "Testi" (parameters that the user have to modify properly into the .ac2 file)
+		"_npd" : Banana.document.table("Testi").findRowByValue("RowId","_npd").value("Testo"),
+		"_cpd" : Banana.document.table("Testi").findRowByValue("RowId","_cpd").value("Testo"),
+		"_iqd" : Banana.document.table("Testi").findRowByValue("RowId","_iqd").value("Testo"),
+		"_art" : Banana.document.table("Testi").findRowByValue("RowId","_art").value("Testo"),
+		"_arn" : Banana.document.table("Testi").findRowByValue("RowId","_arn").value("Testo"),
+		"_ard" : Banana.document.table("Testi").findRowByValue("RowId","_ard").value("Testo"),
+		"_grc" : Banana.document.table("Testi").findRowByValue("RowId","_grc").value("Testo"),	
+		"_oss" : Banana.document.table("Testi").findRowByValue("RowId","_oss").value("Testo"),
+		"_all" : Banana.document.table("Testi").findRowByValue("RowId","_all").value("Testo"),
+
+		//Additional informations
+		"reportName":"Rendiconto finanziario - 2017",
+		"bananaVersion":"Banana Accounting, v. " + Banana.document.info("Base", "ProgramVersion"),
+		"scriptVersion":"script v. 2015-09-21 (TEST VERSION)",
+		"pageCounterText":"Pagina",
+		"rounding" : 2,	
+		"formatNumber":true
+	};
+
+	loadOsservazioni();
+	loadAllegati();
+}
+
+
+//The purpose of this function is to load a form with all the data taken from the table "Accounts" of the .ac2 file
+function loadForm() {
+	var table = Banana.document.table("Accounts");
+	for (var i = 0; i < table.rowCount; i++) {
+		var tRow = table.row(i);
+		if (tRow.value("Account")) { //We take only the rows with an existing account number/text
+			form.push({
+				"account" : tRow.value("Account"),
+				"group" : tRow.value("Group"),
+				"description" : tRow.value("Description"),
+				"gr" : tRow.value("Gr"),
+				"opening" : Banana.document.currentBalance(tRow.value("Account"), param.startDate, param.endDate).opening,
+				"balance" : Banana.document.currentBalance(tRow.value("Account"), param.startDate, param.endDate).balance,
+				"docNumero" : tRow.value("DocNumero"),
+				"particellaNumero" : tRow.value("ParticellaNumero"),
+				"valoreStima" : tRow.value("ValoreStima")
+			});
+		}
+	}
+	//Contabilita semplice, carica anche i dati presenti nella tabella Categorie
+	if (Banana.document.table('Accounts') && Banana.document.table('Categories')) {
+		var tableCategories = Banana.document.table("Categories");
+		for (var i = 0; i < tableCategories.rowCount; i++) {
+			var tRow = tableCategories.row(i);
+			if (tRow.value("Category")) { //We take only the rows with an existing account number/text
+				form.push({
+					"group" : tRow.value("Group"),
+					"account" : tRow.value("Category"), //the value of category is used as account value
+					"description" : tRow.value("Description"),
+					"gr" : tRow.value("Gr"),
+					//Se fosse necessario avere i saldi, usare la funzione Banana.document.currentBalance("GrC=numero_gr").balance
+				});
+			}
+		}
+	}
+}
+
+
+//The purpose of this function is to do some operations before the values are converted
+function postProcess() {
+	
+	//Chiamata della funzione di verifica
+	flagError = verificaImporti();
+}
+
+
+//MAIN FUNCTION
 function exec(string) {
     
-    //versione
-	var pubdate = "2015-01-12";
+	//Check if we are on an opened document
+	if (!Banana.document) {return;}
+		
+	/** 1. CREATE AND LOAD THE PARAMETERS AND THE FORM */
+	loadParam();
+	loadForm();
+	
+	/** 2. CALCULATE THE TOTALS */
+	calcTotals();
 
-	// check if we are on an opened document
-	if (!Banana.document)
-		return;
-	var transactions = Banana.document.table('Transactions');
-	if (!transactions)
-		return;
-	var categories = Banana.document.table('Categories');
-	if (!categories)
-		return;
-	var accounts = Banana.document.table('Accounts');
-	if (!accounts)
-		return;
+	/** 3. DO SOME OPERATIONS BEFORE CONVERTING THE VALUES */
+	postProcess();
+
+	/** 4. CONVERT ALL THE VALUES */
+	formatValues(["opening", "balance"]);
+
+	/** 5. PRINT THE REPORT */
+	printReport();
+}
 
 
-	//variabile globale per il messaggio di avviso
-	messaggioAvviso="";
-
-
+//The purpose of this function is to create the report
+function printReport() {
+	var report = Banana.Report.newReport(param.reportName);
 
 
 	//------------------------------------------------------------------------------//
-	// CREAZIONE REPORT
+	// 1.	TITOLI, HEADER E FOOTER
 	//------------------------------------------------------------------------------//
-	//Titolo, sottotitolo, header e footer
-
-	var report = Banana.Report.newReport("Rendiconto Finanziario");
-
-  	report.addParagraph("Rendiconto finanziario", "titleStyle bordoSinistraSopra");
+	//Titoli
+	report.addParagraph("Rendiconto finanziario", "titleStyle bordoSinistraSopra");
   	report.addParagraph("(art. 410 CC)", "subtitleStyle bordoSinistra");
   	report.addParagraph(" ");
 
 	//Header
 	var pageHeader = report.getHeader();
 	pageHeader.addClass("header");
-	pageHeader.addText("Autorità Regionale di Protezione no. " + Banana.document.info("FreeTexts","AutoritaRegionaleNo") + ", di "  + Banana.document.info("FreeTexts","AutoritaRegionaleDi"), "header");
-	
+	pageHeader.addText("Autorità Regionale di Protezione no. " + param._arn + ", di "  + param._ard, "header");
+
 	//Footer
-	var pageFooter = report.getFooter();
-	pageFooter.addClass("footer");
-	pageFooter.addText("Banana Contabilità, v. " + Banana.document.info("Base", "ProgramVersion") + ", script v. " + pubdate, "footer");
-
-
-
+	addFooter(report);
 
 
 
 	//------------------------------------------------------------------------------//
-	// DATA PERIODO CONTABILE
+	// 2.	DATA PERIODO CONTABILE
 	//------------------------------------------------------------------------------//
 	//creazione tabella per le date
 	var tableAccountingDate = report.addTable("table");
-
-	// date di aperture e chiusura del periodo contabile, estratte dalle informazioni del file
-	var openingDate = Banana.document.info("AccountingDataBase","OpeningDate");
-	var closureDate = Banana.document.info("AccountingDataBase","ClosureDate");
-	var year = Banana.Converter.toDate(openingDate).getFullYear();
-
-    //stampa date
-    printAccauntingDate(tableAccountingDate, openingDate, closureDate, year);
-
-
+    tableRow = tableAccountingDate.addRow();
+	tableRow.addCell("Anno " + Banana.Converter.toDate(param.startDate).getFullYear().toString(), "intestazioneStyle");
+	tableRow.addCell("Periodo dal " + Banana.Converter.toLocaleDateFormat(param.startDate), "intestazioneStyle");
+	tableRow.addCell("Al " + Banana.Converter.toLocaleDateFormat(param.endDate), "intestazioneStyle");
 
 
 
 	//------------------------------------------------------------------------------//
-	// INTESTAZIONE
+	// 3.	INTESTAZIONE
 	//------------------------------------------------------------------------------//
 	//Intestazione permette l'inserimento dei dati personali
 
@@ -90,8 +199,8 @@ function exec(string) {
   	var tableIntestazioneConcernente = report.addTable("tableIntestazione1");
   	tableIntestazioneConcernente.getCaption().addText("Concernente", "intestazioneStyle");
 	tableRow = tableIntestazioneConcernente.addRow();
-	tableRow.addCell("Nome: " + Banana.document.info("FreeTexts", "NomeConcernente"), "testoNormale");
-	tableRow.addCell("Cognome: " + Banana.document.info("FreeTexts", "CognomeConcernente"), "testoNormale");
+	tableRow.addCell("Nome: " + param.name, "testoNormale");
+	tableRow.addCell("Cognome: " + param.familyName, "testoNormale");
 	tableRow = tableIntestazioneConcernente.addRow();
 	tableRow.addCell(" ");
 	tableRow.addCell(" ");
@@ -101,8 +210,8 @@ function exec(string) {
 	var tableIntestazionePresentatoDa = report.addTable("tableIntestazione1");
 	tableIntestazionePresentatoDa.getCaption().addText("Presentato da", "intestazioneStyle");
 	tableRow = tableIntestazionePresentatoDa.addRow();
-	tableRow.addCell("Nome: " + Banana.document.info("FreeTexts", "NomePresentatoDa"), "testoNormale");
-	tableRow.addCell("Cognome: " + Banana.document.info("FreeTexts", "CognomePresentatoDa"), "testoNormale");
+	tableRow.addCell("Nome: " + param._npd, "testoNormale");
+	tableRow.addCell("Cognome: " + param._cpd, "testoNormale");
 	tableRow = tableIntestazionePresentatoDa.addRow();
 	tableRow.addCell(" ");
 	tableRow.addCell(" ");
@@ -115,29 +224,25 @@ function exec(string) {
 	tableRow.addCell("Nominato ai sensi dell'articolo:", "testoNormale");
 
 	tableRow = tableIntestazioneTipologia.addRow();
-	tableRow.addCell(Banana.document.info("FreeTexts", "InQualitaDi"), "testoNormale");
-	tableRow.addCell(Banana.document.info("FreeTexts", "Articolo"), "testoNormale");
+	tableRow.addCell(param._iqd, "testoNormale");
+	tableRow.addCell(param._art, "testoNormale");
 	report.addParagraph(" ");
 	report.addParagraph(" ");
-
-
-
 
 
 
 	//------------------------------------------------------------------------------//
-	// DATA SITUAZIONE PATRIMONIALE
+	// 4.	DATA SITUAZIONE PATRIMONIALE
 	//------------------------------------------------------------------------------//
 	var tableSituazionePatrimonialeAl = report.addTable("table");
-	printSituazionePatrimoniale(tableSituazionePatrimonialeAl, closureDate);
+	tableRow = tableSituazionePatrimonialeAl.addRow();
+	tableRow.addCell("Situazione patrimoniale al " + Banana.Converter.toLocaleDateFormat(param.endDate), "intestazioneStyle");
 	report.addParagraph(" ");
 
 
 
-
-
 	//------------------------------------------------------------------------------//
-	// CONT0 ATTIVO
+	// 5.	CONTI ATTIVI
 	//------------------------------------------------------------------------------//
 	//Crea tabella 
 	var tableAttivo = report.addTable("tableAP");  
@@ -154,67 +259,91 @@ function exec(string) {
 	tableRow.addCell("Importo (CHF)","intestazioneStyle");
 	tableRow.addCell("Documento giustificativo","intestazioneStyle");
 
-	//Estrazione dati tabella conto attivo
-	var totAttivo = "";
-	
-	//Cerco tutti gli ATTIVI - IMMOBILI (Gr=11)
+	//Cerca tutti gli ATTIVI - IMMOBILI (Gr=11)
 	tableRow = tableAttivo.addRow();
 	tableRow.addCell("Immobili", " ",5);
-	for(i=0; i<accounts.rowCount; i++)
-	{
-		var tRow = accounts.row(i);
-		if (tRow.value('Gr') == '11')
-		{	
-			printAccountAtt(tableAttivo, tRow.value('Account'));
-			totAttivo = Banana.SDecimal.add(totAttivo, tRow.value('Balance'));
+	for (var i = 0; i < form.length; i++) {
+		if (getObject(form, form[i].account).gr === "11" && Banana.SDecimal.sign(getObject(form, form[i].account).balance) > 0) {
+			//colonna 2,3 - Part. no/Descrizione, Valore stima
+			//Riempimento delle colonne 2 e 3 a seconda che si tratti di "Immobili" oppure di "Beni mobili"	
+			tableRow = tableAttivo.addRow();
+			tableRow.addCell("                      ");
+			tableRow.addCell("Part. no " + getObject(form, form[i].account).particellaNumero);
+			tableRow.addCell(getObject(form, form[i].account).valoreStima ,"Amount");
+
+			//colonna 4 - Saldo CHF
+			//Riempimento della colonna 4 con il saldo in CHF di ogni conto
+			tableRow.addCell(getObject(form, form[i].account).balance, "Amount");
+
+			//colonna 5 - Numero Documento
+			//Riempimento della colonna 5 con il numero del documento
+			tableRow.addCell("Doc. no " + getObject(form, form[i].account).docNumero);
 		}
 	}
 
-	//Cerco tutti gli ATTIVI - BENI MOBILI (Gr=10) con saldo POSITIVO
+	//Cerca tutti gli ATTIVI - BENI MOBILI (Gr=10) con saldo POSITIVO
 	tableRow = tableAttivo.addRow();
 	tableRow.addCell("Beni mobili", " ",5);
-	for (i=0; i<accounts.rowCount; i++)
-	{
-		var tRow = accounts.row(i);
-		if(tRow.value('Gr')=='10' && tRow.value('Balance')>0)
-		{
-			printAccountAtt(tableAttivo, tRow.value('Account'));
-			totAttivo = Banana.SDecimal.add(totAttivo, tRow.value('Balance'));
+	for (var i = 0; i < form.length; i++) {
+		if (getObject(form, form[i].account).gr === "10" && Banana.SDecimal.sign(getObject(form, form[i].account).balance) > 0) {
+
+			tableRow = tableAttivo.addRow();
+			tableRow.addCell("                      ");
+			tableRow.addCell(getObject(form, form[i].account).description);
+			tableRow.addCell("");
+
+			//colonna 4 - Saldo CHF
+			//Riempimento della colonna 4 con il saldo in CHF di ogni conto
+			tableRow.addCell(getObject(form, form[i].account).balance, "Amount");
+
+			//colonna 5 - Numero Documento
+			//Riempimento della colonna 5 con il numero del documento
+			tableRow.addCell("Doc. no " + getObject(form, form[i].account).docNumero);
 		}
 	}
 
-	//Cerco tutti i PASSIVI - DEBITI (Gr=2) con saldo POSITIVO
-	//Il capitale proprio viene escluso
-	for (i=0; i<accounts.rowCount; i++)
-	{
-		var tRow = accounts.row(i);
-		if(tRow.value('Gr')=='2' && tRow.value('Account')!='290' && tRow.value('Balance')>0)
-		{
-			printAccountAtt(tableAttivo, tRow.value('Account'));
-			totAttivo = Banana.SDecimal.add(totAttivo, tRow.value('Balance'));
+	//Cerca tutti i PASSIVI - DEBITI (Gr=20) con saldo POSITIVO (il capitale proprio viene escluso)
+	for (var i = 0; i < form.length; i++) {
+		if (getObject(form, form[i].account).gr === "20" && Banana.SDecimal.sign(getObject(form, form[i].account).balance) > 0) {
+
+			tableRow = tableAttivo.addRow();
+			tableRow.addCell("                      ");
+			tableRow.addCell(getObject(form, form[i].account).description);
+			tableRow.addCell("");
+
+			//colonna 4 - Saldo CHF
+			//Riempimento della colonna 4 con il saldo in CHF di ogni conto
+			tableRow.addCell(getObject(form, form[i].account).balance, "Amount");
+
+			//colonna 5 - Numero Documento
+			//Riempimento della colonna 5 con il numero del documento
+			tableRow.addCell("Doc. no " + getObject(form, form[i].account).docNumero);
 		}
 	}
 
-	//Stampo il totale ATTIVO
-	printTotal(tableAttivo, totAttivo);
-
+	//Stampa del totale ATTIVO
+	tableRowEmpty = tableAttivo.addRow();
+	tableRowEmpty.addCell(" ", " ", 5);
+	tableRow = tableAttivo.addRow();
+	tableRow.addCell("Totale (CHF)", "intestazioneStyle", 3);
+	tableRow.addCell(getObject(form, "totAttivo").balance, "intestazioneStyle Right", 2);
 	report.addParagraph(" ");	
 
-	//Richiamo funzione di verifica Conti-Categorie
-	//In caso di errore viene visualizzato un messaggio sul rendiconto
-	verificaImporti();
-	report.addParagraph(messaggioAvviso, "warning");
-
+	//Se la funzione di verifica trova un errore, viene visualizzato un messaggio sul rendiconto in prima pagina
+	if (flagError) {
+		for (var i = 0; i < form.length; i++) {
+			if (form[i]["warningMessage"]) {
+				report.addParagraph(form[i]["warningMessage"], "warning");
+			}
+		}
+	}
 	report.addPageBreak();
 
 
 
 
-
-
-
 	//------------------------------------------------------------------------------//
-	// CONT0 PASSIVO
+	// 6.	CONTI PASSIVI
 	//------------------------------------------------------------------------------//
 	//Aggiunge la tabella al report
 	var tablePassivo = report.addTable("tableAP");  
@@ -230,135 +359,190 @@ function exec(string) {
 	tableRow3.addCell("Importo (CHF)","intestazioneStyle");
 	tableRow3.addCell("Documento giustificativo","intestazioneStyle");
 	
-	//Estrazione dati tabella conto passivo
-	var totPassivo = "";
-	
-	//Cerco tutti i PASSIVI - DEBITI (Gr=2) con saldo NEGATIVO escludendo il Capitale Proprio (conto 290)
+	//Cerca tutti i PASSIVI - DEBITI (Gr=20) con saldo NEGATIVO escludendo il Capitale Proprio (conto 290)
 	tableRow = tablePassivo.addRow();
 	tableRow.addCell("Debiti", " ",4);
-	for ( i=0; i< accounts.rowCount; i++)
-	{
-		var tRow = accounts.row(i);
-		if (tRow.value('Gr')=='2' && tRow.value('Account')!='290' && tRow.value('Balance')<0)
-		{
-			printAccountPass(tablePassivo, tRow.value('Account'));
-			totPassivo = Banana.SDecimal.add(totPassivo, tRow.value('Balance'));
+	for (var i = 0; i < form.length; i++) {
+		if (getObject(form, form[i].account).gr === "20" && Banana.SDecimal.sign(getObject(form, form[i].account).balance) < 0) {
+			//Aggiunge riga alla tabella
+			tableRow = tablePassivo.addRow();
+			tableRow.addCell("             ");
+
+			//colonna 2 - Descrizione
+			tableRow.addCell(getObject(form, form[i].account).description);
+
+			//colonna 3 - Saldo CHF
+			//Riempimento della colonna 3 con il saldo in CHF di ogni conto
+			tableRow.addCell(getObject(form, form[i].account).balance, "Amount");
+
+			//colonna 4 - Numero Documento
+			//Riempimento della colonna 4 con il numero del documento
+			tableRow.addCell("Doc. no " + getObject(form, form[i].account).docNumero);
 		}
 	}
 
 	//Cerco tutti gli ATTIVI - BENI MOBILI (Gr=10) con saldo NEGATIVO
-	for ( i=0; i< accounts.rowCount; i++)
-	{
-		var tRow = accounts.row(i);
-		if(tRow.value('Gr')=='10' && tRow.value('Balance')<0)
-		{
-			printAccountPass(tablePassivo, tRow.value('Account'));
-			totPassivo = Banana.SDecimal.add(totPassivo, tRow.value('Balance'));
+	for (i = 0; i < form.length; i++) {
+		if(getObject(form, form[i].account).gr === "10" && Banana.SDecimal.sign(getObject(form, form[i].account).balance) < 0) {
+			//Aggiunge riga alla tabella
+			tableRow = tablePassivo.addRow();
+			tableRow.addCell("             ");
+
+			//colonna 2 - Descrizione
+			tableRow.addCell(getObject(form, form[i].account).description);
+
+			//colonna 3 - Saldo CHF
+			//Riempimento della colonna 3 con il saldo in CHF di ogni conto
+			tableRow.addCell(getObject(form, form[i].account).balance, "Amount");
+
+			//colonna 4 - Numero Documento
+			//Riempimento della colonna 4 con il numero del documento
+			tableRow.addCell("Doc. no " + getObject(form, form[i].account).docNumero);
 		}
 	}
 
-	//Totale PASSIVO
-	printTotal(tablePassivo, totPassivo);
-
+	//Stampa del totale PASSIVO
+	tableRowEmpty = tablePassivo.addRow();
+	tableRowEmpty.addCell(" ", " ", 5);
+	tableRow = tablePassivo.addRow();
+	tableRow.addCell("Totale (CHF)", "intestazioneStyle", 3);
+	tableRow.addCell(getObject(form, "totPassivo").balance, "intestazioneStyle Right", 2);
 	report.addParagraph(" ");
 
 
 
 
-
-
-
 	//------------------------------------------------------------------------------//
-	// TOTALI => ATTIVO + PASSIVO
+	// 7.	TOTALI => ATTIVI + PASSIVI
 	//------------------------------------------------------------------------------//
-	//Creazine tabella per i totali
+	//Creazine tabella per la stampa dei totali
 	var tableTot = report.addTable("table");
     tableTot.getCaption().addText("Totali", "intestazioneStyle");
 
-	printSostanzaNetta(tableTot, totAttivo, totPassivo, closureDate);
-	
+	tableRow = tableTot.addRow();
+	tableRow.addCell(" ");
+	tableRow.addCell("Importo (CHF)","intestazioneStyle");
+
+	tableRow = tableTot.addRow();
+	tableRow.addCell("Totale attivo");
+	tableRow.addCell(getObject(form, "totAttivo").balance, "Amount");
+
+	tableRow1 = tableTot.addRow();
+	tableRow1.addCell("Totale passivo");
+	tableRow1.addCell(getObject(form, "totPassivo").balance, "Amount");
+
+	tableRow2 = tableTot.addRow();
+	tableRow2.addCell("Sostanza netta al " + Banana.Converter.toLocaleDateFormat(param.endDate), "intestazioneStyle");
+	tableRow2.addCell(getObject(form, "totSostanzaNetta").balance, "intestazioneStyle Amount");
 	report.addParagraph(" ");
 
 
 
 
-
-
 	//------------------------------------------------------------------------------//
-	// OSSERVAZIONI
+	// 8.	OSSERVAZIONI
 	//------------------------------------------------------------------------------//
-	//Creazione dello spazio riservato alle eventuali osservazioni, da inserire manualmente
+	//Creazione dello spazio riservato alle eventuali osservazioni, da inserire manualmente nella tabella "Testi"
 	var sezioneOss = report.addSection(" ", "bottom2em");
 
 	sezioneOss.addParagraph("Osservazioni o informazioni supplementari", "intestazioneStyle");
 	sezioneOss.addParagraph("ev. debiti verso l'Ufficio del sostegno sociale e dell'inserimento (doc. no. )", "bordoSinistraSopra");
 	sezioneOss.addParagraph(" ", "bordoSinistra");
-	sezioneOss.addParagraph(Banana.document.info("FreeTexts", "Osservazione1"), "bordoSinistra");
-	sezioneOss.addParagraph(Banana.document.info("FreeTexts", "Osservazione2"), "bordoSinistra");
-	sezioneOss.addParagraph(Banana.document.info("FreeTexts", "Osservazione3"), "bordoSinistra");
+	
+	for (var i = 0; i < param.ossParam.length; i++) {
+		sezioneOss.addParagraph(param.ossParam[i].testo, "bordoSinistra");
+	}
 	sezioneOss.addParagraph(" ");
 	sezioneOss.addParagraph(" ");
-
 
 
 
 
 
 	//------------------------------------------------------------------------------//
-	// MOVIMENTI FINANZIARI
+	// 9.	MOVIMENTI FINANZIARI
 	//------------------------------------------------------------------------------//	
-	//Date apertura/chiusura movimenti finanziari
-	var openingDateMovimenti = Banana.document.info("AccountingDataBase","OpeningDate");
-	var closureDateMovimenti = Banana.document.info("AccountingDataBase","ClosureDate");
-	
-	//Entrate
-	var totEntrateGenerali = Banana.document.table('Categories').findRowByValue('Group','40').value('Balance');
-	var utiliPatrimoniali = Banana.document.table('Categories').findRowByValue('Group','41').value('Balance');
-	var totEntrate = Banana.document.table('Categories').findRowByValue('Group','4').value('Balance');
-
-	//Uscite
-	var totUsciteGenerali = Banana.document.table('Categories').findRowByValue('Group','30').value('Balance');
-	var perditePatrimoniali = Banana.document.table('Categories').findRowByValue('Group','31').value('Balance');
-	var totUscite = Banana.document.table('Categories').findRowByValue('Group','3').value('Balance');
-
-	//Utile/Perdita
-	var utileEsercizio = Banana.document.table('Categories').findRowByValue('Group','00').value('Balance');
-	var aperturaSostNetta = Banana.document.table('Accounts').findRowByValue('Group','00').value('Opening');
-	var totSostanzaNetta = Banana.SDecimal.add(aperturaSostNetta, utileEsercizio);
-
-	//Tabella Data movimenti finanziari
+	//Creazione della tabella per la stampa della data dei movimenti finanziari
 	var tableDataMovimentiFinanziari = report.addTable("table");
 	tableRow = tableDataMovimentiFinanziari.addRow();
-	tableRow.addCell("Movimenti finanziari dal " + Banana.Converter.toLocaleDateFormat(openingDateMovimenti), "intestazioneStyle");
-	tableRow.addCell("Al " + Banana.Converter.toLocaleDateFormat(closureDateMovimenti), "intestazioneStyle");
+	tableRow.addCell("Movimenti finanziari dal " + Banana.Converter.toLocaleDateFormat(param.startDate), "intestazioneStyle");
+	tableRow.addCell("Al " + Banana.Converter.toLocaleDateFormat(param.endDate), "intestazioneStyle");
 	report.addParagraph(" ");
 
-	//Tabella Movimenti Finanziari 
+	//Creazione della tabella per la stampa dei movimenti Finanziari 
 	var tableMovimentiFinanziari = report.addTable("tableConti");
-	printMovimentiFinanziari(
-		tableMovimentiFinanziari, 
-		totEntrateGenerali,
-		utiliPatrimoniali,
-		totEntrate, 
-		totUsciteGenerali, 
-		perditePatrimoniali,
-		totUscite, 
-		utileEsercizio, 
-		aperturaSostNetta, 
-		totSostanzaNetta, 
-		closureDate
-	);
 
+	//Conto esercizio
+	tableRow0 = tableMovimentiFinanziari.addRow();
+	tableRow0.addCell(" ");
+	tableRow0.addCell("Importo (CHF)", "intestazioneStyle");
+	tableRow0.addCell("Importo (CHF)", "intestazioneStyle");
+
+	tableRow1 = tableMovimentiFinanziari.addRow();
+	tableRow1.addCell("Conto esercizio", "intestazioneStyle", 3);
+
+	tableRow2 = tableMovimentiFinanziari.addRow();
+	tableRow2.addCell("Totale entrate", "intestazioneStyle");
+	tableRow2.addCell(getObject(form, "totEntrateGenerali").balance ,"Amount");
+	tableRow2.addCell(" ");
+	
+	tableRow3 = tableMovimentiFinanziari.addRow();
+	tableRow3.addCell("Utili patrimoniali (cfr. istruzione punto 9)");
+	tableRow3.addCell(getObject(form, "totEntratePatrimoniali").balance, "Amount");
+	tableRow3.addCell(getObject(form, "totEntrate").balance, "Amount");
+
+	tableRowEmpty = tableMovimentiFinanziari.addRow();
+	tableRowEmpty.addCell(" ", " ", 3);
+
+	tableRow4 = tableMovimentiFinanziari.addRow();
+	tableRow4.addCell("Totale uscite", "intestazioneStyle");
+	tableRow4.addCell(getObject(form, "totUsciteGenerali").balance, "Amount");
+	tableRow4.addCell(" ");
+	
+	tableRow5 = tableMovimentiFinanziari.addRow();
+	tableRow5.addCell("Perdite patrimoniali (cfr. istruzione punto 10)");
+	tableRow5.addCell(getObject(form, "totUscitePatrimoniali").balance, "Amount");
+	tableRow5.addCell(getObject(form, "totUscite").balance, "Amount totalStyle");
+
+	tableRowEmpty1 = tableMovimentiFinanziari.addRow();
+	tableRowEmpty1.addCell(" ", " ", 3);
+
+	tableRow6 = tableMovimentiFinanziari.addRow();
+	tableRow6.addCell("Utile/perdita d'esercizio", "intestazioneStyle ", 2);
+	tableRow6.addCell(getObject(form, "risEsercizio").balance, "intestazioneStyle Amount");
+	
+	//Conto patrimoniale
+	tableRow12 = tableMovimentiFinanziari.addRow();
+	tableRow12.addCell(" ", " ", 3);
+
+	tableRow7 = tableMovimentiFinanziari.addRow();
+	tableRow7.addCell("Conto patrimoniale", "intestazioneStyle", 3);
+
+	tableRow8 = tableMovimentiFinanziari.addRow();
+	tableRow8.addCell("Riportare sostanza netta anno precedente (o inventario)", " ", 2);
+	tableRow8.addCell(getObject(form, "totSostanzaNettaApertura").balance, "Amount");
+
+	tableRow9 = tableMovimentiFinanziari.addRow();
+	tableRow9.addCell("Ev. modifiche e/o rettifiche, da precisare nelle osservazioni", " ", 3);
+
+	tableRow10 = tableMovimentiFinanziari.addRow();
+	tableRow10.addCell("Utile perdita d'esercizio (+/-)", "intestazioneStyle", 2);
+	tableRow10.addCell(getObject(form, "risEsercizio").balance, "Amount totalStyle");
+
+	tableRowEmpty2 = tableMovimentiFinanziari.addRow();
+	tableRowEmpty2.addCell(" ", " ", 3);
+
+	tableRow11 = tableMovimentiFinanziari.addRow();
+	tableRow11.addCell("Sostanza netta al " + Banana.Converter.toLocaleDateFormat(param.endDate), "intestazioneStyle", 2);
+	tableRow11.addCell(getObject(form, "totSostanzaNetta").balance, "intestazioneStyle Amount");
 	report.addPageBreak();
 
 
 
 
 
-
-
 	//------------------------------------------------------------------------------//
-	// FIRME
+	// 10.	FIRME
 	//------------------------------------------------------------------------------//
 	//Creazione della quarta pagina dedicata alle firme
 	report.addParagraph(" ");
@@ -389,31 +573,26 @@ function exec(string) {
 	tableRow.addCell(" ");
 	tableRow.addCell(" ");
 
-	//Allegati
+	//Stampa degli allegati (tabella "Testi")
 	report.addParagraph(" ");
 	report.addParagraph("Allegati:", "testoFirma bordoSinistraSopra");
-	report.addParagraph(" " , "bordoSinistra");
-	report.addParagraph(" - " , "testoFirmaAllegati bordoSinistra");
-	report.addParagraph(" " , "bordoSinistra");
-	report.addParagraph(" - " , "testoFirmaAllegati bordoSinistra");
-	report.addParagraph(" " , "bordoSinistra");
-	report.addParagraph(" - " , "testoFirmaAllegati bordoSinistra");
-
+	report.addParagraph(" ", "bordoSinistra");
+	for (var i = 0; i < param.allParam.length; i++) {
+		report.addParagraph(" - " + param.allParam[i].testo, "testoFirmaAllegati bordoSinistra");
+	}
 	report.addPageBreak();
 
 
 
 
-
-
 	//------------------------------------------------------------------------------//
-	// RETRO PAGINA FIRME
+	// 11.	RETRO PAGINA FIRME
 	//------------------------------------------------------------------------------//
 	var paragraph = report.addParagraph("","bordoSinistraSopra");
-	paragraph.addText("L'Autorità Regionale di Protezione no. ", "testoNormale");
+	paragraph.addText("L'Autorità Regionale di Protezione no. " + param._arn, "testoNormale");
 
 	var paragraph1 = report.addParagraph("","bordoSinistra");
-	paragraph1.addText("di ", "testoNormale");	
+	paragraph1.addText("di " + param._ard, "testoNormale");	
 
 	var paragraph2 = report.addParagraph("","bordoSinistra");
 	paragraph2.addText("nella seduta del ", "testoNormale");
@@ -537,13 +716,10 @@ function exec(string) {
 
 
 
-
-
-
 	//------------------------------------------------------------------------------//
-	// TESTO - ISTRUZIONI PER I TUTORI/CURATORI
+	// 12.	TESTO - ISTRUZIONI PER I TUTORI/CURATORI
 	//------------------------------------------------------------------------------//
-	//Testo ultima pagina, in una tabella per una piu' facile formattazione del testo	
+	//Testo ultima pagina	
 	var tableIstruzioni = report.addTable("tableIstruzioni");  
     tableIstruzioni.getCaption().addText("Istruzioni per i tutori / curatori", "intestazioneStyle"); 
     
@@ -648,9 +824,8 @@ function exec(string) {
 	tableRowEmpty.addCell(" ");
 
     tableRow = tableIstruzioni.addRow();
-    tableRow.addCell("11");
+    tableRow.addCell("11.");
     tableRow.addCell("Gli ammortamenti ipotecari o di altri debiti non vanno iscritti alle uscite come spesa di esercizio in quanto alla diminuzione di liquidità corrisponde una identica diminuzione del debito.", "testoNormaleBold");
-
 
     //Norme legali
 	report.addParagraph(" ", "bordoSinistra");
@@ -676,329 +851,252 @@ function exec(string) {
 	tableRow = tableIstruzioni2.addRow();
     tableRow.addCell("Responsabilità:", "testo");
     tableRow.addCell("art. 454 - 456 CC.", "testo");
-    //fine testo
-
-
-
-
-
 
 
 
 
 	//------------------------------------------------------------------------------//
-	// CREAZIONE/STAMPA DEL REPORT
+	// 13.	CREAZIONE/STAMPA DEL REPORT
 	//------------------------------------------------------------------------------//
-	
-	// Styles
-	var stylesheet = CreaStyleSheet1();
+	//Creazione degli stili utilizzati per la stampa
+	var stylesheet = createStyleSheet();
 
-	//Verifica degli importi e chiede all'utente in caso di errore se continuare o meno.
-	if(verificaImporti()){
-		if(Banana.Ui.showQuestion("", "ATTENZIONE! Differenza tra Conti e Categorie. Continuare?")){
-			messaggioAvviso = "ATTENZIONE! Differenza tra Conti e Categorie.";
-
-			//Stampa il rendiconto finanziario
+	//In caso di errore viene chiesto all'utente se continuare o meno con la stampa del report
+	if (flagError) {
+		if(Banana.Ui.showQuestion("", "ATTENZIONE! Differenza tra Sostanza netta e Risultato d'esercizio. Continuare?")){
+			//Stampa il rendiconto finanziario con un messaggio di avviso
 			Banana.Report.preview(report, stylesheet);
 		}
-	}
-	else if(!verificaGr(accounts,categories)){
-
+	} else {
 	 	//Stampa il rendiconto finanziario
 		Banana.Report.preview(report, stylesheet);
 	}
 
+	return report;
 }
 
 
-
-
-
-
-
-//------------------------------------------------------------------------------//
-// FUNZIONI
-//------------------------------------------------------------------------------//
-
-//Stampa Conti Attivo
-function printAccountAtt(table, account) {	
-	// aggiunge riga alla tabella
-	tableRow = table.addRow();
-	tableRow.addCell("                      ");
-
-	//colonna 2,3 - Part. no/Descrizione, Valore stima
-	//Riempimento delle colonne 2 e 3 a seconda che si tratti di "Immobili" oppure di "Beni mobili"	
-	if(Banana.document.table('Accounts').findRowByValue('Account',account).value('Gr') =='11'){
-		tableRow.addCell("Part. no " + Banana.document.table('Accounts').findRowByValue('Account',account).value('ParticellaNumero'));
-		tableRow.addCell(Banana.Converter.toLocaleNumberFormat(Banana.document.table('Accounts').findRowByValue('Account',account).value('ValoreStima')) ,"Amount");
+//The purpose of this function is to get all the texts of the "osservazioni" tag from the table "Testi" and add them to the parameters 
+function loadOsservazioni() {
+	var ossParam = [];
+	var table = Banana.document.table("Testi");
+	for (var i = 0; i < table.rowCount; i++) {
+		var tRow = table.row(i);
+		
+		if (tRow.value("RowId") === "_oss" && tRow.value("Testo")) {
+			ossParam.push({"testo" : tRow.value("Testo")});
+		}
 	}
+	param.ossParam = ossParam;
+}
+
+
+//The purpose of this function is to get all the texts of the "allegati" tag from the table "Testi" and add them to the parameters 
+function loadAllegati() {
+	var allParam = [];
+	var table = Banana.document.table("Testi");
+	for (var i = 0; i < table.rowCount; i++) {
+		var tRow = table.row(i);
+		
+		if (tRow.value("RowId") === "_all" && tRow.value("Testo")) {
+			allParam.push({"testo" : tRow.value("Testo")});
+		}
+	}
+	param.allParam = allParam;
+}
+
+
+//The purpose of this function is to calculate all the totals and save them into the form
+function calcTotals() {
+
+	//getObject(form, form[i].account).
+
+	var totaleBeniMobili = "";
+	var totalePassivo = "";
+	var totaleBeniMobiliApertura = "";
+	var totalePassivoApertura = "";
+
+	//Calcolo tot ATTIVO e PASSIVO
+	for (var i = 0; i < form.length; i++) {
+
+		//Calcolo attivi => Gr=10 > 0 ; Gr=20 > 0
+		if (getObject(form, form[i].account).gr === "10" && Banana.SDecimal.sign(getObject(form, form[i].account).balance) > 0) {
+			totaleBeniMobili = Banana.SDecimal.add(totaleBeniMobili, getObject(form, form[i].account).balance);
+			totaleBeniMobiliApertura = Banana.SDecimal.add(totaleBeniMobiliApertura, getObject(form, form[i].account).opening);
+		}
+		else if (getObject(form, form[i].account).gr === "20" && Banana.SDecimal.sign(getObject(form, form[i].account).balance) > 0) {
+			totaleBeniMobili = Banana.SDecimal.add(totaleBeniMobili, getObject(form, form[i].account).balance);
+			totaleBeniMobiliApertura = Banana.SDecimal.add(totaleBeniMobiliApertura, getObject(form, form[i].account).opening);
+		}
+
+		//Calcolo passivi => Gr=20 < 0 ; Gr=10 < 0
+		else if (getObject(form, form[i].account).gr === "20" && Banana.SDecimal.sign(getObject(form, form[i].account).balance) < 0) {
+			totalePassivo = Banana.SDecimal.add(totalePassivo, getObject(form, form[i].account).balance);
+			totalePassivoApertura = Banana.SDecimal.add(totalePassivoApertura, getObject(form, form[i].account).opening);
+		}
+		else if (getObject(form, form[i].account).gr === "10" && Banana.SDecimal.sign(getObject(form, form[i].account).balance) < 0) {
+			totalePassivo = Banana.SDecimal.add(totalePassivo, getObject(form, form[i].account).balance);
+			totalePassivoApertura = Banana.SDecimal.add(totalePassivoApertura, getObject(form, form[i].account).opening);
+		}
+	}
+
+	var totaleBeniImmobili = Banana.document.currentBalance("Gr=11", param.startDate, param.endDate).balance;
+	var totaleBeniImmobiliApertura = Banana.document.currentBalance("Gr=11", param.startDate, param.endDate).opening;
+
+	//Contabilità semplice
+	if (Banana.document.table('Accounts') && Banana.document.table('Categories')) {
+		var totaleUsciteGenerali = Banana.document.currentBalance("GrC=30", param.startDate, param.endDate).total;
+		totaleUsciteGenerali = Banana.SDecimal.invert(totaleUsciteGenerali);
+
+		var totaleUscitePatrimoniali = Banana.document.currentBalance("GrC=31", param.startDate, param.endDate).total;
+		totaleUscitePatrimoniali = Banana.SDecimal.invert(totaleUscitePatrimoniali);
+
+		var totaleEntrateGenerali = Banana.document.currentBalance("GrC=40", param.startDate, param.endDate).total;
+		var totaleEntratePatrimoniali = Banana.document.currentBalance("GrC=41", param.startDate, param.endDate).total;
+	
+	}
+	//Contabilità doppia
 	else {
-		tableRow.addCell(Banana.document.table('Accounts').findRowByValue('Account',account).value('Description'));
-		tableRow.addCell("");
+		var totaleUsciteGenerali = Banana.document.currentBalance("Gr=30", param.startDate, param.endDate).total;
+		var totaleUscitePatrimoniali = Banana.document.currentBalance("Gr=31", param.startDate, param.endDate).total;
+		
+		var totaleEntrateGenerali = Banana.document.currentBalance("Gr=40", param.startDate, param.endDate).total;
+		totaleEntrateGenerali = Banana.SDecimal.invert(totaleEntrateGenerali);
+
+		var totaleEntratePatrimoniali = Banana.document.currentBalance("Gr=41", param.startDate, param.endDate).total;
+		totaleEntratePatrimoniali = Banana.SDecimal.invert(totaleEntratePatrimoniali);
 	}
 
-	//colonna 4 - Saldo CHF
-	//Riempimento della colonna 4 con il saldo in CHF di ogni conto
-	var current = Banana.document.currentBalance(account).balance;
-	tableRow.addCell(Banana.Converter.toLocaleNumberFormat(current),"Amount");	
-
-	//colonna 5 - Numero Documento
-	//Riempimento della colonna 5 con il numero del documento
-	tableRow.addCell("Doc. no " + Banana.document.table('Accounts').findRowByValue('Account',account).value('DocNumero'));
-}
-
-
-
-
-
-//Stampa Conti Passivo
-function printAccountPass(table, account) {	
-	// aggiunge riga alla tabella
-	tableRow = table.addRow();
-	tableRow.addCell("             ");
-
-	//colonna 2 - Descrizione
-	tableRow.addCell(Banana.document.table('Accounts').findRowByValue('Account',account).value('Description'));
-
-	//colonna 3 - Saldo CHF
-	//Riempimento della colonna 3 con il saldo in CHF di ogni conto
-	var current = Banana.document.currentBalance(account).balance;
-	tableRow.addCell(Banana.Converter.toLocaleNumberFormat(current),"Amount");	
-
-	//colonna 4 - Numero Documento
-	//Riempimento della colonna 4 con il numero del documento
-	tableRow.addCell("Doc. no " + Banana.document.table('Accounts').findRowByValue('Account',account).value('DocNumero'));
-}
-
-
-
-
-
-//Categorie
-function printCategory(table, account) {	
-	// add a row to the table
-	tableRow = table.addRow();
-	// add first column with group
-	tableRow.addCell(account);
-	// retrieve account description and add to second column
-	tableRow.addCell(Banana.document.table('Categories').findRowByValue('Category',account).value('Description'));
-	// get total movement for the account
-	var current = Banana.document.currentBalance(account).total;
-	tableRow.addCell(Banana.Converter.toLocaleNumberFormat(current), 'Amount');
-}
-
-
-
-
-
-// Stampa il periodo del rendiconto
-function printAccauntingDate(table, openingDate, closureDate, year){
-	tableRow = table.addRow();
-	tableRow.addCell("Anno " + year.toString(), "intestazioneStyle");
-	tableRow.addCell("Periodo dal " + Banana.Converter.toLocaleDateFormat(openingDate), "intestazioneStyle");
-	tableRow.addCell("Al " + Banana.Converter.toLocaleDateFormat(closureDate), "intestazioneStyle");
-}
-
-
-
-
-// Stampa la data della situazione patrimoniale
-function printSituazionePatrimoniale(table, date){
-	tableRow = table.addRow();
-	tableRow.addCell("Situazione patrimoniale al " + Banana.Converter.toLocaleDateFormat(date), "intestazioneStyle");
-}
-
-
-
-
-// Stampa il totale dei conti
-function printTotal(table, total){
-	tableRowEmpty = table.addRow();
-	tableRowEmpty.addCell(" ", " ", 5);
-	tableRow = table.addRow();
-	tableRow.addCell("Totale (CHF)", "intestazioneStyle", 3);
-	tableRow.addCell(Banana.Converter.toLocaleNumberFormat(total), "intestazioneStyle Right", 2);
-}
-
-
-
-
-// Stampa i totali di ATTIVI e PASSIVI (SOSTANZA NETTA)
-function printSostanzaNetta(table, totAttivo, totPassivo, date){
-	tableRow = table.addRow();
-	tableRow.addCell(" ");
-	tableRow.addCell("Importo (CHF)","intestazioneStyle");
-
-	tableRow = table.addRow();
-	tableRow.addCell("Totale attivo");
-	tableRow.addCell(Banana.Converter.toLocaleNumberFormat(totAttivo), "Amount");
-
-	tableRow1 = table.addRow();
-	tableRow1.addCell("Totale passivo");
-	tableRow1.addCell(Banana.Converter.toLocaleNumberFormat(totPassivo), "Amount");
-
-	var sostanzaNetta = Banana.SDecimal.add(totAttivo, totPassivo);
-	tableRow2 = table.addRow();
-	tableRow2.addCell("Sostanza netta al " + Banana.Converter.toLocaleDateFormat(date), "intestazioneStyle");
-	tableRow2.addCell(Banana.Converter.toLocaleNumberFormat(sostanzaNetta), "intestazioneStyle Amount");
-}
-
-
-
-
-//Stampa tabella Movimenti Finanziari
-function printMovimentiFinanziari(table, totEntrateGenerali, utiliPatrimoniali, totEntrate, totUsciteGenerali, perditePatrimoniali, totUscite, utileEsercizio, aperturaSostNetta, totSostanzaNetta, date){
-	//Conto esercizio
-	tableRow0 = table.addRow();
-	tableRow0.addCell(" ");
-	tableRow0.addCell("Importo (CHF)", "intestazioneStyle");
-	tableRow0.addCell("Importo (CHF)", "intestazioneStyle");
-
-	tableRow1 = table.addRow();
-	tableRow1.addCell("Conto esercizio", "intestazioneStyle", 3);
-
-	tableRow2 = table.addRow();
-	tableRow2.addCell("Totale entrate", "intestazioneStyle");
-	tableRow2.addCell(Banana.Converter.toLocaleNumberFormat(totEntrateGenerali) ,"Amount");
-	tableRow2.addCell(" ");
+	//Calcolo i totali
+	var totaleAttivo = Banana.SDecimal.add(totaleBeniMobili, totaleBeniImmobili);				//tot attivi
+	var totaleSostanzaNetta = Banana.SDecimal.add(totaleAttivo, totalePassivo);					//tot sostanza netta (attivi + passivi)
+	var totaleUscite = Banana.SDecimal.add(totaleUsciteGenerali, totaleUscitePatrimoniali);		//tot costi
+	var totaleEntrate = Banana.SDecimal.add(totaleEntrateGenerali, totaleEntratePatrimoniali);	//tot ricavi
+	var risultatoEsercizio = Banana.SDecimal.subtract(totaleEntrate, totaleUscite);				//risultato d'esecitzio (ricavi - costi)
 	
-	tableRow3 = table.addRow();
-	tableRow3.addCell("Utili patrimoniali (cfr. istruzione punto 9)");
-	tableRow3.addCell(Banana.Converter.toLocaleNumberFormat(utiliPatrimoniali), "Amount");
-	tableRow3.addCell(Banana.Converter.toLocaleNumberFormat(totEntrate), "Amount");
-
-	tableRowEmpty = table.addRow();
-	tableRowEmpty.addCell(" ", " ", 3);
-
-	tableRow4 = table.addRow();
-	tableRow4.addCell("Totale uscite", "intestazioneStyle");
-	tableRow4.addCell(Banana.Converter.toLocaleNumberFormat(totUsciteGenerali), "Amount");
-	tableRow4.addCell(" ");
+	//var totaleSostanzaNettaApertura = Banana.SDecimal.add(totaleBeniMobiliApertura, totalePassivoApertura);
+	//totaleSostanzaNettaApertura = Banana.SDecimal.add(totaleSostanzaNettaApertura, totalePassivoApertura);
 	
-	tableRow5 = table.addRow();
-	tableRow5.addCell("Perdite patrimoniali (cfr. istruzione punto 10)");
-	tableRow5.addCell(Banana.Converter.toLocaleNumberFormat(perditePatrimoniali), "Amount");
-	tableRow5.addCell(Banana.Converter.toLocaleNumberFormat(totUscite), "Amount totalStyle");
-
-	tableRowEmpty1 = table.addRow();
-	tableRowEmpty1.addCell(" ", " ", 3);
-
-	tableRow6 = table.addRow();
-	tableRow6.addCell("Utile/perdita d'esercizio", "intestazioneStyle ", 2);
-	tableRow6.addCell(Banana.Converter.toLocaleNumberFormat(utileEsercizio), "intestazioneStyle Amount");
+	var totaleSostanzaNettaApertura = Banana.SDecimal.add(totaleBeniMobiliApertura, totaleBeniImmobiliApertura);
+	totaleSostanzaNettaApertura = Banana.SDecimal.add(totaleSostanzaNettaApertura, totalePassivoApertura);
+	//var totaleSostanzaNettaApertura = Banana.document.table('Accounts').findRowByValue('Group','00').value('Opening');
 	
 
-	//Conto patrimoniale
-	tableRow12 = table.addRow();
-	tableRow12.addCell(" ", " ", 3);
 
-	tableRow7 = table.addRow();
-	tableRow7.addCell("Conto patrimoniale", "intestazioneStyle", 3);
 
-	tableRow8 = table.addRow();
-	tableRow8.addCell("Riportare sostanza netta anno precedente (o inventario)", " ", 2);
-	tableRow8.addCell(Banana.Converter.toLocaleNumberFormat(aperturaSostNetta), "Amount");
-
-	tableRow9 = table.addRow();
-	tableRow9.addCell("Ev. modifiche e/o rettifiche, da precisare nelle osservazioni", " ", 3);
-
-	tableRow10 = table.addRow();
-	tableRow10.addCell("Utile perdita d'esercizio (+/-)", "intestazioneStyle", 2);
-	tableRow10.addCell(Banana.Converter.toLocaleNumberFormat(utileEsercizio), "Amount totalStyle");
-
-	tableRowEmpty2 = table.addRow();
-	tableRowEmpty2.addCell(" ", " ", 3);
-
-	tableRow11 = table.addRow();
-	tableRow11.addCell("Sostanza netta al " + Banana.Converter.toLocaleDateFormat(date), "intestazioneStyle", 2);
-	tableRow11.addCell(Banana.Converter.toLocaleNumberFormat(totSostanzaNetta), "intestazioneStyle Amount");
+	//Alla fine salvo tutto nel form. Attenzione che nel caso della contabilita semplice devo invertire i valori del CE
+	//Save the totals into the form, so they can be used
+	form.push({"account":"totBeniMobili", "balance":totaleBeniMobili});
+	form.push({"account":"totBeniImmobili", "balance":totaleBeniImmobili});
+	form.push({"account":"totAttivo", "balance":totaleAttivo});
+	form.push({"account":"totPassivo", "balance":totalePassivo});
+	form.push({"account":"totSostanzaNetta", "balance":totaleSostanzaNetta});
+	form.push({"account":"totSostanzaNettaApertura", "balance":totaleSostanzaNettaApertura});
+	form.push({"account":"totUsciteGenerali", "balance":totaleUsciteGenerali});
+	form.push({"account":"totUscitePatrimoniali", "balance":totaleUscitePatrimoniali});
+	form.push({"account":"totUscite", "balance":totaleUscite});
+	form.push({"account":"totEntrateGenerali", "balance":totaleEntrateGenerali});
+	form.push({"account":"totEntratePatrimoniali", "balance":totaleEntratePatrimoniali});
+	form.push({"account":"totEntrate", "balance":totaleEntrate});
+	form.push({"account":"risEsercizio", "balance":risultatoEsercizio});
 }
 
 
+//The purpose of this function is to convert all the values from the given list to local format
+function formatValues(fields) {
+	if (param["formatNumber"] === true) {
+		for (i = 0; i < form.length; i++) {
+			var valueObj = getObject(form, form[i].account);
+
+			for (var j = 0; j < fields.length; j++) {
+				valueObj[fields[j]] = Banana.Converter.toLocaleNumberFormat(valueObj[fields[j]]);
+			}
+		}
+	}
+}
 
 
+//The purpose of this function is to return a specific object of the form
+function getObject(form, account) {
+	for (var i = 0; i < form.length; i++) {
+		if (form[i]["account"] === account) {
+			return form[i];
+		}
+	}
+	Banana.document.addMessage("Couldn't find object with account: " + account);
+}
 
 
-//Funzione che verifica che non vi sia una differenza tra CONTI e CATEGORIE.
-function verificaImporti(){
-	var aperturaSostNetta = Banana.document.table('Accounts').findRowByValue('Group','00').value('Opening');
-	var utilePerditaEsercizio = Banana.document.table('Categories').findRowByValue('Group','00').value('Balance');
-	var saldoSostnetta = Banana.document.table('Accounts').findRowByValue('Group','00').value('Balance');
+//Funzione che verifica che non vi sia una differenza tra risultato d'esecizio da bilancio e risultato d'esercizio da conto economico
+function verificaImporti() {
+	
+	var utilePerditaEsercizio = getObject(form, "risEsercizio").balance;
+	var aperturaSostNetta = getObject(form, "totSostanzaNettaApertura").balance;
+	var saldoSostnetta = getObject(form, "totSostanzaNetta").balance;
 	var totale = Banana.SDecimal.add(aperturaSostNetta, utilePerditaEsercizio);
 
-	if(totale != saldoSostnetta)
-	{
-		messaggioAvviso = "ATTENZIONE! Differenza tra Conti e Categorie."
+	Banana.console.log("aperturaSostanzaNetta " + aperturaSostNetta);
+	Banana.console.log("utilePerditaEsercizio " + utilePerditaEsercizio);
+	Banana.console.log("totale " + totale);
+	Banana.console.log("saldoSostnetta " + saldoSostnetta);
+	Banana.console.log(totale + " =? " + saldoSostnetta);
+
+	if(totale != saldoSostnetta) {
+		var messaggioAvviso = "ATTENZIONE! Differenze. [Sostanza netta]: <" + saldoSostnetta + ">, [Apertura sost.netta + u/p esercizio]: <" + totale +">";
+		form.push({"warningMessage" : messaggioAvviso});
 		return true;
 	}
 }
 
 
-
-
-
-
 //Funzione che verifica i GR/GROUP
-function verificaGr(accounts, categories){
-	
+function verificaGr() {
+	var accounts = Banana.document.table("Accounts");
 	var controllo = 0;
-	var controllo1 = 0;
 
 	//Conti
-	for (i=0; i< accounts.rowCount; i++)
-	{
+	for (var i = 0; i < accounts.rowCount; i++) {
 		var tRow = accounts.row(i);
-		if(tRow.value('Gr')!='10' 
-			&& tRow.value('Gr')!='11' 
-			&& tRow.value('Gr')!='2' 
-			&& tRow.value('Gr')!='1' 
-			&& tRow.value('Gr')!='00' 
-			&& tRow.value('Gr')!=''
-			)
-		{
+		if(tRow.value('Gr')!=='10' 
+			&& tRow.value('Gr')!=='11'
+			&& tRow.value('Gr')!=='1'
+			&& tRow.value('Gr')!=='20'
+			&& tRow.value('Gr')!=='29' 
+			&& tRow.value('Gr')!=='2' 
+			&& tRow.value('Gr')!=='30' 
+			&& tRow.value('Gr')!=='31' 
+			&& tRow.value('Gr')!=='3' 
+			&& tRow.value('Gr')!=='40' 
+			&& tRow.value('Gr')!=='41' 
+			&& tRow.value('Gr')!=='4'
+			&& tRow.value('Gr')!=='00'
+			&& tRow.value('Gr')!=='01'
+			&& tRow.value('Gr')!=='0'
+			&& tRow.value('Gr')!=='') {
 			tRow.addMessage("ERRORE! Gr non valido. Gruppo inesistente.");
 			controllo = 1;
 		}
 	}
 
-	//Categorie
-	for (i=0; i< categories.rowCount; i++)
-	{
-		var tRow = categories.row(i);
-		if(tRow.value('Gr')!='30' 
-			&& tRow.value('Gr')!='31' 
-			&& tRow.value('Gr')!='3' 
-			&& tRow.value('Gr')!='40' 
-			&& tRow.value('Gr')!='41' 
-			&& tRow.value('Gr')!='4'
-			&& tRow.value('Gr')!='00'
-			&& tRow.value('Gr')!=''
-			)
-		{
-			tRow.addMessage("ERRORE! Gr non valido. Gruppo inesistente.");
-			controllo1 = 1;
-		}
-	}
-	if(controllo==1 && controllo1==1){
+	if (controllo == 1) {
 		return true;
-	}
-	else if(controllo==1 && controllo1==0){
-		return true;
-	}
-	else if(controllo==0 && controllo1==1){
-		return true;
-	}
-	else if(controllo==0 && controllo1==0){
+	} else {
 		return false;
 	}
-} 
+}
 
 
-
+//This function adds a Footer to the report
+function addFooter(report) {
+   report.getFooter().addClass("footer");
+   var versionLine = report.getFooter().addText(param.bananaVersion + ", " + param.scriptVersion + ", ", "description");
+   report.getFooter().addText(param.pageCounterText + " ", "description");
+   report.getFooter().addFieldPageNr();
+}
 
 
 //Creazione degli stili
-function CreaStyleSheet1() {
+function createStyleSheet() {
 
 	//------------------------------------------------------------------------------//
 	// GENERALI
@@ -1026,6 +1124,7 @@ function CreaStyleSheet1() {
 	style = docStyles.addStyle(".footer");
 	style.setAttribute("font-size", "8pt");
 	style.setAttribute("text-align", "right");
+	style.setAttribute("font-family", "Courier New");
     
     //Title
 	style = docStyles.addStyle(".titleStyle");
