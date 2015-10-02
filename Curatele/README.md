@@ -1,20 +1,20 @@
 # Rendiconto finanziario per curatele
-La BananaApp [rendicontoFinanziario.js] (https://raw.githubusercontent.com/BananaAccounting/Ticino/master/Curatele/rendicontoFinanziario.js) prepara il rendiconto finanziario per le curatele (art. 410 Codice civile svizzero) secondo lo schema dell'autorità di vigilanza del Cantone Ticino.
+La BananaApp [rendicontoFinanziario.js](https://raw.githubusercontent.com/BananaAccounting/Ticino/master/Curatele/rendicontoFinanziario.js) prepara il rendiconto finanziario per le curatele (art. 410 Codice civile svizzero) secondo lo schema dell'autorità di vigilanza del Cantone Ticino.
 
-## Come usare questa BananaApps 
+## Come usare questa BananaApps
 Procedere come segue per installare la app:
-1) Scaricare il file della contabiltà doppia e adattarlo alle proprie esigenze.
-2) Scaricare file **[rendicontoFinanziario.js](https://raw.githubusercontent.com/BananaAccounting/Ticino/master/Curatele/rendicontoFinanziario.js)**.
-Salvare il file (Clic tasto destro del mouse e scegliere **salva file**) nella stessa cartella del file di contabilità.
-3) Avviare Banana 8 e aprire il file di contabilità
-4) Nel Menu **Apps** selezionare il comando **Gestione Apps…**
-5) Nel dialogo cliccare su **Aggiungi…**, selezionare il file **rendicontoFinanziario.js**, e confermare con **Apri**
-6) Confermare l’importazione della apps cliccando su **Ok**
-7) Salvare la contabilità
+
+1. Scaricare il file della contabiltà doppia e adattarlo alle proprie esigenze
+2. Scaricare file **[rendicontoFinanziario.js](https://raw.githubusercontent.com/BananaAccounting/Ticino/master/Curatele/rendicontoFinanziario.js)**. Salvare il file (clic tasto destro del mouse e scegliere **salva file**) nella stessa cartella del file di contabilità
+3. Avviare Banana 8 e aprire il file di contabilità
+4. Nel Menu **Apps** selezionare il comando **Gestione Apps…**
+5. Nel dialogo cliccare su **Aggiungi…**, selezionare il file
+6. Confermare l’importazione della apps cliccando su **Ok**
+7. Salvare la contabilità
 
 Procedere come segue per usare la app:
-1) Aprire il file contabile
-2) Dal menu **Apps** selezionare **Rendiconto finanziario (art. 410 CC)**
+1. Aprire il file contabile
+2. Dal menu **Apps** selezionare **Rendiconto finanziario (art. 410 CC)**
 
 A questo punto verrà creato il report del rendiconto finanziario e sarà possibile salvarlo in formato pdf.
 
@@ -29,7 +29,7 @@ Nella tabella **Conti** Sono state aggiunte tre colonne:
 * DocNumero (numero del documento giustificativo)
 
 #### Attivi
-I conti attivi sono divisi in due categorie:
+I conti attivi sono divisi in due categorie: Beni mobili e Immobili.
 * Beni mobili
  	* Gruppo 10
 	* Necessitano del campo DocNumero
@@ -40,7 +40,7 @@ I conti attivi sono divisi in due categorie:
 	* Necessitano del campo ParticellaNumero
 
 #### Passivi
-I conti passivi sono rappresentati in due categorie:
+I conti passivi sono rappresentati in due categorie: Debiti e Capitale proprio.
 * Debiti
 	* Gruppo 20
 	* Necessitano del campo DocNumero
@@ -48,14 +48,14 @@ I conti passivi sono rappresentati in due categorie:
 	* Gruppo 29
 
 #### Ricavi
-Le entrate sono rappresentate in due categorie:
+Le entrate sono rappresentate in due categorie: Ricavi generali e Ricavi patrimoniali.
 * Ricavi generali
 	* Gruppo 40
 * Ricavi patrimoniali
 	* Gruppo 41
 
 #### Costi
-Le uscite sono rappresentate in due categorie:
+Le uscite sono rappresentate in due categorie: Costi generali e Costi patrimoniali.
 * Costi generali
 	* Gruppo 30
 * Costi patrimoniali
@@ -63,15 +63,10 @@ Le uscite sono rappresentate in due categorie:
 
 ### Completamento dati
 Per poter compilare correttamente il rendiconto finanziario è necessario che l’utente inserisca manualmente alcuni valori che saranno poi riportati automaticamente nel rapporto finale.
-#### Finestra Contabilità
+#### Proprietà file
 **File > Proprietà File** e selezionare la finestra **Contabilità**.
-In questa finestra appariranno diversi campi modificabili, ma gli unici importanti e che devono obbligatoriamente essere modificati sono le due date.
-Chiave  	  | Descrizione 		| Tipo dato
-------------- | --------------------|----------
-Data apertura | Data inizio periodo |Data
-Data chiusura | data fine periodo   |Data
+In questa finestra appariranno diversi campi modificabili, ma gli unici che devono essere modificati sono le date di apertura e chiusura del periodo contabile.
 
-#### Finestra Indirizzi
 **File > Proprietà File** e selezionare la finestra **Indirizzi**.
 In questa finestra è necessario inserire i dati riguardanti la persona tutelata/curatelata.
 
@@ -156,3 +151,4 @@ Utile/perdita d'esercizio
 * totale, somma del saldo sostanza netta anno precedente e utile/perdita d'esercizio
 
 La sostanza netta calcolata nella tabella riassuntiva di attivo/passivo deve corrispondere alla sostanza netta della tabella dei movimenti finanziari.
+
