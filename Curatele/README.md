@@ -22,13 +22,14 @@ A questo punto verrà creato il report del rendiconto finanziario e sarà possib
 ## 2. Documentazione
 
 Il rendiconto finanziario verrà creato in modo quasi del tutto automatico tramite l’esecuzione dello script allegato. Bisogna però rispettare alcune semplici regole riguardanti la struttura del file di banana contabilità e l’inserimento manuale di determinate informazioni fondamentali.
-### 2.1 Struttura Contabilità
+### 2.1 Impostazione piano dei conti 
+#### 2.1.1 Aggiunta colonne 
 Nella tabella **Conti** Sono state aggiunte tre colonne:
 * ValoreStima (valore di stima degli immobili)
 * ParticellaNumero (numero particella degli immobili)
 * DocNumero (numero del documento giustificativo)
 
-#### 2.1.1 Attivi
+#### 2.1.2 Attivi
 I conti attivi sono divisi in due categorie: Beni mobili e Immobili.
 * Beni mobili
  	* Gruppo 10
@@ -39,7 +40,7 @@ I conti attivi sono divisi in due categorie: Beni mobili e Immobili.
 	* Necessitano del campo ValoreStima
 	* Necessitano del campo ParticellaNumero
 
-#### 2.1.2 Passivi
+#### 2.1.3 Passivi
 I conti passivi sono rappresentati in due categorie: Debiti e Capitale proprio.
 * Debiti
 	* Gruppo 20
@@ -47,21 +48,21 @@ I conti passivi sono rappresentati in due categorie: Debiti e Capitale proprio.
 * Capitale proprio
 	* Gruppo 29
 
-#### 2.1.3 Ricavi
+#### 2.1.4 Ricavi
 Le entrate sono rappresentate in due categorie: Ricavi generali e Ricavi patrimoniali.
 * Ricavi generali
 	* Gruppo 40
 * Ricavi patrimoniali
 	* Gruppo 41
 
-#### 2.1.4 Costi
+#### 2.1.5 Costi
 Le uscite sono rappresentate in due categorie: Costi generali e Costi patrimoniali.
 * Costi generali
 	* Gruppo 30
 * Costi patrimoniali
 	* Gruppo 31
 
-### 2.2 Completamento dati
+### 2.2 Altri dati da inserire nel file contabile
 Per poter compilare correttamente il rendiconto finanziario è necessario che l’utente inserisca manualmente alcuni valori che saranno poi riportati automaticamente nel rapporto finale.
 #### 2.2.1 Proprietà file
 **File > Proprietà File** e selezionare la finestra **Contabilità**.
@@ -105,7 +106,7 @@ Ogni osservazione deve essere inserita in campi diversi della tabella. Nel caso 
 Ogni allegato deve essere inserito in campi diversi della tabella. Nel caso non sia necessario inserire un allegato, lasciare il campo vuoto. Sono permessi fino ad un massimo di sei allegati.
 
 
-## 3. Ulteriori informazioni
+## 3. Spiegazioni in merito al report 
 ### 3.1 Intestazione
 Nella parte iniziale del documento vengono riportate informazioni inerenti:
 * il periodo contabile;
@@ -114,14 +115,15 @@ Nella parte iniziale del documento vengono riportate informazioni inerenti:
 
 ### 3.2 Situazione patrimoniale
 Tabella Attivi
-* vengono elencati tutti gli immobili con il numero di particella, il valore di stima, il saldo e il documento giustificativo;
-* vengono elencati tutti i beni mobili con saldo positivo e i passivi con saldo positivo (capitale proprio escluso);
+* Immobili: vengono elencati tutti i conti Gr 11 con il numero di particella, il valore di stima, il saldo e il documento giustificativo;
+* Beni mobili: vengono elencati tutti i conti con Gr 10 e 20 con un saldo con saldo positivo;
 * totale, la somma di immobili, beni mobili e passivi presenti nella tabella
 
 Tabella Passivi
-* vengono elencati tutti i passivi con saldo negativo (capitale proprio escluso);
-* vengono elencati tutti gli attivi con saldo negativo;
-* totale, la somma di passivi e attivi presenti nella tabella
+* Debiti: vengono elencati tutti i conti appartentenenti al gruppo 10 o 20 con saldo negativo;
+* Esecuzioni: Per il momento non implementato.
+* Attestati carenza beni: Per il momento non implementato.
+* totale, per il momento il totale debiti 
 
 Tabella Totali
 * riporto del totale degli attivi
@@ -129,12 +131,12 @@ Tabella Totali
 * totale della sostanza netta, la somma di attivi e passivi
 
 Osservazioni
-* vengono elencate tutte le eventuali osservazioni che l'utente ha inserito nella tabella Testi.
+* vengono ripresi i testi il cui Id è uguale "_oss".
 
 ### 3.3 Movimenti finanziari
 #### 3.3.1 Conto esercizio
 Entrate
-* riporto del totale delle entrate
+* Totale delle entrate. Il totale dei conti con il Gr 40 e 41 
 * riporto degli utili patrimoniali
 * totale, la somma del totale delle entrate e degli utili patrimoniali
 
