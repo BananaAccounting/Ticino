@@ -75,33 +75,34 @@ Il file di banana contabilità deve contenere la tabella **Testi**, pensata appo
 * la colonna **Id**: serve allo script per reperire le informazioni dalla tabella stessa (**importante: non modificare questa colonna**);
 * la colonna **Descrizione**: serve per aiutare l'utente a capire che genere di informazione deve essere inserita;
 * la colonna **Testo**: serve all'utente per inserire i dati corretti.
-Nel caso non esistesse la tabella in questione: **Strumenti > Aggiungi nuove funzionalità... > Nuova tabella libera**, per creare la tabella.
-Di seguito una breve panoramica dei valori modificabili suddivisi in base al contesto in cui verranno utilizzati all’interno del documento.
 
-ID   | Descrizione del campo                    | Tipo dato
------| -----------------------------------------|----------
-_npd | Nome di chi presenta il rendiconto       | Testo
-_cpd | Cognome di chi presenta il rendiconto    | Testo
-_iqd | Scelta tra tutore o curatore             | Testo
-_art | Numero dell'articolo                     | Testo/numero
-_arn | Numero Autorità Regionale di Protezione  | Testo/numero
-_ard | Regione Autorità Regionale di Protezione | Testo
-_oss | Osservazione/informazione 1              | Testo
-_oss | Osservazione/informazione 2              | Testo 
-_oss | Osservazione/informazione 3              | Testo 
-_oss | Osservazione/informazione 4              | Testo 
-_oss | Osservazione/informazione 5              | Testo 
-_oss | Osservazione/informazione 6              | Testo 
-_all | Allegato 1                               | Testo
-_all | Allegato 2                               | Testo
-_all | Allegato 3                               | Testo
-_all | Allegato 4                               | Testo
-_all | Allegato 5                               | Testo
-_all | Allegato 6                               | Testo
+Nel caso non esistesse la tabella, per crearla andare nel menu **Strumenti > Aggiungi nuove funzionalità... > Nuova tabella libera**, inserire **Testi** come nome tabella (**importante**).
+Di seguito una breve panoramica dei valori modificabili .
 
-Ogni osservazione deve essere inserita in campi diversi della tabella. Nel caso non sia necessario inserire un'osservazione, lasciare il campo vuoto.
+Descrizione del campo                    | Tipo di dato
+-----------------------------------------|-------------
+Nome di chi presenta il rendiconto       | Testo
+Cognome di chi presenta il rendiconto    | Testo
+Scelta tra tutore o curatore             | Testo
+Numero dell'articolo                     | Testo/numero
+Numero Autorità Regionale di Protezione  | Testo/numero
+Regione Autorità Regionale di Protezione | Testo
+Osservazione/informazione 1              | Testo
+Osservazione/informazione 2              | Testo 
+Osservazione/informazione 3              | Testo 
+Osservazione/informazione 4              | Testo 
+Osservazione/informazione 5              | Testo 
+Osservazione/informazione 6              | Testo 
+Allegato 1                               | Testo
+Allegato 2                               | Testo
+Allegato 3                               | Testo
+Allegato 4                               | Testo
+Allegato 5                               | Testo
+Allegato 6                               | Testo
 
-Ogni allegato deve essere inserito in campi diversi della tabella. Nel caso non sia necessario inserire un allegato, lasciare il campo vuoto.
+Ogni osservazione deve essere inserita in campi diversi della tabella. Nel caso non sia necessario inserire un'osservazione, lasciare il campo vuoto. Sono permesse fino ad un massimo di sei osservazioni.
+
+Ogni allegato deve essere inserito in campi diversi della tabella. Nel caso non sia necessario inserire un allegato, lasciare il campo vuoto. Sono permessi fino ad un massimo di sei allegati.
 
 
 ## 3. Ulteriori informazioni
