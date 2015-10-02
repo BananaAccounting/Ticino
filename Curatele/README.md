@@ -1,7 +1,7 @@
 # Rendiconto finanziario per curatele
 La BananaApp [rendicontoFinanziario.js](https://raw.githubusercontent.com/BananaAccounting/Ticino/master/Curatele/rendicontoFinanziario.js) prepara il rendiconto finanziario per le curatele (art. 410 Codice civile svizzero) secondo lo schema dell'autorità di vigilanza del Cantone Ticino.
 
-## Come usare questa BananaApps
+## 1. Come usare questa BananaApps
 Procedere come segue per installare la app:
 
 1. Scaricare il file della contabiltà doppia e adattarlo alle proprie esigenze
@@ -19,16 +19,16 @@ Procedere come segue per usare la app:
 A questo punto verrà creato il report del rendiconto finanziario e sarà possibile salvarlo in formato pdf.
 
 
-## Documentazione
+## 2. Documentazione
 
 Il rendiconto finanziario verrà creato in modo quasi del tutto automatico tramite l’esecuzione dello script allegato. Bisogna però rispettare alcune semplici regole riguardanti la struttura del file di banana contabilità e l’inserimento manuale di determinate informazioni fondamentali.
-### Struttura Contabilità
+### 2.1 Struttura Contabilità
 Nella tabella **Conti** Sono state aggiunte tre colonne:
 * ValoreStima (valore di stima degli immobili)
 * ParticellaNumero (numero particella degli immobili)
 * DocNumero (numero del documento giustificativo)
 
-#### Attivi
+#### 2.1.1 Attivi
 I conti attivi sono divisi in due categorie: Beni mobili e Immobili.
 * Beni mobili
  	* Gruppo 10
@@ -39,7 +39,7 @@ I conti attivi sono divisi in due categorie: Beni mobili e Immobili.
 	* Necessitano del campo ValoreStima
 	* Necessitano del campo ParticellaNumero
 
-#### Passivi
+#### 2.1.2 Passivi
 I conti passivi sono rappresentati in due categorie: Debiti e Capitale proprio.
 * Debiti
 	* Gruppo 20
@@ -47,30 +47,30 @@ I conti passivi sono rappresentati in due categorie: Debiti e Capitale proprio.
 * Capitale proprio
 	* Gruppo 29
 
-#### Ricavi
+#### 2.1.3 Ricavi
 Le entrate sono rappresentate in due categorie: Ricavi generali e Ricavi patrimoniali.
 * Ricavi generali
 	* Gruppo 40
 * Ricavi patrimoniali
 	* Gruppo 41
 
-#### Costi
+#### 2.1.4 Costi
 Le uscite sono rappresentate in due categorie: Costi generali e Costi patrimoniali.
 * Costi generali
 	* Gruppo 30
 * Costi patrimoniali
 	* Gruppo 31
 
-### Completamento dati
+### 2.2 Completamento dati
 Per poter compilare correttamente il rendiconto finanziario è necessario che l’utente inserisca manualmente alcuni valori che saranno poi riportati automaticamente nel rapporto finale.
-#### Proprietà file
+#### 2.2.1 Proprietà file
 **File > Proprietà File** e selezionare la finestra **Contabilità**.
 In questa finestra appariranno diversi campi modificabili, ma gli unici che devono essere modificati sono le date di apertura e chiusura del periodo contabile.
 
 **File > Proprietà File** e selezionare la finestra **Indirizzi**.
 In questa finestra è necessario inserire i dati riguardanti la persona tutelata/curatelata.
 
-#### Tabella Testi
+#### 2.2.2 Tabella Testi
 Il file di banana contabilità deve contenere la tabella **Testi**, pensata appositamente per permettere all'utente di inserire le informazioni necessarie in modo molto semplice e diretto. Questa tabella è composta da tre colonne:
 * la colonna **Id**: serve allo script per reperire le informazioni dalla tabella stessa (**importante: non modificare questa colonna**);
 * la colonna **Descrizione**: serve per aiutare l'utente a capire che genere di informazione deve essere inserita;
@@ -104,14 +104,14 @@ Ogni osservazione deve essere inserita in campi diversi della tabella. Nel caso 
 Ogni allegato deve essere inserito in campi diversi della tabella. Nel caso non sia necessario inserire un allegato, lasciare il campo vuoto.
 
 
-## Ulteriori informazioni
-### Intestazione
+## 3. Ulteriori informazioni
+### 3.1 Intestazione
 Nella parte iniziale del documento vengono riportate informazioni inerenti:
 * il periodo contabile;
 * il tutelato/curatelato;
 * il tutore/curatore
-### Situazione patrimoniale
 
+### 3.2 Situazione patrimoniale
 Tabella Attivi
 * vengono elencati tutti gli immobili con il numero di particella, il valore di stima, il saldo e il documento giustificativo;
 * vengono elencati tutti i beni mobili con saldo positivo e i passivi con saldo positivo (capitale proprio escluso);
@@ -130,8 +130,8 @@ Tabella Totali
 Osservazioni
 * vengono elencate tutte le eventuali osservazioni che l'utente ha inserito nella tabella Testi.
 
-### Movimenti finanziari
-#### Conto esercizio
+### 3.3 Movimenti finanziari
+#### 3.3.1 Conto esercizio
 Entrate
 * riporto del totale delle entrate
 * riporto degli utili patrimoniali
@@ -145,7 +145,7 @@ Uscite
 Utile/perdita d'esercizio
 * utile/perdita d'esercizio, differenza tra entrate ed uscite
 
-#### Conto patrimoniale
+#### 3.3.2 Conto patrimoniale
 * riporto della sostanza netta anno precedente
 * riporto utile/perdita d'esercizio
 * totale, somma del saldo sostanza netta anno precedente e utile/perdita d'esercizio
