@@ -16,7 +16,7 @@
 // @api = 1.0
 // @pubdate = 2015-09-21
 // @publisher = Banana.ch SA
-// @description = Rendiconto finanziario (art. 410 CC) - II
+// @description = Rendiconto finanziario (art. 410 CC)
 // @task = app.command
 // @doctype = *.*
 // @docproperties = ticino
@@ -1034,12 +1034,6 @@ function verificaImporti() {
 	var aperturaSostNetta = getObject(form, "totSostanzaNettaApertura").balance;
 	var saldoSostnetta = getObject(form, "totSostanzaNetta").balance;
 	var totale = Banana.SDecimal.add(aperturaSostNetta, utilePerditaEsercizio);
-
-	Banana.console.log("aperturaSostanzaNetta " + aperturaSostNetta);
-	Banana.console.log("utilePerditaEsercizio " + utilePerditaEsercizio);
-	Banana.console.log("totale " + totale);
-	Banana.console.log("saldoSostnetta " + saldoSostnetta);
-	Banana.console.log(totale + " =? " + saldoSostnetta);
 
 	if(totale != saldoSostnetta) {
 		var messaggioAvviso = "ATTENZIONE! Differenze. [Sostanza netta]: <" + saldoSostnetta + ">, [Apertura sost.netta + u/p esercizio]: <" + totale +">";
