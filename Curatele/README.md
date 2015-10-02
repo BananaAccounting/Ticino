@@ -65,7 +65,7 @@ Le uscite sono rappresentate in due categorie: Costi generali e Costi patrimonia
 Per poter compilare correttamente il rendiconto finanziario è necessario che l’utente inserisca manualmente alcuni valori che saranno poi riportati automaticamente nel rapporto finale.
 #### 2.2.1 Proprietà file
 **File > Proprietà File** e selezionare la finestra **Contabilità**.
-In questa finestra appariranno diversi campi modificabili, ma gli unici che devono essere modificati sono le date di apertura e chiusura del periodo contabile.
+In questa finestra appariranno diversi campi ed è fondamentale che siano compilate almeno le date di apertura e chiusura del periodo contabile.
 
 **File > Proprietà File** e selezionare la finestra **Indirizzi**.
 In questa finestra è necessario inserire i dati riguardanti la persona tutelata/curatelata.
