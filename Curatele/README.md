@@ -45,6 +45,10 @@ I conti passivi sono rappresentati in due categorie: Debiti e Capitale proprio.
 * Debiti
 	* Gruppo 20
 	* Necessitano del campo DocNumero
+* Esecuzioni
+	* Gruppo 20
+	* Necessitano del campo DocNumero
+	* _Nota_: tutte le esecuzioni devono essere inserite come dei normali conti nel gruppo 20. Per differenziare un'esecuzione da un conto bisogna specificarlo nella descrizione, inserendo un apposito commento.
 * Capitale proprio
 	* Gruppo 29
 
@@ -99,12 +103,11 @@ Nella parte iniziale del documento vengono riportate informazioni inerenti:
 ### 3.2 Situazione patrimoniale
 Tabella Attivi
 * **Immobili**: vengono elencati tutti i conti appartenenti al gruppo **Gr 11** con il numero di particella, il valore di stima, il saldo e il documento giustificativo.
-* **Beni mobili**: vengono elencati tutti i conti appartenenti ai gruppi **Gr 10** e **Gr 20** con saldo positivo.
+* **Beni mobili**: vengono elencati tutti i conti appartenenti ai gruppi **Gr 10** e **Gr 20** con saldo **positivo**.
 * **Totale**: la somma dei gruppi **11**, **10** e **20** presenti nella tabella.
 
 Tabella Passivi
-* **Debiti**: vengono elencati tutti i conti appartentenenti al gruppo **Gr 10** e **Gr 20** con saldo **negativo**.
-* **Esecuzioni**: devono essere inserite come conti nel gruppo **Gr 20** specificando nella descrizione che si tratta di un'esecuzione.
+* **Debiti/Esecuzioni**: vengono elencati tutti i conti appartentenenti al gruppo **Gr 10** e **Gr 20** con saldo **negativo**.
 * **Attestati carenza beni**: _Per il momento non implementato_.
 * **Totale**: per il momento, la somma del gruppo **Gr 20** (debiti ed esecuzioni). 
 
