@@ -60,15 +60,15 @@ function loadParam() {
 		"vatNumber" : Banana.document.info("AccountingDataBase","VatNumber"),
 		
 		//Parameters saved into the table "Testi" (parameters that the user have to modify properly into the .ac2 file)
-		"_npd" : Banana.document.table("Testi").findRowByValue("RowId","_npd").value("Testo"),
-		"_cpd" : Banana.document.table("Testi").findRowByValue("RowId","_cpd").value("Testo"),
-		"_iqd" : Banana.document.table("Testi").findRowByValue("RowId","_iqd").value("Testo"),
-		"_art" : Banana.document.table("Testi").findRowByValue("RowId","_art").value("Testo"),
-		"_arn" : Banana.document.table("Testi").findRowByValue("RowId","_arn").value("Testo"),
-		"_ard" : Banana.document.table("Testi").findRowByValue("RowId","_ard").value("Testo"),
-		"_grc" : Banana.document.table("Testi").findRowByValue("RowId","_grc").value("Testo"),	
-		"_oss" : Banana.document.table("Testi").findRowByValue("RowId","_oss").value("Testo"),
-		"_all" : Banana.document.table("Testi").findRowByValue("RowId","_all").value("Testo"),
+		"npd" : Banana.document.table("Testi").findRowByValue("RowId","npd").value("Testo"),
+		"cpd" : Banana.document.table("Testi").findRowByValue("RowId","cpd").value("Testo"),
+		"iqd" : Banana.document.table("Testi").findRowByValue("RowId","iqd").value("Testo"),
+		"art" : Banana.document.table("Testi").findRowByValue("RowId","art").value("Testo"),
+		"arn" : Banana.document.table("Testi").findRowByValue("RowId","arn").value("Testo"),
+		"ard" : Banana.document.table("Testi").findRowByValue("RowId","ard").value("Testo"),
+		"grc" : Banana.document.table("Testi").findRowByValue("RowId","grc").value("Testo"),	
+		"oss" : Banana.document.table("Testi").findRowByValue("RowId","oss").value("Testo"),
+		"all" : Banana.document.table("Testi").findRowByValue("RowId","all").value("Testo"),
 
 		//Additional informations
 		"reportName":"Rendiconto finanziario - 2017",
@@ -170,7 +170,7 @@ function printReport() {
 	//Header
 	var pageHeader = report.getHeader();
 	pageHeader.addClass("header");
-	pageHeader.addText("Autorità Regionale di Protezione no. " + param._arn + ", di "  + param._ard, "header");
+	pageHeader.addText("Autorità Regionale di Protezione no. " + param.arn + ", di "  + param.ard, "header");
 
 	//Footer
 	addFooter(report);
@@ -210,8 +210,8 @@ function printReport() {
 	var tableIntestazionePresentatoDa = report.addTable("tableIntestazione1");
 	tableIntestazionePresentatoDa.getCaption().addText("Presentato da", "intestazioneStyle");
 	tableRow = tableIntestazionePresentatoDa.addRow();
-	tableRow.addCell("Nome: " + param._npd, "testoNormale");
-	tableRow.addCell("Cognome: " + param._cpd, "testoNormale");
+	tableRow.addCell("Nome: " + param.npd, "testoNormale");
+	tableRow.addCell("Cognome: " + param.cpd, "testoNormale");
 	tableRow = tableIntestazionePresentatoDa.addRow();
 	tableRow.addCell(" ");
 	tableRow.addCell(" ");
@@ -224,8 +224,8 @@ function printReport() {
 	tableRow.addCell("Nominato ai sensi dell'articolo:", "testoNormale");
 
 	tableRow = tableIntestazioneTipologia.addRow();
-	tableRow.addCell(param._iqd, "testoNormale");
-	tableRow.addCell(param._art, "testoNormale");
+	tableRow.addCell(param.iqd, "testoNormale");
+	tableRow.addCell(param.art, "testoNormale");
 	report.addParagraph(" ");
 	report.addParagraph(" ");
 
@@ -589,10 +589,10 @@ function printReport() {
 	// 11.	RETRO PAGINA FIRME
 	//------------------------------------------------------------------------------//
 	var paragraph = report.addParagraph("","bordoSinistraSopra");
-	paragraph.addText("L'Autorità Regionale di Protezione no. " + param._arn, "testoNormale");
+	paragraph.addText("L'Autorità Regionale di Protezione no. " + param.arn, "testoNormale");
 
 	var paragraph1 = report.addParagraph("","bordoSinistra");
-	paragraph1.addText("di " + param._ard, "testoNormale");	
+	paragraph1.addText("di " + param.ard, "testoNormale");	
 
 	var paragraph2 = report.addParagraph("","bordoSinistra");
 	paragraph2.addText("nella seduta del ", "testoNormale");
@@ -883,7 +883,7 @@ function loadOsservazioni() {
 	for (var i = 0; i < table.rowCount; i++) {
 		var tRow = table.row(i);
 		
-		if (tRow.value("RowId") === "_oss" && tRow.value("Testo")) {
+		if (tRow.value("RowId") === "oss" && tRow.value("Testo")) {
 			ossParam.push({"testo" : tRow.value("Testo")});
 		}
 	}
@@ -898,7 +898,7 @@ function loadAllegati() {
 	for (var i = 0; i < table.rowCount; i++) {
 		var tRow = table.row(i);
 		
-		if (tRow.value("RowId") === "_all" && tRow.value("Testo")) {
+		if (tRow.value("RowId") === "all" && tRow.value("Testo")) {
 			allParam.push({"testo" : tRow.value("Testo")});
 		}
 	}

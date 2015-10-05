@@ -21,7 +21,7 @@ A questo punto verrà creato il report del rendiconto finanziario e sarà possib
 
 ## 2. Documentazione
 
-Il rendiconto finanziario verrà creato in modo quasi del tutto automatico tramite l’esecuzione dello script allegato. Bisogna però rispettare alcune semplici regole riguardanti la struttura del file di banana contabilità e l’inserimento manuale di determinate informazioni fondamentali.
+Il rendiconto finanziario verrà creato tramite l’esecuzione dello script allegato. Bisogna però rispettare alcune semplici regole riguardanti la struttura del file di banana contabilità e l’inserimento manuale di determinate informazioni fondamentali.
 ### 2.1 Impostazione piano dei conti 
 #### 2.1.1 Aggiunta colonne 
 Nella tabella **Conti** Sono state aggiunte tre colonne:
@@ -63,94 +63,89 @@ Le uscite sono rappresentate in due categorie: Costi generali e Costi patrimonia
 	* Gruppo 31
 
 ### 2.2 Altri dati da inserire nel file contabile
-Per poter compilare correttamente il rendiconto finanziario è necessario che l’utente inserisca manualmente alcuni valori che saranno poi riportati automaticamente nel rapporto finale.
+Per poter compilare correttamente il rendiconto finanziario è necessario che l’utente inserisca manualmente alcuni valori che saranno poi riportati nel rapporto finale.
 #### 2.2.1 Proprietà file
-**File > Proprietà File** e selezionare la finestra **Contabilità**.
-In questa finestra appariranno diversi campi ed è fondamentale che siano compilate almeno le date di apertura e chiusura del periodo contabile.
+Inserimento della data: **File > Proprietà File** e selezionare la finestra **Contabilità**. In questa finestra appariranno diversi campi ed è fondamentale che siano compilate almeno la **data di apertura** e la **data di chiusura** del periodo contabile.
 
-**File > Proprietà File** e selezionare la finestra **Indirizzi**.
+Inserimento dell'indirizzo: **File > Proprietà File** e selezionare la finestra **Indirizzi**.
 In questa finestra è necessario inserire i dati riguardanti la persona tutelata/curatelata.
 
 #### 2.2.2 Tabella Testi
 Il file di banana contabilità deve contenere la tabella **Testi**, pensata appositamente per permettere all'utente di inserire le informazioni necessarie in modo molto semplice e diretto. Questa tabella è composta da tre colonne:
-* la colonna **Id**: serve allo script per reperire le informazioni dalla tabella stessa (**importante: non modificare questa colonna**);
-* la colonna **Descrizione**: serve per aiutare l'utente a capire che genere di informazione deve essere inserita;
-* la colonna **Testo**: serve all'utente per inserire i dati corretti.
-
-Nel caso non esistesse la tabella, per crearla andare nel menu **Strumenti > Aggiungi nuove funzionalità... > Nuova tabella libera**, inserire **Testi** come nome tabella (**importante**).
-Di seguito una breve panoramica dei valori modificabili .
-
-Descrizione del campo                    | Tipo di dato
------------------------------------------|-------------
-Nome di chi presenta il rendiconto       | Testo
-Cognome di chi presenta il rendiconto    | Testo
-Scelta tra tutore o curatore             | Testo
-Numero dell'articolo                     | Testo/numero
-Numero Autorità Regionale di Protezione  | Testo/numero
-Regione Autorità Regionale di Protezione | Testo
-Osservazione/informazione 1              | Testo
-Osservazione/informazione 2              | Testo 
-Osservazione/informazione 3              | Testo 
-Osservazione/informazione 4              | Testo 
-Osservazione/informazione 5              | Testo 
-Osservazione/informazione 6              | Testo 
-Allegato 1                               | Testo
-Allegato 2                               | Testo
-Allegato 3                               | Testo
-Allegato 4                               | Testo
-Allegato 5                               | Testo
-Allegato 6                               | Testo
+* colonna **Id**: serve allo script per reperire le informazioni dalla tabella stessa (**importante: non modificare questa colonna**);
+* colonna **Descrizione**: serve per aiutare l'utente a capire che genere di informazione deve essere inserita;
+* colonna **Testo**: è la parte della tabella che deve essere completata dall'utente, inserendo i dati desiderati.
 
 Ogni osservazione deve essere inserita in campi diversi della tabella. Nel caso non sia necessario inserire un'osservazione, lasciare il campo vuoto. Sono permesse fino ad un massimo di sei osservazioni.
 
-Ogni allegato deve essere inserito in campi diversi della tabella. Nel caso non sia necessario inserire un allegato, lasciare il campo vuoto. Sono permessi fino ad un massimo di sei allegati.
+Analogamente a quanto accade per le informazioni, anche gli allegati devono essere inseriti in campi diversi della tabella. Nel caso non sia necessario inserire un allegato, lasciare il campo vuoto. Sono permessi fino ad un massimo di sei allegati.
 
 
 ## 3. Spiegazioni in merito al report 
 ### 3.1 Intestazione
 Nella parte iniziale del documento vengono riportate informazioni inerenti:
-* il periodo contabile;
-* il tutelato/curatelato;
+* il periodo contabile
+	* date di apertura/chiusura estratte dalle proprietà del file nella sezione Contabilità
+* il tutelato/curatelato
+	* nome e cognome estratti dalle proprietà del file nella sezione Indirizzi
 * il tutore/curatore
+	* nome: dalla tabella Testi, viene ripreso il testo il cui Id è uguale "npd"
+	* cognome: dalla tabella Testi, viene ripreso il testo il cui Id è uguale "cpd"
+* scelta tra tutore o curatore
+	* dalla tabella Testi, viene ripreso il testo il cui Id è uguale "iqd"
+* numero articolo
+	* dalla tabella Testi, viene ripreso il testo il cui Id è uguale "art"
 
 ### 3.2 Situazione patrimoniale
 Tabella Attivi
-* Immobili: vengono elencati tutti i conti Gr 11 con il numero di particella, il valore di stima, il saldo e il documento giustificativo;
-* Beni mobili: vengono elencati tutti i conti con Gr 10 e 20 con un saldo con saldo positivo;
-* totale, la somma di immobili, beni mobili e passivi presenti nella tabella
+* **Immobili**: vengono elencati tutti i conti appartenenti al gruppo **Gr 11** con il numero di particella, il valore di stima, il saldo e il documento giustificativo.
+* **Beni mobili**: vengono elencati tutti i conti appartenenti ai gruppi **Gr 10** e **Gr 20** con saldo positivo.
+* **Totale**: la somma dei gruppi **11**, **10** e **20** presenti nella tabella.
 
 Tabella Passivi
-* Debiti: vengono elencati tutti i conti appartentenenti al gruppo 10 o 20 con saldo negativo;
-* Esecuzioni: Per il momento non implementato.
-* Attestati carenza beni: Per il momento non implementato.
-* totale, per il momento il totale debiti 
+* **Debiti**: vengono elencati tutti i conti appartentenenti al gruppo **Gr 10** e **Gr 20** con saldo **negativo**.
+* **Esecuzioni**: devono essere inserite come conti nel gruppo **Gr 20** specificando nella descrizione che si tratta di un'esecuzione.
+* **Attestati carenza beni**: _Per il momento non implementato_.
+* **Totale**: per il momento, la somma del gruppo **Gr 20** (debiti ed esecuzioni). 
 
 Tabella Totali
-* riporto del totale degli attivi
-* riporto del totale dei passivi
-* totale della sostanza netta, la somma di attivi e passivi
+* **Totale attivo**: Riporto del totale dei gruppi 11, 10 e 20 calcolato in precedenza.
+* **Totale passivo**: Riporto del totale del gruppo 20 calcolato in precedenza.
+* **Sostanza netta al**: somma totale attivo e totale passivo.
 
 Osservazioni
-* vengono ripresi i testi il cui Id è uguale "_oss".
+* Dalla tabella Testi, vengono ripresi ed elencati i testi il cui Id è uguale "oss".
 
 ### 3.3 Movimenti finanziari
 #### 3.3.1 Conto esercizio
 Entrate
-* Totale delle entrate. Il totale dei conti con il Gr 40 e 41 
-* riporto degli utili patrimoniali
-* totale, la somma del totale delle entrate e degli utili patrimoniali
+* **Totale entrate**: la somma dei conti appartenenti al gruppo **Gr 40**. 
+* **Utili patrimoniali**: la somma dei conti appartenenti al gruppo **Gr 41**.
+* **Totale**: la somma dei gruppi **Gr 40** e **Gr 41**
 
 Uscite
-* riporto del totale delle uscite
-* riporto delle perdite patrimoniali
-* totale, somma del totale delle uscite e le perdite patrimoniali
+* **Totale uscite**: la somma dei conti appartenenti al gruppo **Gr 30**. 
+* **Perdite patrimoniali**: la somma dei conti appartenenti al gruppo **Gr 31**. 
+* **Totale**: la somma dei gruppi **Gr 30** e **Gr 31**
 
 Utile/perdita d'esercizio
-* utile/perdita d'esercizio, differenza tra entrate ed uscite
+* **Utile/perdita d'esercizio**, differenza tra entrate ed uscite.
 
 #### 3.3.2 Conto patrimoniale
-* riporto della sostanza netta anno precedente
-* riporto utile/perdita d'esercizio
-* totale, somma del saldo sostanza netta anno precedente e utile/perdita d'esercizio
+* **Riporto della sostanza netta anno precedente**: viene calcolata sommando i **saldi di apertura** di **attivi** (gruppi Gr 10 e 11) e **passivi** (gruppo Gr 20).
+* **Utile/perdita d'esercizio (+/-)**: riporto del saldo calcolato al punto 3.3.1.
+* **Sostanza netta al**: la somma del saldo sostanza netta anno precedente e utile/perdita d'esercizio.
 
 La sostanza netta calcolata nella tabella riassuntiva di attivo/passivo deve corrispondere alla sostanza netta della tabella dei movimenti finanziari.
+
+### 3.4 Allegati
+Dalla tabella Testi, vengono ripresi ed elencati i testi il cui Id è uguale "all".
+
+### 3.5 Decisione
+A pagina 4 del rendiconto finanziario vengono inserite alcune informazioni inerenti l'Autorità Regionale di Protezione:
+* **Numero** Autorità Regionale di Protezione: dalla tabella Testi, viene ripreso il testo il cui Id è uguale "arn".
+* Autorità Regionale di Protezione **di**: dalla tabella Testi, viene ripreso il testo il cui Id è uguale "ard".
+
+### 3.6 Altro
+La parte del rendiconto finanziaro rimanente, quella non compilata automaticamente, deve essere riempita a mano da chi di dovere.
+
