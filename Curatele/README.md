@@ -24,35 +24,30 @@ Nella tabella **Conti** sono state aggiunte tre colonne:
 
 #### 2.1.2 Attivi
 I conti attivi sono divisi in due categorie: Beni mobili e Immobili.
-* Beni mobili
- 	* Gruppo 10
-	* Competare anche la colonna DocNumero
-* Immobili
-	* Gruppo 11
-	* Completare la colonna DocNumero, ValoreStima e ParticellaNumero
+* Beni mobili. Gruppo 10
+  * Competare anche la colonna DocNumero
+* Immobili. Gruppo 11
+  * Completare la colonna DocNumero, ValoreStima e ParticellaNumero
 
 #### 2.1.3 Passivi
 I conti passivi sono rappresentati in due categorie: Debiti e Capitale proprio.
-* Debiti
-	* Gruppo 20
-	* Completare la colonna DocNumero
-* Esecuzioni
-	* Gruppo 20
-	* Se si tratta di un'esecuzione o altro indicarlo nella descrizione del conto. 
-	* Completare la colonna DocNumero
-* Capitale proprio
-	* Gruppo 29
-	* Questo gruppo non è necessario nella contaiblità Entrate/Uscite
+* Debiti. Gruppo 20
+  * Completare la colonna DocNumero
+* Esecuzioni. Gruppo 20
+  * Se si tratta di un'esecuzione o altro indicarlo nella descrizione del conto. 
+  * Completare la colonna DocNumero
+* Capitale proprio. Gruppo 29
+  * Questo gruppo non è necessario nella contaiblità Entrate/Uscite
 
 #### 2.1.4 Ricavi
 Le entrate sono rappresentate in due categorie: Ricavi generali e Ricavi patrimoniali.
-* Ricavi generali Gruppo 40
-* Ricavi patrimoniali, Gruppo 41
+* Ricavi generali. Gruppo 40
+* Ricavi patrimoniali. Gruppo 41
 
 #### 2.1.5 Costi
 Le uscite sono rappresentate in due categorie: Costi generali e Costi patrimoniali.
-* Costi generali Gruppo 30
-* Costi patrimoniali Gruppo 31
+* Costi generali. Gruppo 30
+* Costi patrimoniali. Gruppo 31
 
 ### 2.2 Altri dati da inserire nel file contabile
 Per poter compilare correttamente il rendiconto finanziario è necessario che l’utente inserisca manualmente alcuni valori che saranno poi riportati nel rapporto finale.
