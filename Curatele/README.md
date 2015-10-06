@@ -4,27 +4,20 @@ La BananaApp [rendicontoFinanziario.js](https://raw.githubusercontent.com/Banana
 ## 1. Come usare questa BananaApps
 Procedere come segue per installare la app:
 
-1. Scaricare il file della contabiltà doppia e adattarlo alle proprie esigenze
-2. Scaricare file **[rendicontoFinanziario.js](https://raw.githubusercontent.com/BananaAccounting/Ticino/master/Curatele/rendicontoFinanziario.js)**. Salvare il file (clic tasto destro del mouse e scegliere **salva file**) nella stessa cartella del file di contabilità
-3. Avviare Banana 8 e aprire il file di contabilità
-4. Nel Menu **Apps** selezionare il comando **Gestione Apps…**
-5. Nel dialogo cliccare su **Aggiungi…**, selezionare il file
-6. Confermare l’importazione della apps cliccando su **Ok**
-7. Salvare la contabilità
-
-Procedere come segue per usare la app:
-1. Aprire il file contabile
-2. Dal menu **Apps** selezionare **Rendiconto finanziario (art. 410 CC)**
+1. Scaricare il file della contabiltà doppia o entrate/uscite e adattarlo alle proprie esigenze
+2. Installare la BananaApp curatele come indicato su http://doc8.banana.ch/it/node/7685.
+3. Eseguire nel menu menu **Apps** il comando **Rendiconto finanziario (art. 410 CC)**
 
 A questo punto verrà creato il report del rendiconto finanziario e sarà possibile salvarlo in formato pdf.
 
 
 ## 2. Documentazione
 
-Il rendiconto finanziario verrà creato tramite l’esecuzione dello script allegato. Bisogna però rispettare alcune semplici regole riguardanti la struttura del file di banana contabilità e l’inserimento manuale di determinate informazioni fondamentali.
+Il rendiconto finanziario verrà creato tramite l’esecuzione dello script allegato. 
+Il piano dei conti di Banana Contabilità deve essere adattato alle esigenze dello script, come descritto qui di seguito. 
 ### 2.1 Impostazione piano dei conti 
 #### 2.1.1 Aggiunta colonne 
-Nella tabella **Conti** Sono state aggiunte tre colonne:
+Nella tabella **Conti** sono state aggiunte tre colonne:
 * ValoreStima (valore di stima degli immobili)
 * ParticellaNumero (numero particella degli immobili)
 * DocNumero (numero del documento giustificativo)
@@ -33,38 +26,33 @@ Nella tabella **Conti** Sono state aggiunte tre colonne:
 I conti attivi sono divisi in due categorie: Beni mobili e Immobili.
 * Beni mobili
  	* Gruppo 10
-	* Necessitano del campo DocNumero
+	* Competare anche la colonna DocNumero
 * Immobili
 	* Gruppo 11
-	* Necessitano del campo DocNumero
-	* Necessitano del campo ValoreStima
-	* Necessitano del campo ParticellaNumero
+	* Completare la colonna DocNumero, ValoreStima e ParticellaNumero
 
 #### 2.1.3 Passivi
 I conti passivi sono rappresentati in due categorie: Debiti e Capitale proprio.
 * Debiti
 	* Gruppo 20
-	* Necessitano del campo DocNumero
+	* Completare la colonna DocNumero
 * Esecuzioni
 	* Gruppo 20
-	* Necessitano del campo DocNumero
-	* _Nota_: tutte le esecuzioni devono essere inserite come dei normali conti nel gruppo 20. Per differenziare un'esecuzione da un conto bisogna specificarlo nella descrizione, inserendo un apposito commento.
+	* Se si tratta di un'esecuzione o altro indicarlo nella descrizione del conto. 
+	* Completare la colonna DocNumero
 * Capitale proprio
 	* Gruppo 29
+	* Questo gruppo non è necessario nella contaiblità Entrate/Uscite
 
 #### 2.1.4 Ricavi
 Le entrate sono rappresentate in due categorie: Ricavi generali e Ricavi patrimoniali.
-* Ricavi generali
-	* Gruppo 40
-* Ricavi patrimoniali
-	* Gruppo 41
+* Ricavi generali Gruppo 40
+* Ricavi patrimoniali, Gruppo 41
 
 #### 2.1.5 Costi
 Le uscite sono rappresentate in due categorie: Costi generali e Costi patrimoniali.
-* Costi generali
-	* Gruppo 30
-* Costi patrimoniali
-	* Gruppo 31
+* Costi generali Gruppo 30
+* Costi patrimoniali Gruppo 31
 
 ### 2.2 Altri dati da inserire nel file contabile
 Per poter compilare correttamente il rendiconto finanziario è necessario che l’utente inserisca manualmente alcuni valori che saranno poi riportati nel rapporto finale.
@@ -75,10 +63,10 @@ Inserimento dell'indirizzo: **File > Proprietà File** e selezionare la finestra
 In questa finestra è necessario inserire i dati riguardanti la persona tutelata/curatelata.
 
 #### 2.2.2 Tabella Testi
-Il file di banana contabilità deve contenere la tabella **Testi**, pensata appositamente per permettere all'utente di inserire le informazioni necessarie in modo molto semplice e diretto. Questa tabella è composta da tre colonne:
-* colonna **Id**: serve allo script per reperire le informazioni dalla tabella stessa (**importante: non modificare questa colonna**);
-* colonna **Descrizione**: serve per aiutare l'utente a capire che genere di informazione deve essere inserita;
-* colonna **Testo**: è la parte della tabella che deve essere completata dall'utente, inserendo i dati desiderati.
+Il file di banana contabilità deve contenere la tabella **Testi** dove si inseriscono le informazioni non contabili richieste nel report. Questa tabella è composta da tre colonne:
+* **Id**: serve allo script per reperire le informazioni dalla tabella stessa (**importante: non modificare questa colonna**);
+* **Descrizione**: serve per aiutare l'utente a capire che genere di informazione deve essere inserita;
+* **Testo**: è la parte della tabella che deve essere completata dall'utente, inserendo i dati desiderati.
 
 Ogni osservazione deve essere inserita in campi diversi della tabella. Nel caso non sia necessario inserire un'osservazione, lasciare il campo vuoto. Sono permesse fino ad un massimo di sei osservazioni.
 
