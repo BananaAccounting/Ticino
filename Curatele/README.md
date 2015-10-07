@@ -4,7 +4,7 @@ La BananaApp [rendicontoFinanziario.js](https://raw.githubusercontent.com/Banana
 **Attenzione per scaricare i file bisogna**
 
 1. cliccare sul link del nome file
-2. Cliccare sul bottone **"Row"**
+2. click tasto destro del mouse sul bottone **"Row"** e fare "Salva con nome" 
 
 ## 1. Come usare questa BananaApps
 Procedere come segue per installare la app:
