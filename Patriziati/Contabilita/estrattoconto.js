@@ -267,16 +267,34 @@ function exec(string) {
 		var indirizzo2Mittente = Banana.document.info("AccountingDataBase","Address2");
 		
 		var sezioneIndirizzo1 = report.addSection("indirizzoStyle1");
-		sezioneIndirizzo1.addParagraph(societa);
-		sezioneIndirizzo1.addParagraph(nomeMittente + " " + cognomeMittente);
-		sezioneIndirizzo1.addParagraph(indirizzo1Mittente);
-		sezioneIndirizzo1.addParagraph(indirizzo2Mittente);
-		sezioneIndirizzo1.addParagraph(cap + " " + localita);
-		sezioneIndirizzo1.addParagraph("Tel. " + telefono);
-		sezioneIndirizzo1.addParagraph("Cel. " + cellulare);
-		sezioneIndirizzo1.addParagraph("Email: " + email);
-		sezioneIndirizzo1.addParagraph("Partita IVA: " + partitaIva);
-		
+		if (societa) {
+			sezioneIndirizzo1.addParagraph(societa, "bold");
+		}
+		if (nomeMittente && cognomeMittente) {
+			sezioneIndirizzo1.addParagraph(nomeMittente + " " + cognomeMittente);
+		}
+		if (indirizzo1Mittente) {
+			sezioneIndirizzo1.addParagraph(indirizzo1Mittente);
+		}
+		if (indirizzo2Mittente) {
+			sezioneIndirizzo1.addParagraph(indirizzo2Mittente);
+		}
+		if (cap && localita) {
+			sezioneIndirizzo1.addParagraph(cap + " " + localita);
+		}
+		if (telefono) {
+			sezioneIndirizzo1.addParagraph("Tel. " + telefono);
+		}
+		if (cellulare) {
+			sezioneIndirizzo1.addParagraph("Cel. " + cellulare);
+		}
+		if (email) {
+			sezioneIndirizzo1.addParagraph("Email: " + email);
+		}
+		if (partitaIva) {
+			sezioneIndirizzo1.addParagraph("Partita IVA: " + partitaIva);
+		}
+
 		//Indirizzo (tablella conti) - Destinatario
 		var nomeDestinatario = Banana.document.table('Accounts').findRowByValue('Account',conto).value('FirstName');
 		var cognomeDestinatario = Banana.document.table('Accounts').findRowByValue('Account',conto).value('LastName');
@@ -289,12 +307,22 @@ function exec(string) {
 		var codiceNazioneDestinatario = Banana.document.table('Accounts').findRowByValue('Account',conto).value('CountryCode');
 		
 		var sezioneIndirizzo = report.addSection("indirizzoStyle");
-		sezioneIndirizzo.addParagraph(societaDestinatario);
-		sezioneIndirizzo.addParagraph(nomeDestinatario + " " + cognomeDestinatario);
-		sezioneIndirizzo.addParagraph(indirizzo1Destinatario);
-		sezioneIndirizzo.addParagraph(indirizzo2Destinatario);
-		sezioneIndirizzo.addParagraph(capDestinatario + " " + luogoDestinatario);
-		if(codiceNazioneDestinatario && nazioneDestinatario){
+		if (societaDestinatario) {
+			sezioneIndirizzo.addParagraph(societaDestinatario);
+		}
+		if (nomeDestinatario && cognomeDestinatario) {
+			sezioneIndirizzo.addParagraph(nomeDestinatario + " " + cognomeDestinatario);
+		}
+		if (indirizzo1Destinatario) {
+			sezioneIndirizzo.addParagraph(indirizzo1Destinatario);
+		}
+		if (indirizzo2Destinatario) {
+			sezioneIndirizzo.addParagraph(indirizzo2Destinatario);
+		}
+		if (capDestinatario && luogoDestinatario) {
+			sezioneIndirizzo.addParagraph(capDestinatario + " " + luogoDestinatario);
+		}
+		if(codiceNazioneDestinatario && nazioneDestinatario) {
 			sezioneIndirizzo.addParagraph(codiceNazioneDestinatario + "-" + nazioneDestinatario);
 		}
 		else{
@@ -468,8 +496,9 @@ function CreaStyleSheet1() {
 
 	//Footer
 	style = docStyles.addStyle(".footer");
-	style.setAttribute("font-size", "8pt");
 	style.setAttribute("text-align", "right");
+	style.setAttribute("font-size", "8px");
+	style.setAttribute("font-family", "Courier New");
 	
 	//Titoletti intestazione
 	style = docStyles.addStyle(".intestazioneStyle");
@@ -523,6 +552,9 @@ function CreaStyleSheet1() {
 	style.setAttribute("height", "30mm");
 	style.setAttribute("overflow-shrink-max", "0.6");
 	style.setAttribute("overflow", "shrink");
+
+	style = docStyles.addStyle(".bold");
+	style.setAttribute("font-weight", "bold");
 	
 	//Spazio tra paragrafi
 	style = docStyles.addStyle(".paragrafiStyle");
@@ -552,6 +584,9 @@ function CreaStyleSheet1() {
 	style = docStyles.addStyle(".intestazioneTableStyle");
 	style.setAttribute("font-size", "10pt");
 	style.setAttribute("font-weight", "bold");
+	style.setAttribute("padding-bottom", "5px"); 
+	style.setAttribute("background-color", "#ffd100");
+	style.setAttribute("color", "#1b365d");
 	
 	//Testo tabella
 	style = docStyles.addStyle(".testoTab");
@@ -563,6 +598,7 @@ function CreaStyleSheet1() {
 	style.setAttribute("font-size", "10pt");
 	style.setAttribute("text-align", "left");
 	style.setAttribute("font-weight", "bold");
+	style.setAttribute("background-color", "#b7c3e0"); 
 	
 	//Importi tabella
 	style = docStyles.addStyle(".importiTab");
@@ -574,6 +610,7 @@ function CreaStyleSheet1() {
 	style.setAttribute("font-size", "10pt");
 	style.setAttribute("font-weight", "bold");
 	style.setAttribute("text-align", "right");
+	style.setAttribute("background-color", "#b7c3e0"); 
 	
 	//Tabella Estratto conto
 	var tableStyle1 = docStyles.addStyle(".tableEC");
