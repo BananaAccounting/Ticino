@@ -98,9 +98,9 @@ function loadForm(banDoc) {
 			var middleName = tRow.value("MiddleName");
 			var familyName = tRow.value("FamilyName");
 			var paternity = tRow.value("Paternity");
-			var addressStreet = tRow.value("AddressStreet");
-			var addressPostalCode = tRow.value("AddressPostalCode");
-			var addressLocality = tRow.value("AddressLocality");
+			var addressStreet = tRow.value("Street");
+			var addressPostalCode = tRow.value("PostalCode");
+			var addressLocality = tRow.value("Locality");
 			var birthDate = tRow.value("DateOfBirth");
 			var deathDate = tRow.value("DateOfDeath");
 			var memberVote = tRow.value("MemberVote");
