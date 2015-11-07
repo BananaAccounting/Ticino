@@ -79,7 +79,7 @@ function printFullCatalog(banDoc, form, catalogHeader) {
 	tableRow = tableHeader.addRow();	
 	
 	tableRow.addCell("Id", "alignCenter valueTitle", 1);
-	tableRow.addCell("Gruppo Id", "alignCenter valueTitle", 1);
+	//tableRow.addCell("Gruppo Id", "alignCenter valueTitle", 1);
 	tableRow.addCell("Scheda", "alignCenter valueTitle", 1);
 	//tableRow.addCell("Prefisso", "alignCenter valueTitle", 1);
 	tableRow.addCell("Nome", "alignCenter valueTitle", 1);
@@ -100,11 +100,14 @@ function printFullCatalog(banDoc, form, catalogHeader) {
 
 		tableRow = table.addRow();
 		tableRow.addCell(form[i]["RowId"], "alignCenter valueText", 1);
-		tableRow.addCell(form[i]["ContactsGroupsRowId"], "alignLeft valueText", 1);
+		//tableRow.addCell(form[i]["ContactsGroupsRowId"], "alignLeft valueText", 1);
 		tableRow.addCell(form[i]["RowBelongTo"], "alignCenter valueText", 1);
 		//tableRow.addCell(form[i]["NamePrefix"], "alignLeft valueText", 1);
-		tableRow.addCell(form[i]["FirstName"], "alignLeft valueText", 1);
-		//tableRow.addCell(form[i]["MiddleName"], "alignLeft valueText", 1);
+		var name = form[i]["FirstName"];
+		if (form[i]["MiddleName"].length > 0) {
+			name = name + " " + form[i]["MiddleName"];
+		}
+		tableRow.addCell(name, "alignLeft valueText", 1);
 		tableRow.addCell(form[i]["FamilyName"], "alignLeft valueText", 1);
 		tableRow.addCell(form[i]["Street"], "alignLeft valueText", 1);
 		tableRow.addCell(form[i]["PostalCode"], "alignCenter valueText", 1);
@@ -152,7 +155,7 @@ function printVotersCatalog(banDoc, form, catalogHeader) {
 	tableRow = tableHeader.addRow();	
 	
 	tableRow.addCell("Id", "alignCenter valueTitle", 1);
-	tableRow.addCell("Gruppo Id", "alignCenter valueTitle", 1);
+	//tableRow.addCell("Gruppo Id", "alignCenter valueTitle", 1);
 	tableRow.addCell("Scheda", "alignCenter valueTitle", 1);
 	//tableRow.addCell("Prefisso", "alignCenter valueTitle", 1);
 	tableRow.addCell("Nome", "alignCenter valueTitle", 1);
@@ -177,11 +180,14 @@ function printVotersCatalog(banDoc, form, catalogHeader) {
 
 			tableRow = table.addRow();
 			tableRow.addCell(form[i]["RowId"], "alignCenter valueText", 1);
-			tableRow.addCell(form[i]["ContactsGroupsRowId"], "alignLeft valueText", 1);
+			//tableRow.addCell(form[i]["ContactsGroupsRowId"], "alignLeft valueText", 1);
 			tableRow.addCell(form[i]["RowBelongTo"], "alignCenter valueText", 1);
 			//tableRow.addCell(form[i]["NamePrefix"], "alignLeft valueText", 1);
-			tableRow.addCell(form[i]["FirstName"], "alignLeft valueText", 1);
-			//tableRow.addCell(form[i]["MiddleName"], "alignLeft valueText", 1);
+			var name = form[i]["FirstName"];
+			if (form[i]["MiddleName"].length > 0) {
+				name = name + " " + form[i]["MiddleName"];
+			}
+			tableRow.addCell(name, "alignLeft valueText", 1);
 			tableRow.addCell(form[i]["FamilyName"], "alignLeft valueText", 1);
 			tableRow.addCell(form[i]["Street"], "alignLeft valueText", 1);
 			tableRow.addCell(form[i]["PostalCode"], "alignCenter valueText", 1);
