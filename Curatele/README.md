@@ -1,6 +1,8 @@
 # Rendiconto finanziario per curatele
 La BananaApp [rendicontoFinanziario.js](https://raw.githubusercontent.com/BananaAccounting/Ticino/master/Curatele/rendicontoFinanziario.js) prepara il rendiconto finanziario per le curatele (art. 410 Codice civile svizzero) secondo lo schema dell'autorità di vigilanza del Cantone Ticino.
 
+Se avete una contabilità esistente e volete convertirla seguite la [spiegazione importa file]  (http://doc8.banana.ch/it/node/5045).
+
 **Attenzione per scaricare i file bisogna**
 
 1. cliccare sul link del nome file
