@@ -97,6 +97,7 @@ function loadForm() {
 				"gr" : tRow.value("Gr"),
 				"opening" : Banana.document.currentBalance(tRow.value("Account"), param.startDate, param.endDate).opening,
 				"balance" : Banana.document.currentBalance(tRow.value("Account"), param.startDate, param.endDate).balance,
+				"balanceNotConverted" : Banana.document.currentBalance(tRow.value("Account"), param.startDate, param.endDate).balance,
 				"docNumero" : tRow.value("DocNumero"),
 				"particellaNumero" : tRow.value("ParticellaNumero"),
 				"valoreStima" : tRow.value("ValoreStima")
@@ -263,7 +264,7 @@ function printReport() {
 	tableRow = tableAttivo.addRow();
 	tableRow.addCell("Immobili", " ",5);
 	for (var i = 0; i < form.length; i++) {
-		if (getObject(form, form[i].account).gr === "11" && Banana.SDecimal.sign(getObject(form, form[i].account).balance) > 0) {
+		if (getObject(form, form[i].account).gr === "11" && Banana.SDecimal.sign(getObject(form, form[i].account).balanceNotConverted) > 0) {
 			//colonna 2,3 - Part. no/Descrizione, Valore stima
 			//Riempimento delle colonne 2 e 3 a seconda che si tratti di "Immobili" oppure di "Beni mobili"	
 			tableRow = tableAttivo.addRow();
@@ -285,7 +286,7 @@ function printReport() {
 	tableRow = tableAttivo.addRow();
 	tableRow.addCell("Beni mobili", " ",5);
 	for (var i = 0; i < form.length; i++) {
-		if (getObject(form, form[i].account).gr === "10" && Banana.SDecimal.sign(getObject(form, form[i].account).balance) > 0) {
+		if (getObject(form, form[i].account).gr === "10" && Banana.SDecimal.sign(getObject(form, form[i].account).balanceNotConverted) > 0) {
 
 			tableRow = tableAttivo.addRow();
 			tableRow.addCell("                      ");
@@ -304,8 +305,8 @@ function printReport() {
 
 	//Cerca tutti i PASSIVI - DEBITI (Gr=20) con saldo POSITIVO (il capitale proprio viene escluso)
 	for (var i = 0; i < form.length; i++) {
-		if (getObject(form, form[i].account).gr === "20" && Banana.SDecimal.sign(getObject(form, form[i].account).balance) > 0) {
-
+		if (getObject(form, form[i].account).gr === "20" && Banana.SDecimal.sign(getObject(form, form[i].account).balanceNotConverted) > 0) {
+						
 			tableRow = tableAttivo.addRow();
 			tableRow.addCell("                      ");
 			tableRow.addCell(getObject(form, form[i].account).description);
@@ -363,7 +364,7 @@ function printReport() {
 	tableRow = tablePassivo.addRow();
 	tableRow.addCell("Debiti", " ",4);
 	for (var i = 0; i < form.length; i++) {
-		if (getObject(form, form[i].account).gr === "20" && Banana.SDecimal.sign(getObject(form, form[i].account).balance) < 0) {
+		if (getObject(form, form[i].account).gr === "20" && Banana.SDecimal.sign(getObject(form, form[i].account).balanceNotConverted) < 0) {
 			//Aggiunge riga alla tabella
 			tableRow = tablePassivo.addRow();
 			tableRow.addCell("             ");
@@ -383,7 +384,7 @@ function printReport() {
 
 	//Cerco tutti gli ATTIVI - BENI MOBILI (Gr=10) con saldo NEGATIVO
 	for (i = 0; i < form.length; i++) {
-		if(getObject(form, form[i].account).gr === "10" && Banana.SDecimal.sign(getObject(form, form[i].account).balance) < 0) {
+		if(getObject(form, form[i].account).gr === "10" && Banana.SDecimal.sign(getObject(form, form[i].account).balanceNotConverted) < 0) {
 			//Aggiunge riga alla tabella
 			tableRow = tablePassivo.addRow();
 			tableRow.addCell("             ");
