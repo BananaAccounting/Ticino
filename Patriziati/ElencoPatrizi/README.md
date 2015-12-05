@@ -1,4 +1,5 @@
 #Patriziati
+Link alla [documentazione elenco patrizi] (https://doc8.banana.ch/it/node/7992) 
 
 **Attenzione per scaricare i file bisogna**
 
