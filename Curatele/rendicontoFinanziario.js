@@ -18,8 +18,8 @@
 // @publisher = Banana.ch SA
 // @description = Rendiconto finanziario (art. 410 CC)
 // @task = app.command
-// @doctype = *.*
-// @docproperties = ticino
+// @doctype = 100.*;110.*;130.*
+// @docproperties = curatele
 // @outputformat = none
 // @inputdataform = none
 // @timeout = -1
@@ -643,11 +643,11 @@ function printReport() {
       	
     tableRow = tableRisolve.addRow();
     tableRow.addCell("3.");
-	tableRow.addCell("__ Le spese e la tassa della presente decisione per complessivi CHF                             sono a carico dell'interessato;", "testo");
+	tableRow.addCell("[  ] Le spese e la tassa della presente decisione per complessivi CHF                             sono a carico dell'interessato;", "testo");
 	
     tableRow = tableRisolve.addRow();
     tableRow.addCell(" ");
-    tableRow.addCell("__ non vengono prelevate tasse né spese.", "testo");
+    tableRow.addCell("[  ] non vengono prelevate tasse né spese.", "testo");
       	
     tableRow = tableRisolve.addRow();
     tableRow.addCell("4.");
@@ -1084,7 +1084,7 @@ function verificaGr() {
 //This function adds a Footer to the report
 function addFooter(report) {
    report.getFooter().addClass("footer");
-   var versionLine = report.getFooter().addText(param.bananaVersion + ", " + param.scriptVersion + ", ", "description");
+   var versionLine = report.getFooter().addText("Banana Contabilità 8" + ", ", "description");
    report.getFooter().addText(param.pageCounterText + " ", "description");
    report.getFooter().addFieldPageNr();
 }
