@@ -104,7 +104,7 @@ function loadForm() {
 			});
 		}
 	}
-	//Contabilita semplice, carica anche i dati presenti nella tabella Categorie
+	//Income & Expense accounting: loads the data from the table Categories
 	if (Banana.document.table('Accounts') && Banana.document.table('Categories')) {
 		var tableCategories = Banana.document.table("Categories");
 		for (var i = 0; i < tableCategories.rowCount; i++) {
@@ -114,8 +114,8 @@ function loadForm() {
 					"group" : tRow.value("Group"),
 					"account" : tRow.value("Category"), //the value of category is used as account value
 					"description" : tRow.value("Description"),
-					"gr" : tRow.value("Gr"),
-					//Se fosse necessario avere i saldi, usare la funzione Banana.document.currentBalance("GrC=numero_gr").balance
+					"gr" : tRow.value("Gr")
+					//If balance is needed use the function Banana.document.currentBalance("GrC=grNumber").balance
 				});
 			}
 		}
@@ -126,7 +126,7 @@ function loadForm() {
 //The purpose of this function is to do some operations before the values are converted
 function postProcess() {
 	
-	//Chiamata della funzione di verifica
+	//Function call to verify the values
 	flagError = verificaImporti();
 }
 
@@ -914,6 +914,9 @@ function calcTotals() {
 
 	var totaleBeniMobili = "";
 	var totalePassivo = "";
+	var totalePassivoN = "";
+	var totalePassivoP = "";
+	var totalePassivoTMP = "";
 	var totaleBeniMobiliApertura = "";
 	var totalePassivoApertura = "";
 
@@ -931,10 +934,22 @@ function calcTotals() {
 		}
 
 		//Calcolo passivi => Gr=20 < 0 ; Gr=10 < 0
-		else if (getObject(form, form[i].account).gr === "20" && Banana.SDecimal.sign(getObject(form, form[i].account).balance) < 0) {
-			totalePassivo = Banana.SDecimal.add(totalePassivo, getObject(form, form[i].account).balance);
+		else if (getObject(form, form[i].account).gr === "20") {
+
+			//Column balance < 0
+			if (Banana.SDecimal.sign(getObject(form, form[i].account).balance) < 0) {
+				totalePassivoN = Banana.SDecimal.add(totalePassivoN, getObject(form, form[i].account).balance);
+			} 
+			//Column balance > 0
+			//Column balance = 0 : (column Opening + column Income = 0) 
+			else {
+				totalePassivoP = Banana.SDecimal.add(totalePassivoP, getObject(form, form[i].account).balance);
+			}
+			totalePassivoTMP = Banana.SDecimal.add(totalePassivoN, totalePassivoP);
+			totalePassivo = Banana.SDecimal.add(totalePassivo, totalePassivoTMP);
 			totalePassivoApertura = Banana.SDecimal.add(totalePassivoApertura, getObject(form, form[i].account).opening);
 		}
+
 		else if (getObject(form, form[i].account).gr === "10" && Banana.SDecimal.sign(getObject(form, form[i].account).balance) < 0) {
 			totalePassivo = Banana.SDecimal.add(totalePassivo, getObject(form, form[i].account).balance);
 			totalePassivoApertura = Banana.SDecimal.add(totalePassivoApertura, getObject(form, form[i].account).opening);
@@ -974,16 +989,11 @@ function calcTotals() {
 	var totaleUscite = Banana.SDecimal.add(totaleUsciteGenerali, totaleUscitePatrimoniali);		//tot costi
 	var totaleEntrate = Banana.SDecimal.add(totaleEntrateGenerali, totaleEntratePatrimoniali);	//tot ricavi
 	var risultatoEsercizio = Banana.SDecimal.subtract(totaleEntrate, totaleUscite);				//risultato d'esecitzio (ricavi - costi)
-	
-	//var totaleSostanzaNettaApertura = Banana.SDecimal.add(totaleBeniMobiliApertura, totalePassivoApertura);
-	//totaleSostanzaNettaApertura = Banana.SDecimal.add(totaleSostanzaNettaApertura, totalePassivoApertura);
-	
+		
 	var totaleSostanzaNettaApertura = Banana.SDecimal.add(totaleBeniMobiliApertura, totaleBeniImmobiliApertura);
 	totaleSostanzaNettaApertura = Banana.SDecimal.add(totaleSostanzaNettaApertura, totalePassivoApertura);
 	//var totaleSostanzaNettaApertura = Banana.document.table('Accounts').findRowByValue('Group','00').value('Opening');
 	
-
-
 
 	//Alla fine salvo tutto nel form. Attenzione che nel caso della contabilita semplice devo invertire i valori del CE
 	//Save the totals into the form, so they can be used
