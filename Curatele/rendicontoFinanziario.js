@@ -910,54 +910,64 @@ function loadAllegati() {
 //The purpose of this function is to calculate all the totals and save them into the form
 function calcTotals() {
 
-	//getObject(form, form[i].account).
-
-	var totaleBeniMobili = "";
-	var totalePassivo = "";
-	var totalePassivoN = "";
-	var totalePassivoP = "";
-	var totalePassivoTMP = "";
-	var totaleBeniMobiliApertura = "";
-	var totalePassivoApertura = "";
+	var totaleBeniMobili = 0;
+	var totalePassivo = 0;
+	var totalePassivoN = 0;
+	var totalePassivoP = 0;
+	var totalePassivoTMP = 0;
+	var totaleBeniMobiliApertura = 0;
+	var totalePassivoApertura = 0;
+	var totaleBeniImmobili = Banana.document.currentBalance("Gr=11", param.startDate, param.endDate).balance;
+	var totaleBeniImmobiliApertura = Banana.document.currentBalance("Gr=11", param.startDate, param.endDate).opening;
 
 	//Calcolo tot ATTIVO e PASSIVO
 	for (var i = 0; i < form.length; i++) {
 
-		//Calcolo attivi => Gr=10 > 0 ; Gr=20 > 0
-		if (getObject(form, form[i].account).gr === "10" && Banana.SDecimal.sign(getObject(form, form[i].account).balance) >= 0) {
-			totaleBeniMobili = Banana.SDecimal.add(totaleBeniMobili, getObject(form, form[i].account).balance);
-			totaleBeniMobiliApertura = Banana.SDecimal.add(totaleBeniMobiliApertura, getObject(form, form[i].account).opening);
-		}
-		else if (getObject(form, form[i].account).gr === "20" && Banana.SDecimal.sign(getObject(form, form[i].account).balance) >= 0) {
-			totaleBeniMobili = Banana.SDecimal.add(totaleBeniMobili, getObject(form, form[i].account).balance);
-			totaleBeniMobiliApertura = Banana.SDecimal.add(totaleBeniMobiliApertura, getObject(form, form[i].account).opening);
+		//Conti con GR = 10
+		if (getObject(form, form[i].account).gr === "10") 
+		{
+			//Se il saldo >= 0, è un attivo
+			//Inizio somma dell'apertura/saldo dei beni mobili
+			if (Banana.SDecimal.sign(getObject(form, form[i].account).balance) >= 0) 
+			{
+				totaleBeniMobili = Banana.SDecimal.add(totaleBeniMobili, getObject(form, form[i].account).balance);
+				totaleBeniMobiliApertura = Banana.SDecimal.add(totaleBeniMobiliApertura, getObject(form, form[i].account).opening);
+			}
+			//Se il saldo < 0, è un passivo
+			//Inizio somma dell'apertura/saldo dei passivi
+			else if (Banana.SDecimal.sign(getObject(form, form[i].account).balance) < 0) 
+			{
+				totalePassivo = Banana.SDecimal.add(totalePassivo, getObject(form, form[i].account).balance);
+				totalePassivoApertura = Banana.SDecimal.add(totalePassivoApertura, getObject(form, form[i].account).opening);
+			}
 		}
 
-		//Calcolo passivi => Gr=20 < 0 ; Gr=10 < 0
-		else if (getObject(form, form[i].account).gr === "20") {
-
-			//Column balance < 0
-			if (Banana.SDecimal.sign(getObject(form, form[i].account).balance) < 0) {
-				totalePassivoN = Banana.SDecimal.add(totalePassivoN, getObject(form, form[i].account).balance);
-			} 
-			//Column balance > 0
-			//Column balance = 0 : (column Opening + column Income = 0) 
-			else {
+		//Conti con GR = 20
+		else if (getObject(form, form[i].account).gr === "20") 
+		{
+			//Se il saldo > 0, è un attivo
+			//Viene aggiunto nella somma dell'apertura/saldo dei beni mobili
+			//Inizio nuova somma del saldo dei "passivi positivi"
+			if (Banana.SDecimal.sign(getObject(form, form[i].account).balance) > 0) 
+			{
+				totaleBeniMobili = Banana.SDecimal.add(totaleBeniMobili, getObject(form, form[i].account).balance);
+				totaleBeniMobiliApertura = Banana.SDecimal.add(totaleBeniMobiliApertura, getObject(form, form[i].account).opening);
 				totalePassivoP = Banana.SDecimal.add(totalePassivoP, getObject(form, form[i].account).balance);
 			}
-			totalePassivoTMP = Banana.SDecimal.add(totalePassivoN, totalePassivoP);
-			totalePassivo = Banana.SDecimal.add(totalePassivo, totalePassivoTMP);
-			totalePassivoApertura = Banana.SDecimal.add(totalePassivoApertura, getObject(form, form[i].account).opening);
-		}
-
-		else if (getObject(form, form[i].account).gr === "10" && Banana.SDecimal.sign(getObject(form, form[i].account).balance) < 0) {
-			totalePassivo = Banana.SDecimal.add(totalePassivo, getObject(form, form[i].account).balance);
+			//Se il saldo <= 0, è un passivo
+			//Inizio nuova somma del saldo dei "passivi negativi"
+			else if (Banana.SDecimal.sign(getObject(form, form[i].account).balance) <= 0) 
+			{
+				totalePassivoN = Banana.SDecimal.add(totalePassivoN, getObject(form, form[i].account).balance);
+			}
+			//In ogni caso, sia che si tratti di un GR20>0 oppure di un GR20<=0, viene aggiunto alla somma dell'apertura dei passivi
 			totalePassivoApertura = Banana.SDecimal.add(totalePassivoApertura, getObject(form, form[i].account).opening);
 		}
 	}
 
-	var totaleBeniImmobili = Banana.document.currentBalance("Gr=11", param.startDate, param.endDate).balance;
-	var totaleBeniImmobiliApertura = Banana.document.currentBalance("Gr=11", param.startDate, param.endDate).opening;
+	//Calcolo finale del totale passivo
+	totalePassivoTMP = Banana.SDecimal.add(totalePassivoN, totalePassivoP);
+	totalePassivo = Banana.SDecimal.add(totalePassivo, totalePassivoTMP);
 
 	//Contabilità semplice
 	if (Banana.document.table('Accounts') && Banana.document.table('Categories')) {
@@ -992,11 +1002,8 @@ function calcTotals() {
 		
 	var totaleSostanzaNettaApertura = Banana.SDecimal.add(totaleBeniMobiliApertura, totaleBeniImmobiliApertura);
 	totaleSostanzaNettaApertura = Banana.SDecimal.add(totaleSostanzaNettaApertura, totalePassivoApertura);
-	//var totaleSostanzaNettaApertura = Banana.document.table('Accounts').findRowByValue('Group','00').value('Opening');
-	
 
 	//Alla fine salvo tutto nel form. Attenzione che nel caso della contabilita semplice devo invertire i valori del CE
-	//Save the totals into the form, so they can be used
 	form.push({"account":"totBeniMobili", "balance":totaleBeniMobili});
 	form.push({"account":"totBeniImmobili", "balance":totaleBeniImmobili});
 	form.push({"account":"totAttivo", "balance":totaleAttivo});
@@ -1010,6 +1017,7 @@ function calcTotals() {
 	form.push({"account":"totEntratePatrimoniali", "balance":totaleEntratePatrimoniali});
 	form.push({"account":"totEntrate", "balance":totaleEntrate});
 	form.push({"account":"risEsercizio", "balance":risultatoEsercizio});
+
 }
 
 
