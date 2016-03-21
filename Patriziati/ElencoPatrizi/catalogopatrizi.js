@@ -169,7 +169,7 @@ function printVotersCatalog(banDoc, form, catalogHeader) {
 	tableRow.addCell("Nascita", "alignCenter valueTitle", 1);
 	//tableRow.addCell("Decesso", "alignCenter valueTitle", 1);
 	tableRow.addCell("Voto", "alignCenter valueTitle", 1);
-	tableRow.addCell("Note", "alignCenter valueTitle", 1);
+	//tableRow.addCell("Note", "alignCenter valueTitle", 1);
 
 	//Add the content of the table
 	for (var i = 0; i < form.length; i++) {
@@ -197,7 +197,7 @@ function printVotersCatalog(banDoc, form, catalogHeader) {
 			tableRow.addCell(Banana.Converter.toLocaleDateFormat(form[i]["DateOfBirth"]), "alignCenter valueText", 1);
 			//tableRow.addCell(Banana.Converter.toLocaleDateFormat(form[i]["DateOfDeath"]), "alignCenter valueText", 1);
 			tableRow.addCell(form[i]["MemberVote"], "alignCenter valueText", 1);
-			tableRow.addCell(form[i]["Notes"], "alignLeft valueText", 1);
+			//tableRow.addCell(form[i]["Notes"], "alignLeft valueText", 1);
 		}
 	}
 
