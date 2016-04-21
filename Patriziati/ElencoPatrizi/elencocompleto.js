@@ -90,6 +90,7 @@ function exec(string) {
 		/* mettiamo in bold il rowId se è capofamiglia */
 		if (currentRow.value("RowId") == currentRow.value("RowBelongTo")) {
 			cellReport.addClass("bold");
+			
 		}
         // Scheda
         text = currentRow.value("RowBelongTo");
@@ -99,11 +100,11 @@ function exec(string) {
             // tieni assieme quelli che hanno il numero scheda uguale
             if ( i < adressesRows.length -1 && currentRow.value("RowBelongTo") == adressesRows[i+1].value("RowBelongTo")) {
                 rowReport.addClass("avoid-pb-after");
-                //cellReport.addClass("red");
+                cellReport.addClass("bold");
             }
             if (i > 0 && currentRow.value("RowBelongTo") == adressesRows[i - 1].value("RowBelongTo")) {
                 rowReport.addClass("avoid-pb-before");
-                //cellReport.addClass("bold");
+                cellReport.addClass("bold");
             }
 
         }
