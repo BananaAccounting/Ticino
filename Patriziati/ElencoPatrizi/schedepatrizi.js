@@ -26,7 +26,7 @@
 
 
 
-var scriptVersion = "script v. 2015-09-08";
+var scriptVersion = "script v. 2015-04-27";
 var form = []; //used to store all the data taken from Banana document
 var mapCF = []; //map used to store CF's data (code/rows)
 var mapMember = []; //map used to store Member's data (code/rows)
@@ -477,7 +477,7 @@ function getCardCodeList(form) {
 //The purpose of this function is to add a footer to the report
 function addFooter(banDoc, report) {
 	report.getFooter().addClass("footer");
-	report.getFooter().addText("Banana Accounting, v. " + banDoc.info("Base", "ProgramVersion") + ", " + scriptVersion, "footer");
+	report.getFooter().addText("Banana Contabilità 8", "footer");
 }
 
 
