@@ -528,7 +528,7 @@ function create_styleSheet() {
 	style = stylesheet.addStyle(".footer");
 	style.setAttribute("text-align", "right");
 	style.setAttribute("font-size", "8px");
-	style.setAttribute("font", "Times New Roman");
+	style.setAttribute("font-family", "Times New Roman");
 	
 	//Bold
 	style = stylesheet.addStyle(".bold");
