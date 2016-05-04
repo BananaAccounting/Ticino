@@ -2,9 +2,9 @@
 //
 // @id = ch.banana.app.patriziato.elencocompleto
 // @api = 1.0
-// @pubdate = 2016-04-21
+// @pubdate = 2016-04-29
 // @publisher = Banana.ch SA
-// @description = Elenco completo patrizi
+// @description = Elenco completo Patrizi
 // @task = app.command
 // @doctype = 400.*
 // @docproperties = patriziati
@@ -14,116 +14,147 @@
 
 function exec(string) {
 
-    // Document
+    //Parametri
     var parametri = {};
-    parametri.soloDirittoVoto = false;
-    parametri.sortByName = true;
-    //parametri.sortBy = "Scheda";
-    parametri.soloUnaRiga = true;
-    // verifichiamo se abbiamo la tabella corretta
-    var addresses = Banana.document.table("Contacts");
-    if (addresses === "undefined")
-        return;
     parametri.reportHeader = "Elenco completo: " + Banana.document.info("Base", "HeaderLeft");
-    parametri.soloDirittoVoto = Banana.Ui.showQuestion("Stampa elenco", "Solo con diritto di voto ?");
-    parametri.sortByName = Banana.Ui.showQuestion("Stampa elenco", "Ordina per nome (No = per scheda)?");
-    parametri.soloUnaRiga = Banana.Ui.showQuestion("Stampa elenco", "Stampa solo la prima riga?");
+    parametri.soloDirittoVoto = false;
+    parametri.soloUnaRiga = false;
+    
+    //Controllo che esista la tabella contatti
+    var addresses = Banana.document.table("Contacts");
+    if (addresses === "undefined") {
+        return;
+    }
+    
+    //Selezione del tipo di ordinamento
+    var itemSelected = Banana.Ui.getItem('Stampa elenco', 'Tipo di ordinamento:', ['Ordina per nome','Ordina per scheda'], 0, false);
+
+    //Titolo del report
     var reportHeader = Banana.Ui.getText("Stampa elenco", "Intestazione stampa:", parametri.reportHeader);
     if (reportHeader === "undefined") {
         return;
     }
     parametri.reportHeader = reportHeader;
-    // riprende, filtra e fai il sort delle righe 
+
+    //Creazione report   
+    var report = Banana.Report.newReport(reportHeader);
+    
+
+    //Righe indirizzi
     var adressesRows;
-    if (parametri.soloDirittoVoto) {
-        adressesRows = addresses.findRows(function (row) { return (row.value("MemberVote").length > 0) });
-    }
-    else {
-        adressesRows = addresses.findRows(function (row) { return (!row.isEmpty) });
-    }
-    if (parametri.sortByName) {
+    adressesRows = addresses.findRows(function (row) { return (!row.isEmpty) });
+
+    if (itemSelected === "Ordina per nome") {
         adressesRows = adressesRows.sort(function (a, b) { return sortByName(a, b) });
     }
-    else {
+    else if (itemSelected === "Ordina per scheda") {
         adressesRows = adressesRows.sort(sortByScheda);
     }
-    // crea il nuovo report
-    var report = Banana.Report.newReport(reportHeader);
-    // mettiamo header e footer
-    var pageHeader = report.getHeader();
-    pageHeader.addClass("header");
-    pageHeader.addText(parametri.reportHeader);
-    var dateToday = new Date();
-    report.getFooter().addText(Banana.Converter.toLocaleDateFormat(dateToday) + " - ");
-    report.getFooter().addFieldPageNr();
 
-    // create table inside report e metti intestazione
-    var tableReport = report.addTable();
+
+    //************ INIZIO CREAZIONE DEL REPORT ************//
+
     var text;
     var cellReport;
+    var tableReport = report.addTable("tableElenco");
+    
+    /* 
+        Header tabella 
+    */
     var tableHeader = tableReport.getHeader();
-    var tableHeaderRow = tableHeader.addRow();
-    tableHeaderRow.addCell("Id", "headerCol");
-    tableHeaderRow.addCell("Scheda", "headerCol");
-    tableHeaderRow.addCell("Nome", "headerCol");
-    cellReport = tableHeaderRow.addCell("Paternità", "headerCol");
+    var tableHeaderRow = tableHeader.addRow("");
+
+    tableHeaderRow.addCell("Id", "headerTable bold center");
+    tableHeaderRow.addCell("Scheda", "headerTable bold center");
+    tableHeaderRow.addCell("Nome", "headerTable bold center");
+    
+    cellReport = tableHeaderRow.addCell("Paternità", "headerTable bold center");
     if (!parametri.soloUnaRiga) {
         cellReport.addLineBreak();
         cellReport.addParagraph("Note", "italic");
     }
-    tableHeaderRow.addCell("Indirizzo", "headerCol");
-    tableHeaderRow.addCell("Località", "headerCol");
-    var cellReport = tableHeaderRow.addCell("Nascita", "headerCol");
+
+    tableHeaderRow.addCell("Indirizzo", "headerTable bold center");
+    tableHeaderRow.addCell("Località", "headerTable bold center");
+    
+    var cellReport = tableHeaderRow.addCell("Nascita", "headerTable bold center");
     if (!parametri.soloUnaRiga) {
         cellReport.addLineBreak();
     }
     cellReport.addParagraph("Decesso", "italic");
-    tableHeaderRow.addCell("Voto", "headerCol");
-    //
-    //stampa i dati dei delle righe
-    for (var i = 0; i < adressesRows.length; i++) {
+    
+    tableHeaderRow.addCell("Voto", "headerTable bold center");
+    
+    
+
+    /* 
+        Dati tabella 
+    */
+    for (var i = 0; i < adressesRows.length; i++) 
+    {
         var rowReport = tableReport.addRow();
         var currentRow = adressesRows[i];
-        // Id
+        
+        /*********** 
+            ID 
+        ***********/
         text = currentRow.value("RowId");
-        cellReport = rowReport.addCell(text, "a-center");
-		/* mettiamo in bold il rowId se è capofamiglia */
+        cellReport = rowReport.addCell(text, "center");
+		
+        //Mettiamo in bold il rowId se è capofamiglia
 		if (currentRow.value("RowId") == currentRow.value("RowBelongTo")) {
 			cellReport.addClass("bold");
 			
 		}
-        // Scheda
+
+        /*********** 
+            Scheda 
+        ***********/
         text = currentRow.value("RowBelongTo");
         cellReport = rowReport.addCell(text, "");
-        // controlliamo il page-break
-        if (!parametri.sortByName) {
-            // tieni assieme quelli che hanno il numero scheda uguale
+        
+        //Controlliamo il page-break
+        if (itemSelected === "Ordina per scheda") {
+            
+            //Raggruppiamo assieme quelli che hanno il numero scheda uguale
             if ( i < adressesRows.length -1 && currentRow.value("RowBelongTo") == adressesRows[i+1].value("RowBelongTo")) {
                 rowReport.addClass("avoid-pb-after");
                 cellReport.addClass("bold");
             }
+
             if (i > 0 && currentRow.value("RowBelongTo") == adressesRows[i - 1].value("RowBelongTo")) {
                 rowReport.addClass("avoid-pb-before");
                 cellReport.addClass("bold");
             }
 
         }
-        // Nome cognome
+
+        /****************** 
+            Nome e cognome 
+        ******************/
         text = currentRow.value("FamilyName");
         text += " " + currentRow.value("FirstName");
+        
         if (currentRow.value("MiddleName").length > 0) {
             text += " " + currentRow.value("MiddleName");
         }
+        
         cellReport = rowReport.addCell();
         cellReport.addParagraph(text, "bold");
+        
         if (!parametri.soloUnaRiga) {
             cellReport.addLineBreak();
             cellReport.addParagraph(currentRow.value("NamePrefix"), "italic");
         }
-        // paternità 
+
+
+        /************* 
+            Paternità 
+        *************/
         cellReport = rowReport.addCell();
         text = currentRow.value("Paternity");
         cellReport.addParagraph(text);
+        
         if (!parametri.soloUnaRiga) {
             //cellReport.addLineBreak();
 			if (currentRow.value("Notes").length > 0) {
@@ -138,67 +169,77 @@ function exec(string) {
 				cellReport.addParagraph(text, "italic");
 			}
         }
-        // indirizzo 
+
+        /************* 
+            Indirizzo 
+        *************/
         text = currentRow.value("Street");
         cellReport = rowReport.addCell(text);
+        
         if (currentRow.value("AddressExtra").length > 0) {
             cellReport.addLineBreak();
             cellReport.addParagraph(currentRow.value("AddressExtra"));
         }
-        // località
+
+        /*********** 
+            Località 
+        ***********/
         text = currentRow.value("PostalCode");
         text += " " + currentRow.value("Locality");
         rowReport.addCell(text);
-        // nascita
+
+        /*********** 
+            Nascita 
+        ***********/
         text = Banana.Converter.toLocaleDateFormat(currentRow.value("DateOfBirth"));
         cellReport = rowReport.addCell();
         cellReport.addParagraph(text);
+        
         if (!parametri.soloUnaRiga) {
             text = Banana.Converter.toLocaleDateFormat(currentRow.value("DateOfDeath"));
             cellReport.addParagraph(text, "italic bold");
 		}
 
-        // Diritto di voto
+        /******************* 
+            Diritto di voto 
+        *******************/
         text = currentRow.value("MemberVote");
+        
         if (text === "1") {
             text = "Sì";
+        } else {
+            text = "No";
         }
-        rowReport.addCell(text, "a-center");
+        
+        rowReport.addCell(text, "center");
     }
-    //
-    // prepara lo StyleSheet
-    var docStyles = Banana.Report.newStyleSheet();
-    var pageStyle = docStyles.addStyle("@page");
-    pageStyle.setAttribute("margin", "15mm 20mm 15mm 20mm");
-    pageStyle.setAttribute("size", "landscape");
 
-    var headerColStyle = docStyles.addStyle(".headerCol");
-    headerColStyle.setAttribute("font-weight", "bold");
-
-    var headerColStyle = docStyles.addStyle(".bold");
-    headerColStyle.setAttribute("font-weight", "bold");
-
-    docStyles.addStyle(".italic", "font-style:italic;");
-
-    docStyles.addStyle("td", "border: 1px dashed black; padding: 2px;");
-
-    var titleStyle = docStyles.addStyle(".header");
-    titleStyle.setAttribute("font-size", "13");
-    titleStyle.setAttribute("text-align", "center");
-    titleStyle.setAttribute("margin-bottom", "0.5em");
-
-    var titleStyle = docStyles.addStyle(".a-center");
-    titleStyle.setAttribute("text-align", "center");
-
-    docStyles.addStyle(".avoid-pb-after", "page-break-after:avoid");
-    docStyles.addStyle(".avoid-pb-before", "page-break-before:avoid");
-
-    docStyles.addStyle(".red", "color:red;");
-
-    // Open Preview
-
-    Banana.Report.preview(report, docStyles, false);
+    //Add header and footer
+    AddHeaderAndFooter(report, parametri);
+    
+    //Aggiunge stile e stampa il report
+    var stylesheet = createStyleSheet();
+    Banana.Report.preview(report, stylesheet);
 }
+
+
+
+
+
+function AddHeaderAndFooter(report, parametri) {
+
+    var pageHeader = report.getHeader();
+    pageHeader.addClass("header");
+    pageHeader.addText(parametri.reportHeader);
+    
+    report.getFooter().addText("Dati aggiornati al: " + Banana.Converter.toLocaleDateFormat(new Date()) + "    -    Pagina ");
+    report.getFooter().addFieldPageNr();
+} 
+
+
+
+
+
 
 function sortByName(a, b) {
     var texta = a.value("FamiliName") + "$" + a.value("FirstName") + "$" + a.value("MiddleName");
@@ -210,6 +251,9 @@ function sortByName(a, b) {
     return -1;
 }
 
+
+
+
 function sortByScheda(a, b) {
     if (Number(a.value("RowBelongTo")) > Number(b.value("RowBelongTo")))
         return 1;
@@ -220,5 +264,38 @@ function sortByScheda(a, b) {
     if (Number(a.value("RowId")) == Number(b.value("RowBelongTo")))
         return -1;
 	return sortByName( a, b);
-	
+}
+
+
+
+
+function createStyleSheet() {
+    
+    var stylesheet = Banana.Report.newStyleSheet();
+    var pageStyle = stylesheet.addStyle("@page");
+    
+    pageStyle.setAttribute("margin", "15mm 20mm 10mm 20mm");
+    pageStyle.setAttribute("size", "landscape");
+
+    stylesheet.addStyle("body", "font-family:Helvetica; font-size:10pt");
+    stylesheet.addStyle(".avoid-pb-after", "page-break-after:avoid");
+    stylesheet.addStyle(".avoid-pb-before", "page-break-before:avoid");
+    stylesheet.addStyle(".italic", "font-style:italic;");
+    stylesheet.addStyle(".center", "text-align:center");
+    stylesheet.addStyle(".bold", "font-weight:bold");
+
+    var titleStyle = stylesheet.addStyle(".header");
+    titleStyle.setAttribute("font-size", "13");
+    titleStyle.setAttribute("text-align", "center");
+    titleStyle.setAttribute("margin-bottom", "0.5em");
+
+    var headerTableStyle = stylesheet.addStyle(".headerTable");
+    headerTableStyle.setAttribute("background-color", "#E0E0E0");
+    headerTableStyle.setAttribute("color", "black");
+
+    var tableStyle = stylesheet.addStyle(".tableElenco");
+    tableStyle.setAttribute("width", "100%");
+    stylesheet.addStyle("table.tableElenco td", "border: thin solid black;");
+
+    return stylesheet;
 }
