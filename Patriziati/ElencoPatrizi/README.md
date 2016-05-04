@@ -14,3 +14,6 @@ Lo scopo dello script è quello di creare un elenco completo del registro dei fu
 
 ##Catalogo Patrizi - *catalogopatrizi.js*
 Lo script permette di creare un catalogo elettorale (persone con diritto di voto) e un catalogo completo (tutte le persone).
+
+##Elenco Completo Patrizi - *elencocompleto.js*
+Lo script permette di creare un elenco comprendente tutte le persone (con diritto di voto e non) dando la possibilità all'utente di inserire un titolo e di scegliere il tipo di ordinamento (per nome o per numero di scheda). 
