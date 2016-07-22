@@ -26,7 +26,7 @@
 
 
 
-var scriptVersion = "script v. 2015-04-27";
+var scriptVersion = "script v. 2016-07-22";
 var form = []; //used to store all the data taken from Banana document
 var mapCF = []; //map used to store CF's data (code/rows)
 var mapMember = []; //map used to store Member's data (code/rows)
@@ -42,6 +42,7 @@ function exec() {
 
 	//Clear old messages
 	Banana.document.clearMessages();
+	Banana.application.showMessages();
 	
 	//Function call to load all the values from Banana document
 	loadForm(Banana.document);
@@ -51,6 +52,9 @@ function exec() {
 
 	//Check if the user has inserted some values or blank
 	if (cardsToPrint || cardsToPrint === "") {
+
+		//Function call to check if a CF with the given card number exists
+		checkCF(Banana.document, form);
 
 		//Function call to create maps that contain CF/Members card codes and rows 
 		createMaps(form, cardsToPrint);
@@ -393,6 +397,27 @@ function getMembers(form, cardNumber) {
 }
 
 
+//The purpose of this function is to check if the CF exists.
+function checkCF(banDoc, form) {
+
+	var CFList = getCardCodeList(form).sort(function(a,b) { return a - b; });
+	var contactsTable = banDoc.table("Contacts");
+
+	for (var j = 0; j < contactsTable.rowCount; j++) {
+
+		var tRow = contactsTable.row(j);
+
+		if (!tRow.isEmpty) {
+			var scheda = tRow.value("RowBelongTo");
+			if (CFList.indexOf(scheda) < 0) {
+				tRow.addMessage("Numero scheda " + scheda + " inesistente o non è capofamiglia.");
+			}
+		}
+	}
+}
+
+
+
 //The purpose of this function is to return the list of codes used to create the report
 //It also checks if the cards selectet by the user exist
 function printChoice(form, cardsToCheck) {
@@ -434,7 +459,7 @@ function printChoice(form, cardsToCheck) {
 //The purpose of this function is to print a message for each code not found
 function addMessageCodesNotFound(banDoc) {
 	for (var i = 0; i < cfNotFound.length; i++) {
-		banDoc.addMessage("Scheda numero <" + cfNotFound[i] + "> inesistente.");
+		banDoc.addMessage("Scheda numero <" + cfNotFound[i] + "> inserito inesistente.");
 	}
 }
 
