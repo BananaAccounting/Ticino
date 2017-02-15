@@ -1,5 +1,5 @@
 #Patriziati
-Link alla [documentazione elenco patrizi] (https://doc8.banana.ch/it/node/7992) 
+Link alla [documentazione elenco patrizi] (https://www.banana.ch/it/contabilita-patriziati) 
 
 **Attenzione per scaricare i file bisogna**
 
