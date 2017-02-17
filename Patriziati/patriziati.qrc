@@ -1,0 +1,12 @@
+<!DOCTYPE RCC><RCC version="1.0">
+ <qresource>
+     <file>ElencoPatrizi/catalogopatrizi.js</file>
+     <file>Contabilita/consuntivopersubtotali.js</file>
+     <file>ElencoPatrizi/elencocompleto.js</file>
+     <file>Contabilita/estrattoconto.js</file>
+     <file>Contabilita/preventivopersubtotali.js</file>
+     <file>Contabilita/riassuntoconsuntivo.js</file>
+     <file>Contabilita/riassuntopreventivo.js</file>
+     <file>ElencoPatrizi/schedepatrizi.js</file>
+ </qresource>
+ </RCC>
