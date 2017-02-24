@@ -1,0 +1,7 @@
+<!DOCTYPE RCC><RCC version="1.0">
+ <qresource>
+    <file>catalogopatrizi.js</file>
+    <file>elencocompleto.js</file>
+    <file>schedepatrizi.js</file>
+ </qresource>
+ </RCC>
