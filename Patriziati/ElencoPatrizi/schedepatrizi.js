@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.app.patriziato.schedepatrizi
 // @api = 1.0
-// @pubdate = 2015-09-08
+// @pubdate = 2017-05-15
 // @publisher = Banana.ch SA
 // @description = Schede Patrizi
 // @task = app.command
@@ -255,6 +255,8 @@ function printCard(banDoc, form, mapCF, mapMember) {
 		
 		if (objectCf.MemberVote === "1") {
 			tableRow.addCell("Sì", "valueText alignCenter valueTextRight", 1);
+		} else {
+			tableRow.addCell("", "", 1);
 		}
 		
 		tableRow.addCell(objectCf.Paternity, "valueText valueTextRight", 1);
