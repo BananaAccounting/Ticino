@@ -43,11 +43,11 @@ function exec() {
 	texts = setTexts(lan);
 
 	//Show a dialog window and return the inserted text or undefined if the user clicked cancel
-	var textToSearch = Banana.Ui.getText(texts.dialogtxt1, texts.dialogtxt2, texts.dialogtxt3).trim();
+	var textToSearch = Banana.Ui.getText(texts.dialogtxt1, texts.dialogtxt2, texts.dialogtxt3);
 
 	//We seacrh the inserted text on each table of the accounting
 	if (textToSearch) {
-
+		textToSearch = textToSearch.trim();
 		Banana.application.showMessages(); //Next messages are showed to the user through the message dialog
 		isFound = false;
 
