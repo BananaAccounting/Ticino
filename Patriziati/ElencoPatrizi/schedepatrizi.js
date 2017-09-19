@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.app.patriziato.schedepatrizi
 // @api = 1.0
-// @pubdate = 2017-05-15
+// @pubdate = 2017-09-19
 // @publisher = Banana.ch SA
 // @description = Schede Patrizi
 // @task = app.command
@@ -26,7 +26,7 @@
 
 
 
-var scriptVersion = "script v. 2016-07-22";
+var scriptVersion = "script v. 2017-09-19";
 var form = []; //used to store all the data taken from Banana document
 var mapCF = []; //map used to store CF's data (code/rows)
 var mapMember = []; //map used to store Member's data (code/rows)
@@ -350,10 +350,10 @@ function printCard(banDoc, form, mapCF, mapMember) {
 		}
 
 		//We add the date of last saved
-		tableRow = table.addRow();
-		tableRow.addCell(" ", "valueTextTop", 11);
-		tableRow = table.addRow();
-		tableRow.addCell("Dati aggiornati al: " + Banana.Converter.toLocaleDateFormat(banDoc.info("Base", "DateLastSaved")), "valueText", 11);
+		// tableRow = table.addRow();
+		// tableRow.addCell(" ", "valueTextTop", 11);
+		// tableRow = table.addRow();
+		// tableRow.addCell("Dati aggiornati al: " + Banana.Converter.toLocaleDateFormat(banDoc.info("Base", "DateLastSaved")), "valueText", 11);
 
 		//Check if there are card codes used several times, then we add a warning message on the card page
 		if (mapCF[i].CFisUnique === "false") {
@@ -504,7 +504,7 @@ function getCardCodeList(form) {
 //The purpose of this function is to add a footer to the report
 function addFooter(banDoc, report) {
 	report.getFooter().addClass("footer");
-	report.getFooter().addText("Banana Contabilità 8", "footer");
+	report.getFooter().addText("Banana Contabilità, " + Banana.Converter.toLocaleDateFormat(new Date()), "footer");
 }
 
 

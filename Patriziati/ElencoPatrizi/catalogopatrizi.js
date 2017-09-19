@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.app.patriziato.catalogopatrizi
 // @api = 1.0
-// @pubdate = 2015-09-08
+// @pubdate = 2017-09-19
 // @publisher = Banana.ch SA
 // @description = Catalogo Patrizi
 // @task = app.command
@@ -26,7 +26,7 @@
 
 
 
-var scriptVersion = "script v. 2015-08-11";
+var scriptVersion = "script v. 2017-09-19";
 
 //Main function
 function exec() {
@@ -201,10 +201,6 @@ function printVotersCatalog(banDoc, form, catalogHeader) {
 		}
 	}
 
-	var date = new Date();
-	report.addParagraph(" ");
-	report.addParagraph("Data di stampa: " + Banana.Converter.toLocaleDateFormat(date));	
-
 	//Add the footer to the report
 	addFooter(banDoc, report);
 
@@ -347,8 +343,9 @@ function sortByRowBelongTo(a, b) {
 
 //The purpose of this function is to add a footer to the report
 function addFooter(banDoc, report) {
+	var date = new Date();
 	report.getFooter().addClass("footer");
-	report.getFooter().addText("Banana Accounting, v. " + banDoc.info("Base", "ProgramVersion") + ", " + scriptVersion, "footer");
+	report.getFooter().addText("Banana Contabilità, " + Banana.Converter.toLocaleDateFormat(date), "footer");
 }
 
 

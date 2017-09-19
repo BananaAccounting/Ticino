@@ -2,7 +2,7 @@
 //
 // @id = ch.banana.app.patriziato.elencocompleto
 // @api = 1.0
-// @pubdate = 2016-04-29
+// @pubdate = 2017-09-19
 // @publisher = Banana.ch SA
 // @description = Elenco completo Patrizi
 // @task = app.command
@@ -227,12 +227,12 @@ function exec(string) {
 
 
 function AddHeaderAndFooter(report, parametri) {
-
     var pageHeader = report.getHeader();
     pageHeader.addClass("header");
     pageHeader.addText(parametri.reportHeader);
     
-    report.getFooter().addText("Dati aggiornati al: " + Banana.Converter.toLocaleDateFormat(new Date()) + "    -    Pagina ");
+    report.getFooter().addClass("footer");
+    report.getFooter().addText("Banana Contabilità, " + Banana.Converter.toLocaleDateFormat(new Date()) + " - Pagina ", "footer");
     report.getFooter().addFieldPageNr();
 } 
 
@@ -288,6 +288,12 @@ function createStyleSheet() {
     titleStyle.setAttribute("font-size", "13");
     titleStyle.setAttribute("text-align", "center");
     titleStyle.setAttribute("margin-bottom", "0.5em");
+
+    //Footer
+    var style = stylesheet.addStyle(".footer");
+    style.setAttribute("text-align", "right");
+    style.setAttribute("font-size", "8px");
+    style.setAttribute("font", "Times New Roman");
 
     var headerTableStyle = stylesheet.addStyle(".headerTable");
     headerTableStyle.setAttribute("background-color", "#E0E0E0");

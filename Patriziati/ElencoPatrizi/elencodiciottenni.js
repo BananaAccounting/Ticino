@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.app.patriziato.elencodiciottenni
 // @api = 1.0
-// @pubdate = 2017-06-26
+// @pubdate = 2017-09-19
 // @publisher = Banana.ch SA
 // @description = Elenco diciottenni
 // @task = app.command
@@ -31,8 +31,6 @@
 
 
 
-
-var scriptVersion = "script v. 2017-08-04";
 var form = []; //used to store all the data taken from Banana document
 
 
@@ -244,7 +242,7 @@ function getValue(source, cardCode, field) {
 //The purpose of this function is to add a footer to the report
 function addFooter(banDoc, report) {
 	report.getFooter().addClass("footer");
-	report.getFooter().addText("Banana Contabilità 8 - Pagina ", "footer");
+	report.getFooter().addText("Banana Contabilità, " + Banana.Converter.toLocaleDateFormat(new Date()) + " - Pagina ", "footer");
 	report.getFooter().addFieldPageNr();
 }
 
