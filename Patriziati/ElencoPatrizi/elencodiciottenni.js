@@ -242,7 +242,7 @@ function getValue(source, cardCode, field) {
 //The purpose of this function is to add a footer to the report
 function addFooter(banDoc, report) {
 	report.getFooter().addClass("footer");
-	report.getFooter().addText("Banana Contabilità, " + Banana.Converter.toLocaleDateFormat(new Date()) + " - Pagina ", "footer");
+	report.getFooter().addText("Banana Contabilità - Pagina ", "footer");
 	report.getFooter().addFieldPageNr();
 }
 

@@ -345,7 +345,7 @@ function sortByRowBelongTo(a, b) {
 function addFooter(banDoc, report) {
 	var date = new Date();
 	report.getFooter().addClass("footer");
-	report.getFooter().addText("Banana Contabilità, " + Banana.Converter.toLocaleDateFormat(date), "footer");
+	report.getFooter().addText("Banana Contabilità", "footer");
 }
 
 

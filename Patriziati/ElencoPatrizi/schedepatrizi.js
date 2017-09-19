@@ -504,7 +504,7 @@ function getCardCodeList(form) {
 //The purpose of this function is to add a footer to the report
 function addFooter(banDoc, report) {
 	report.getFooter().addClass("footer");
-	report.getFooter().addText("Banana Contabilità, " + Banana.Converter.toLocaleDateFormat(new Date()), "footer");
+	report.getFooter().addText("Banana Contabilità", "footer");
 }
 
 

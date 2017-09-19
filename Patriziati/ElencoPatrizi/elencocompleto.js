@@ -232,7 +232,7 @@ function AddHeaderAndFooter(report, parametri) {
     pageHeader.addText(parametri.reportHeader);
     
     report.getFooter().addClass("footer");
-    report.getFooter().addText("Banana Contabilità, " + Banana.Converter.toLocaleDateFormat(new Date()) + " - Pagina ", "footer");
+    report.getFooter().addText("Banana Contabilità - Pagina ", "footer");
     report.getFooter().addFieldPageNr();
 } 
 
