@@ -2,7 +2,7 @@
 //
 // @id = ch.banana.app.patriziato.elencocompleto
 // @api = 1.0
-// @pubdate = 2017-09-19
+// @pubdate = 2018-04-04
 // @publisher = Banana.ch SA
 // @description = Elenco completo Patrizi
 // @task = app.command
@@ -242,8 +242,8 @@ function AddHeaderAndFooter(report, parametri) {
 
 
 function sortByName(a, b) {
-    var texta = a.value("FamiliName") + "$" + a.value("FirstName") + "$" + a.value("MiddleName");
-    var textb = b.value("FamiliName") + "$" + b.value("FirstName") + "$" + b.value("MiddleName");
+    var texta = a.value("FamilyName") + "$" + a.value("FirstName") + "$" + a.value("MiddleName");
+    var textb = b.value("FamilyName") + "$" + b.value("FirstName") + "$" + b.value("MiddleName");
     if (texta > textb)
         return 1;
     else if (texta == textb)
