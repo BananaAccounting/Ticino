@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.app.patriziato.catalogopatrizi
 // @api = 1.0
-// @pubdate = 2017-09-19
+// @pubdate = 2018-04-09
 // @publisher = Banana.ch SA
 // @description = Catalogo Patrizi
 // @task = app.command
@@ -24,9 +24,6 @@
 // @inputdatasource = none
 // @timeout = -1
 
-
-
-var scriptVersion = "script v. 2017-09-19";
 
 //Main function
 function exec() {
@@ -44,16 +41,20 @@ function exec() {
 	var catalogSorting = Banana.Ui.getItem("Ordinamento", "Selezionare un tipo di ordinamento", ["Ordina per cognome","Ordina per scheda"], 2, false);
 	var catalogHeader = Banana.Ui.getText("Stampa catalogo", "Intestazione stampa:", "Patriziato di esempio - Catalogo elettorale");
 
-	//Function call to load all the values from Banana document
-	var form = loadForm(Banana.document, catalogSorting);
+	var parametri = {};
+	parametri.catalogSorting = catalogSorting;
+	parametri.catalogHeader = catalogHeader;
 
 	if (catalogToPrint === "Catalogo elettorale") { //Create the catalog of the voters
-		var report = printVotersCatalog(Banana.document, form, catalogHeader);
+		var report = printVotersCatalog(Banana.document, parametri);
 	} else if (catalogToPrint === "Catalogo completo") { //Create the full catalog
-		var report = printFullCatalog(Banana.document, form, catalogHeader);
+		var report = printFullCatalog(Banana.document, parametri);
 	} else { //User clicked cancel
 		return;
 	}
+
+	//Add the footer to the report
+	addFooter(Banana.document, report);
 
 	//Print the report
 	var stylesheet = createStyleSheet();
@@ -62,13 +63,16 @@ function exec() {
 
 
 //The purpose of this function is to print the full list of the contacts
-function printFullCatalog(banDoc, form, catalogHeader) {
+function printFullCatalog(banDoc, parametri) {
+
+	//Function call to load all the values from Banana document
+	var form = loadForm(banDoc, parametri.catalogSorting);
 
 	var report = Banana.Report.newReport("Catalogo completo");
 
 	// report.addParagraph(banDoc.info("AccountingDataBase", "Company"), "heading1 bold");
 	// report.addParagraph("Catalogo completo", "heading2");
-	report.addParagraph(catalogHeader, "heading1 bold");
+	report.addParagraph(parametri.catalogHeader, "heading1 bold");
 	report.addParagraph(" ");
 
 	//Table with all contacts data
@@ -130,21 +134,21 @@ function printFullCatalog(banDoc, form, catalogHeader) {
 	report.addParagraph(" ");
 	report.addParagraph("Data di stampa: " + Banana.Converter.toLocaleDateFormat(date));	
 
-	//Add the footer to the report
-	addFooter(banDoc, report);
-
 	return report;
 }
 
 
 //The purpose of this function is to print only the voters list 
-function printVotersCatalog(banDoc, form, catalogHeader) {
+function printVotersCatalog(banDoc, parametri) {
+
+	//Function call to load all the values from Banana document
+	var form = loadForm(banDoc, parametri.catalogSorting);
 
 	var report = Banana.Report.newReport("Catalogo elettorale");
 
 	// report.addParagraph(banDoc.info("AccountingDataBase", "Company"), "heading1 bold");
 	// report.addParagraph("Catalogo elettorale", "heading2");
-	report.addParagraph(catalogHeader, "heading1 bold");
+	report.addParagraph(parametri.catalogHeader, "heading1 bold");
 	report.addParagraph(" ");
 
 	//Table with all contacts data
@@ -200,9 +204,6 @@ function printVotersCatalog(banDoc, form, catalogHeader) {
 			//tableRow.addCell(form[i]["Notes"], "alignLeft valueText", 1);
 		}
 	}
-
-	//Add the footer to the report
-	addFooter(banDoc, report);
 
 	return report;
 }

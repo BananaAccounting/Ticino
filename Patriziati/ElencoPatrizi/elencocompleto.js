@@ -2,7 +2,7 @@
 //
 // @id = ch.banana.app.patriziato.elencocompleto
 // @api = 1.0
-// @pubdate = 2018-04-04
+// @pubdate = 2018-04-09
 // @publisher = Banana.ch SA
 // @description = Elenco completo Patrizi
 // @task = app.command
@@ -25,9 +25,11 @@ function exec(string) {
     if (addresses === "undefined") {
         return;
     }
+    parametri.addresses = addresses;
     
     //Selezione del tipo di ordinamento
     var itemSelected = Banana.Ui.getItem('Stampa elenco', 'Tipo di ordinamento:', ['Ordina per nome','Ordina per scheda'], 0, false);
+    parametri.itemSelected = itemSelected;
 
     //Titolo del report
     var reportHeader = Banana.Ui.getText("Stampa elenco", "Intestazione stampa:", parametri.reportHeader);
@@ -36,24 +38,35 @@ function exec(string) {
     }
     parametri.reportHeader = reportHeader;
 
-    //Creazione report   
-    var report = Banana.Report.newReport(reportHeader);
-    
+    //Stampa report
+    var report = printReport(parametri);
 
+    //Aggiunge header e footer
+    AddHeaderAndFooter(report, parametri);
+    
+    //Aggiunge stile e stampa il report
+    var stylesheet = createStyleSheet();
+    Banana.Report.preview(report, stylesheet);
+}
+
+function printReport(parametri) {
+
+    //Creazione report   
+    var report = Banana.Report.newReport(parametri.reportHeader);
+    
     //Righe indirizzi
     var adressesRows;
-    adressesRows = addresses.findRows(function (row) { return (!row.isEmpty) });
+    adressesRows = parametri.addresses.findRows(function (row) { return (!row.isEmpty) });
 
-    if (itemSelected === "Ordina per nome") {
+    //Ordina righe tabella
+    if (parametri.itemSelected === "Ordina per nome") {
         adressesRows = adressesRows.sort(function (a, b) { return sortByName(a, b) });
     }
-    else if (itemSelected === "Ordina per scheda") {
+    else if (parametri.itemSelected === "Ordina per scheda") {
         adressesRows = adressesRows.sort(sortByScheda);
     }
 
-
     //************ INIZIO CREAZIONE DEL REPORT ************//
-
     var text;
     var cellReport;
     var tableReport = report.addTable("tableElenco");
@@ -84,8 +97,6 @@ function exec(string) {
     cellReport.addParagraph("Decesso", "italic");
     
     tableHeaderRow.addCell("Voto", "headerTable bold center");
-    
-    
 
     /* 
         Dati tabella 
@@ -114,7 +125,7 @@ function exec(string) {
         cellReport = rowReport.addCell(text, "");
         
         //Controlliamo il page-break
-        if (itemSelected === "Ordina per scheda") {
+        if (parametri.itemSelected === "Ordina per scheda") {
             
             //Raggruppiamo assieme quelli che hanno il numero scheda uguale
             if ( i < adressesRows.length -1 && currentRow.value("RowBelongTo") == adressesRows[i+1].value("RowBelongTo")) {
@@ -126,7 +137,6 @@ function exec(string) {
                 rowReport.addClass("avoid-pb-before");
                 cellReport.addClass("bold");
             }
-
         }
 
         /****************** 
@@ -146,7 +156,6 @@ function exec(string) {
             cellReport.addLineBreak();
             cellReport.addParagraph(currentRow.value("NamePrefix"), "italic");
         }
-
 
         /************* 
             Paternità 
@@ -214,32 +223,17 @@ function exec(string) {
         rowReport.addCell(text, "center");
     }
 
-    //Add header and footer
-    AddHeaderAndFooter(report, parametri);
-    
-    //Aggiunge stile e stampa il report
-    var stylesheet = createStyleSheet();
-    Banana.Report.preview(report, stylesheet);
+    return report;
 }
-
-
-
-
 
 function AddHeaderAndFooter(report, parametri) {
     var pageHeader = report.getHeader();
     pageHeader.addClass("header");
     pageHeader.addText(parametri.reportHeader);
-    
     report.getFooter().addClass("footer");
     report.getFooter().addText("Banana Contabilità - Pagina ", "footer");
     report.getFooter().addFieldPageNr();
 } 
-
-
-
-
-
 
 function sortByName(a, b) {
     var texta = a.value("FamilyName") + "$" + a.value("FirstName") + "$" + a.value("MiddleName");
@@ -250,9 +244,6 @@ function sortByName(a, b) {
         return 0;
     return -1;
 }
-
-
-
 
 function sortByScheda(a, b) {
     if (Number(a.value("RowBelongTo")) > Number(b.value("RowBelongTo")))
@@ -265,9 +256,6 @@ function sortByScheda(a, b) {
         return -1;
 	return sortByName( a, b);
 }
-
-
-
 
 function createStyleSheet() {
     

@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.app.patriziato.elencodiciottenni
 // @api = 1.0
-// @pubdate = 2017-09-19
+// @pubdate = 2018-04-09
 // @publisher = Banana.ch SA
 // @description = Elenco diciottenni
 // @task = app.command
@@ -44,15 +44,15 @@ function exec() {
 	//Clear old messages
 	Banana.document.clearMessages();
 	Banana.application.showMessages();
-	
-	//Function call to load all the values from Banana document
-	loadForm(Banana.document);
-	
+		
 	//Show the user a dialog asking to insert a text. Return the inserted text or undefined if the user clicked cancel
 	var year = Banana.Ui.getText("Elenco diciottenni", "Stampa elenco diciottenni per l'anno...", "");
 	if (year && year !== "") {
 		//Function call to create the report that contain all the cards selected
-		var report = printCard(Banana.document, form, year);
+		var report = printCard(Banana.document, year);
+
+		/* FOOTER */
+		addFooter(Banana.document, report);
 
 		//Print the report
 		var stylesheet = create_styleSheet();
@@ -123,7 +123,10 @@ function loadForm(banDoc) {
 
 
 //The purpose of this function is to print the report
-function printCard(banDoc, form, year) {
+function printCard(banDoc, year) {
+
+	//Function call to load all the values from Banana document
+	loadForm(banDoc);
 
 	var report = Banana.Report.newReport("Elenco diciottenni");
 	var diciottenniTrovati = false;
@@ -202,9 +205,6 @@ function printCard(banDoc, form, year) {
 		tableRow.addCell("-", "", 1);
 		tableRow.addCell("-", "", 1);
 	}
-
-	/* FOOTER */
-	addFooter(banDoc, report);
 
 	return report;	
 }
