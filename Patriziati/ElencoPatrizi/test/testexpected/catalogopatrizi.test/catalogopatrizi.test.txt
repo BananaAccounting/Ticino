@@ -85,7 +85,7 @@ Id  & Scheda  & Nome  & Cognome  & Via  & CAP  & Località  & Nazione  & Paterni
 12  & 6  & Monica  & Simoni  & V. Campagnola 7  & 6928  & Manno  &  &  & 25.09.1965  & Sì  & nata Alberti \\
 \end{tabular}\\
   \\
-Data di stampa: 09.04.2018 \\
+Data di stampa: 10.04.2018 \\
 \end{reportvalue}
 \subsection{Test 4: Catalogo completo}
 \begin{reportvalue}{Test 4}
@@ -109,7 +109,7 @@ Id  & Scheda  & Nome  & Cognome  & Via  & CAP  & Località  & Nazione  & Paterni
 22  & 22  & Gualtiero  & Bernasconi  & V. Strada 35  & 6900  & Lugano  &  &  & 02.10.1957  & Sì  & \\
 \end{tabular}\\
   \\
-Data di stampa: 09.04.2018 \\
+Data di stampa: 10.04.2018 \\
 \end{reportvalue}
 \keyvalue{Result}{Passed}
 \end{test}

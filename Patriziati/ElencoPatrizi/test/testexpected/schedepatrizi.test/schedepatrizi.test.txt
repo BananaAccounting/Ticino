@@ -1,0 +1,167 @@
+%%info_test_name{schedepatrizi.test}
+\documentclass{report}
+\usepackage{color}
+\usepackage{adjustbox}
+\usepackage{listings}
+\usepackage[margin=1cm]{geometry}
+\begin{document}
+\newenvironment{tablevalue}[2]{\textbf{Table: #1}\\\begin{adjustbox}{max width=\textwidth}\tabular{#2}}{\endtabular\end{adjustbox}\\}
+\newenvironment{reportvalue}[1]{\textbf{Report: #1}\\}{\\}
+\lstnewenvironment{jsonvalue}[1]{\textbf{Json: #1}\lstset{language=Java}}{}
+\lstnewenvironment{xmlvalue}[1]{\textbf{Xml: #1}\lstset{language=Xml}}{}
+\newcommand{\info}[2]{\textit{#1: #2}\\}
+\newcommand{\fatalerror}[1]{\textbf{\textcolor[rgb]{1,0,0}{Fatal error: #1}}\\}
+\newcommand{\keyvalue}[2]{\textbf{Keyvalue: #1} #2\\}
+\newcommand{\textvalue}[1]{#1\\}
+\newcommand{\excltest}[1]{\\Excluded from compare: #1}
+\newenvironment{testcase}[1]{\section*{Test: #1}}{\newpage}
+\newenvironment{test}[1]{\section*{Test case: #1}}{}
+%Begin test data
+%%SCRIPT{/Users/ivan/Documents/GitHub/Ticino/Patriziati/ElencoPatrizi/test/schedepatrizi.test.js}
+%
+\begin{testcase}{ReportSchedePatrizi}
+\begin{test}{testReport}
+%Test ch.banana.app.patriziato.schedepatrizi.js
+\section{Test Schede Patrizi}
+\subsection{Report Schede Patrizi (tutte le pagine)}
+\begin{reportvalue}{Test}
+\begin{tabular}{ l  l  l  l  l  l  l  l }
+\multicolumn{8}{l}{Patriziato di Esempio }\\
+\multicolumn{8}{l}{Registro dei fuochi, dei patrizi e dei votanti }\\
+\multicolumn{8}{l}{}\\
+\multicolumn{2}{l}{Scheda n.  } & 1 \\
+\multicolumn{2}{l}{Scheda antecedente n.  } &  -  \\
+\multicolumn{8}{l}{  }\\
+\multicolumn{8}{l}{Cognome }\\
+\multicolumn{8}{l}{Alberti }\\
+\multicolumn{8}{l}{Rappresentante del fuoco }\\
+Id  & Nome  & Data di nascita  & Indirizzo - Domicilio  & Succ.  & Osservazioni  & Voto  & Paternità \\
+1  & Marco Gianni  & 16.03.1927  & V. Campuréta 40, 6883 Novazzano  &    &  & Sì  & \\
+\multicolumn{8}{l}{Altri membri del fuoco }\\
+Id  & Nome  & Data di nascita  & Indirizzo - Domicilio  & Succ.  & Osservazioni  & Voto  & Paternità \\
+-  & -  & -  &    & -  & -  & -  & - \\
+\\
+\\
+\multicolumn{8}{l}{Patriziato di Esempio }\\
+\multicolumn{8}{l}{Registro dei fuochi, dei patrizi e dei votanti }\\
+\multicolumn{8}{l}{}\\
+\multicolumn{2}{l}{Scheda n.  } & 2 \\
+\multicolumn{2}{l}{Scheda antecedente n.  } &  -  \\
+\multicolumn{8}{l}{  }\\
+\multicolumn{8}{l}{Cognome }\\
+\multicolumn{8}{l}{Lanfranchi }\\
+\multicolumn{8}{l}{Rappresentante del fuoco }\\
+Id  & Nome  & Data di nascita  & Indirizzo - Domicilio  & Succ.  & Osservazioni  & Voto  & Paternità \\
+2  & Luciano   & 27.05.1947  & V. Meggiagra 3, 6599 Robasacco  &    &  & Sì  & fu Lucindo n 1917 \\
+\multicolumn{8}{l}{Altri membri del fuoco }\\
+Id  & Nome  & Data di nascita  & Indirizzo - Domicilio  & Succ.  & Osservazioni  & Voto  & Paternità \\
+8  & Susanna Maria Teresa  & 18.09.1951  & V.Meggiagra 3, 6599 Robasacco  &    & nata Tami  & Sì  & \\
+\\
+\\
+\multicolumn{8}{l}{Patriziato di Esempio }\\
+\multicolumn{8}{l}{Registro dei fuochi, dei patrizi e dei votanti }\\
+\multicolumn{8}{l}{}\\
+\multicolumn{2}{l}{Scheda n.  } & 3 \\
+\multicolumn{2}{l}{Scheda antecedente n.  } &  -  \\
+\multicolumn{8}{l}{  }\\
+\multicolumn{8}{l}{Cognome }\\
+\multicolumn{8}{l}{Luiselli }\\
+\multicolumn{8}{l}{Rappresentante del fuoco }\\
+Id  & Nome  & Data di nascita  & Indirizzo - Domicilio  & Succ.  & Osservazioni  & Voto  & Paternità \\
+3  & Andrea   & 23.04.1964  & V. Mola 9, 6500 Bellinzona  &    &  & Sì  & \\
+\multicolumn{8}{l}{Decesso: 02.05.2015, Archiviato: 2015-05-19 Decesso }\\
+\multicolumn{8}{l}{Altri membri del fuoco }\\
+Id  & Nome  & Data di nascita  & Indirizzo - Domicilio  & Succ.  & Osservazioni  & Voto  & Paternità \\
+-  & -  & -  &    & -  & -  & -  & - \\
+\\
+\\
+\multicolumn{8}{l}{Patriziato di Esempio }\\
+\multicolumn{8}{l}{Registro dei fuochi, dei patrizi e dei votanti }\\
+\multicolumn{8}{l}{}\\
+\multicolumn{2}{l}{Scheda n.  } & 4 \\
+\multicolumn{2}{l}{Scheda antecedente n.  } &  -  \\
+\multicolumn{8}{l}{  }\\
+\multicolumn{8}{l}{Cognome }\\
+\multicolumn{8}{l}{Neri }\\
+\multicolumn{8}{l}{Rappresentante del fuoco }\\
+Id  & Nome  & Data di nascita  & Indirizzo - Domicilio  & Succ.  & Osservazioni  & Voto  & Paternità \\
+4  & Giacomo Roberto  & 10.08.1961  & V. Valaa 44, 6594 Contone  &    &  & Sì  & \\
+\multicolumn{8}{l}{Altri membri del fuoco }\\
+Id  & Nome  & Data di nascita  & Indirizzo - Domicilio  & Succ.  & Osservazioni  & Voto  & Paternità \\
+13  & Catia  Bianchi  &  & V. Moretto 3, 6944 Cureglia  &    &  & No  & \\
+\multicolumn{8}{l}{Errore: numero di scheda <4> utilizzato più volte. }\\
+\\
+\\
+\multicolumn{8}{l}{Patriziato di Esempio }\\
+\multicolumn{8}{l}{Registro dei fuochi, dei patrizi e dei votanti }\\
+\multicolumn{8}{l}{}\\
+\multicolumn{2}{l}{Scheda n.  } & 4 \\
+\multicolumn{2}{l}{Scheda antecedente n.  } &  -  \\
+\multicolumn{8}{l}{  }\\
+\multicolumn{8}{l}{Cognome }\\
+\multicolumn{8}{l}{Bianchi }\\
+\multicolumn{8}{l}{Rappresentante del fuoco }\\
+Id  & Nome  & Data di nascita  & Indirizzo - Domicilio  & Succ.  & Osservazioni  & Voto  & Paternità \\
+4  & Mario   & 05.10.1960  & V. Moretto 3, 6944 Cureglia  &    & movpop non trovata 2012  & Sì  & \\
+\multicolumn{8}{l}{Altri membri del fuoco }\\
+Id  & Nome  & Data di nascita  & Indirizzo - Domicilio  & Succ.  & Osservazioni  & Voto  & Paternità \\
+13  & Catia   &  & V. Moretto 3, 6944 Cureglia  &    &  & No  & \\
+\multicolumn{8}{l}{Errore: numero di scheda <4> utilizzato più volte. }\\
+\\
+\\
+\multicolumn{8}{l}{Patriziato di Esempio }\\
+\multicolumn{8}{l}{Registro dei fuochi, dei patrizi e dei votanti }\\
+\multicolumn{8}{l}{}\\
+\multicolumn{2}{l}{Scheda n.  } & 5 \\
+\multicolumn{2}{l}{Scheda antecedente n.  } &  -  \\
+\multicolumn{8}{l}{  }\\
+\multicolumn{8}{l}{Cognome }\\
+\multicolumn{8}{l}{Rossi }\\
+\multicolumn{8}{l}{Rappresentante del fuoco }\\
+Id  & Nome  & Data di nascita  & Indirizzo - Domicilio  & Succ.  & Osservazioni  & Voto  & Paternità \\
+5  & Renato   & 30.05.1952  & V. Cappelletta 6, 6929 Gravesano  &    &  & Sì  & fu Elio L. n 1929 \\
+\multicolumn{8}{l}{Altri membri del fuoco }\\
+Id  & Nome  & Data di nascita  & Indirizzo - Domicilio  & Succ.  & Osservazioni  & Voto  & Paternità \\
+9  & Angelina   & 19.11.1952  & V. Cappelletta 6, 6929 Gravesano  &    & nata Gianossi  & Sì  & \\
+\multicolumn{8}{l}{Decesso: 02.05.2015, Archiviato: 2015-05-20 Decesso }\\
+11  & Giulia Sara Rossi-Bianchi  & 01.02.1984  & V.Storni, 6802 Rivera  &    &  & Sì  & di Renato  n.1952 \\
+\multicolumn{8}{l}{Archiviato: 19.05.2015 Partito }\\
+10  & Maria   & 14.08.1997  & V. Cappelletta 6, 6929 Gravesano  &    &  & No  & di Renato  n.1952 \\
+\\
+\\
+\multicolumn{8}{l}{Patriziato di Esempio }\\
+\multicolumn{8}{l}{Registro dei fuochi, dei patrizi e dei votanti }\\
+\multicolumn{8}{l}{}\\
+\multicolumn{2}{l}{Scheda n.  } & 6 \\
+\multicolumn{2}{l}{Scheda antecedente n.  } & 1 \\
+\multicolumn{8}{l}{  }\\
+\multicolumn{8}{l}{Cognome }\\
+\multicolumn{8}{l}{Simoni }\\
+\multicolumn{8}{l}{Rappresentante del fuoco }\\
+Id  & Nome  & Data di nascita  & Indirizzo - Domicilio  & Succ.  & Osservazioni  & Voto  & Paternità \\
+6  & Germano   & 23.06.1964  & V. Campagnola 7, 6928 Manno  &    &  & Sì  & \\
+\multicolumn{8}{l}{Altri membri del fuoco }\\
+Id  & Nome  & Data di nascita  & Indirizzo - Domicilio  & Succ.  & Osservazioni  & Voto  & Paternità \\
+12  & Monica   & 25.09.1965  & V. Campagnola 7, 6928 Manno  &    & nata Alberti  & Sì  & \\
+\\
+\\
+\multicolumn{8}{l}{Patriziato di Esempio }\\
+\multicolumn{8}{l}{Registro dei fuochi, dei patrizi e dei votanti }\\
+\multicolumn{8}{l}{}\\
+\multicolumn{2}{l}{Scheda n.  } & 22 \\
+\multicolumn{2}{l}{Scheda antecedente n.  } &  -  \\
+\multicolumn{8}{l}{  }\\
+\multicolumn{8}{l}{Cognome }\\
+\multicolumn{8}{l}{Bernasconi }\\
+\multicolumn{8}{l}{Rappresentante del fuoco }\\
+Id  & Nome  & Data di nascita  & Indirizzo - Domicilio  & Succ.  & Osservazioni  & Voto  & Paternità \\
+22  & Gualtiero   & 02.10.1957  & V. Strada 35, 6900 Lugano  &    &  & Sì  & \\
+\multicolumn{8}{l}{Altri membri del fuoco }\\
+Id  & Nome  & Data di nascita  & Indirizzo - Domicilio  & Succ.  & Osservazioni  & Voto  & Paternità \\
+-  & -  & -  &    & -  & -  & -  & - \\
+\end{tabular}\\
+Banana Contabilità \end{reportvalue}
+\keyvalue{Result}{Passed}
+\end{test}
+\end{testcase}
+\end{document}
