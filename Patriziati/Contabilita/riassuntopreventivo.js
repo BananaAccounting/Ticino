@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.app.patriziato.riassuntopreventivo
 // @api = 1.0
-// @pubdate = 2015-09-08
+// @pubdate = 2018-04-13
 // @publisher = Banana.ch SA
 // @description = Riassunto del preventivo
 // @task = app.command
@@ -168,17 +168,27 @@ function create_report(banDoc, startDate, endDate, isTest) {
 
    // Previous year document
    var banDocPrev = null;
-   var banDocPrevFileName = banDoc.info("AccountingDataBase","FileNamePreviousYear");
-   if (banDocPrevFileName.length > 0) {
-      banDocPrev = Banana.application.openDocument(banDocPrevFileName);
+   if (banDoc) {
+      if (typeof(banDoc.previousYear) === 'function') {
+         banDocPrev = banDoc.previousYear();
+      } else {
+         var banDocPrevFileName = banDoc.info("AccountingDataBase","FileNamePreviousYear");
+         if (banDocPrevFileName.length > 0) {
+            banDocPrev = Banana.application.openDocument(banDocPrevFileName);
+         }
+      }
    }
 
    // Previous 2 year document
    var banDocPrev2 = null;
    if (banDocPrev) {
-      var banDocPrev2FileName = banDocPrev.info("AccountingDataBase","FileNamePreviousYear");
-      if (banDocPrev2FileName.length > 0) {
-         banDocPrev2 = Banana.application.openDocument(banDocPrev2FileName);
+      if (typeof(banDocPrev.previousYear) === 'function') {
+         banDocPrev2 = banDocPrev.previousYear();
+      } else {
+         var banDocPrev2FileName = banDocPrev.info("AccountingDataBase","FileNamePreviousYear");
+         if (banDocPrev2FileName.length > 0) {
+            banDocPrev2 = Banana.application.openDocument(banDocPrev2FileName);
+         }
       }
    }
 

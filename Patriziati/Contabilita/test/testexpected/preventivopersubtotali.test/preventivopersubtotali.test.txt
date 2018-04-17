@@ -1,0 +1,80 @@
+%%info_test_name{preventivopersubtotali.test}
+\documentclass{report}
+\usepackage{longtable}
+\usepackage{color}
+\usepackage{listings}
+\usepackage[margin=1cm]{geometry}
+\begin{document}
+\newenvironment{tablevalue}[2]{\textbf{Table: #1}\begin{longtable}[l]{#2}}{\end{longtable}}
+\newenvironment{reportvalue}[1]{\textbf{Report: #1}\\}{}
+\lstnewenvironment{jsonvalue}[1]{\textbf{Json: #1}\lstset{language=Java}}{}
+\lstnewenvironment{xmlvalue}[1]{\textbf{Xml: #1}\lstset{language=Xml}}{}
+\newcommand{\info}[2]{\textit{#1: #2}\\}
+\newcommand{\fatalerror}[1]{\textbf{\textcolor[rgb]{1,0,0}{Fatal error: #1}}\\}
+\newcommand{\keyvalue}[2]{\textbf{Keyvalue: #1} #2\\}
+\newcommand{\textvalue}[1]{#1\\}
+\newcommand{\excltest}[1]{\\Excluded from compare: #1}
+\newcommand{\lognewpage}{\newpage}
+\newenvironment{testcase}[1]{\section*{Test: #1}}{\newpage}
+\newenvironment{test}[1]{\section*{Test case: #1}}{}
+%Begin test data
+%%SCRIPT{/Users/lorenzo/Programmazione/GitHub/BananaAccounting/Ticino/Patriziati/Contabilita/test/preventivopersubtotali.test.js}
+%
+\begin{testcase}{TestPreventivoPerSubtotali}
+\begin{test}{testReport}
+\begin{reportvalue}{Report}
+Patriziato di XYZ \\
+Preventivo per subtotali 2017 \\
+\begin{longtable}[l]{ l  l  l  l  l }
+ &  & Preventivo  & Preventivo  & Consuntivo \\
+ &  & 2017  & 2016  & 2015 \\
+ & CONTO ECONOMICO  &  &  & \\
+ & SPESE  &  &  & \\
+30  & SPESE PER IL PERSONALE  & 980.00  & 1'160.00  & 890.00 \\
+31  & SPESE PER BENI E SERVIZI E ALTRE SPESE D'ESERCIZIO  & 4'526.00  & 6'426.00  & 4'740.47 \\
+33  & AMMORTAMENTI  & 11'283.26  & 9'000.00  & 14'760.17 \\
+34  & SPESE FINANZIARIE  & 14'177.70  & 15'254.70  & 10'010.55 \\
+35  & VERSAMENTI A FONDI E LEGATI  & 0.00  & 0.00  & 0.00 \\
+36  & SPESE DI TRASFERIMENTO  & 850.00  & 1'050.00  & 736.50 \\
+37  & RIVERSAMENTO CONTRIBUTI DA TERZI  & 0.00  & 0.00  & 0.00 \\
+38  & SPESE STRAORDINARIE  & 6'000.00  & 6'000.00  & 2'000.00 \\
+39  & ADDEBITI INTERNI PER SPESE E CONTRIBUTI CORRENTI  & 0.00  & 0.00  & 6'362.45 \\
+3  & SPESE  & 37'816.96  & 38'890.70  & 39'500.14 \\
+ &  &  &  & \\
+ & RICAVI  &  &  & \\
+40  & IMPOSTA PARZIALE  & 0.00  & 0.00  & 0.00 \\
+42  & RICAVI PER TASSE  & 0.00  & 0.00  & 0.00 \\
+43  & DIVERSI RICAVI  & 0.00  & 0.00  & 0.00 \\
+44  & RICAVI FINANZIARI  & 43'072.00  & 43'072.00  & 37'253.25 \\
+45  & PRELIEVI DA FONDI E LEGATI  & 0.00  & 0.00  & 0.00 \\
+47  & CONTRIBUTI DA TERZI DA RIVERSARE  & 0.00  & 0.00  & 0.00 \\
+49  & ACCREDITI INTERNI PER SPESE E CONTRIBUTI  & 0.00  & 0.00  & 6'362.45 \\
+4  & RICAVI  & 43'072.00  & 43'072.00  & 43'615.70 \\
+ &  &  &  & \\
+ & TOTALE SPESE  & 37'816.96  & 38'890.70  & 39'500.14 \\
+ & TOTALE RICAVI  & 43'072.00  & 43'072.00  & 43'615.70 \\
+ & SALDO  & 5'255.04  & 4'181.30  & 4'115.56 \\
+ &  &  &  & \\
+ & CONTO DEGLI INVESTIMENTI  &  &  & \\
+ & USCITE PER INVESTIMENTI  &  &  & \\
+50  & INVESTIMENTI MATERIALI  & 0.00  & 0.00  & 29'237.31 \\
+52  & INVESTIMENTI IMMATERIALI  & 0.00  & 0.00  & 0.00 \\
+58  & INVESTIMENTI STRAORDINARI  & 0.00  & 0.00  & 0.00 \\
+5  & USCITE PER INVESTIMENTI  & 0.00  & 0.00  & 29'237.31 \\
+ &  &  &  & \\
+ & ENTRATE PER INVESTIMENTI  &  &  & \\
+60  & TRASFERIMENTI DI INVESTIMENTI MATERIALI IN BENI PATRIMONIALI  & 0.00  & 0.00  & 0.00 \\
+62  & ALIENAZIONE DI INVESTIMENTI IMMATERIALI  & 0.00  & 0.00  & 0.00 \\
+63  & CONTRIBUTI PER INVESTIMENTI PROPRI  & 0.00  & 0.00  & 0.00 \\
+65  & TRASFERIMENTO DI PARTECIPAZIONI NEI BENI PATRIMONIALI  & 0.00  & 0.00  & 0.00 \\
+68  & ENTRATE STRAORDINARIE PER INVESTIMENTI  & 0.00  & 0.00  & 0.00 \\
+6  & ENTRATE PER INVESTIMENTI  & 0.00  & 0.00  & 0.00 \\
+ &  &  &  & \\
+ & ONERE NETTO DI INVESTIMENTO  & 0.00  & 0.00  & 29'237.31 \\
+\end{longtable}
+Banana Accounting, v. 9.0.3, Script v. 2018-04-04,  Seite  \\
+\end{reportvalue}
+\keyvalue{Result}{Passed}
+\end{test}
+\end{testcase}
+\end{document}

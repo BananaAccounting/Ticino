@@ -1,0 +1,68 @@
+%%info_test_name{riassuntopreventivo.test}
+\documentclass{report}
+\usepackage{longtable}
+\usepackage{color}
+\usepackage{listings}
+\usepackage[margin=1cm]{geometry}
+\begin{document}
+\newenvironment{tablevalue}[2]{\textbf{Table: #1}\begin{longtable}[l]{#2}}{\end{longtable}}
+\newenvironment{reportvalue}[1]{\textbf{Report: #1}\\}{}
+\lstnewenvironment{jsonvalue}[1]{\textbf{Json: #1}\lstset{language=Java}}{}
+\lstnewenvironment{xmlvalue}[1]{\textbf{Xml: #1}\lstset{language=Xml}}{}
+\newcommand{\info}[2]{\textit{#1: #2}\\}
+\newcommand{\fatalerror}[1]{\textbf{\textcolor[rgb]{1,0,0}{Fatal error: #1}}\\}
+\newcommand{\keyvalue}[2]{\textbf{Keyvalue: #1} #2\\}
+\newcommand{\textvalue}[1]{#1\\}
+\newcommand{\excltest}[1]{\\Excluded from compare: #1}
+\newcommand{\lognewpage}{\newpage}
+\newenvironment{testcase}[1]{\section*{Test: #1}}{\newpage}
+\newenvironment{test}[1]{\section*{Test case: #1}}{}
+%Begin test data
+%%SCRIPT{/Users/lorenzo/Programmazione/GitHub/BananaAccounting/Ticino/Patriziati/Contabilita/test/riassuntopreventivo.test.js}
+%
+\begin{testcase}{TestRiassuntoPreventivo}
+\begin{test}{testReport}
+\begin{reportvalue}{Report}
+Patriziato di XYZ \\
+Riassunto del preventivo 2017 \\
+\begin{longtable}[l]{ l  l  l  l }
+ & Preventivo  & Preventivo  & Consuntivo \\
+ & 2017  & 2016  & 2015 \\
+Conto economico  &  &  & \\
+Spese operative  & 17'639.26  & 17'636.00  & 21'127.14 \\
+Ricavi operativi  & 0.00  & 0.00  & 0.00 \\
+Risultato operativo  & -17'639.26  & -17'636.00  & -21'127.14 \\
+ &  &  & \\
+Spese finanziarie  & 14'177.70  & 15'254.70  & 10'010.55 \\
+Ricavi finanziari  & 43'072.00  & 43'072.00  & 37'253.25 \\
+Risultato finanziario  & 28'894.30  & 27'817.30  & 27'242.70 \\
+ &  &  & \\
+Risultato ordinario  & 11'255.04  & 10'181.30  & 6'115.56 \\
+ &  &  & \\
+Spese straordinarie  & 6'000.00  & 6'000.00  & 2'000.00 \\
+Ricavi straordinari  & 0.00  & 0.00  & 0.00 \\
+Risultato straordinario  & -6'000.00  & -6'000.00  & -2'000.00 \\
+ &  &  & \\
+Risultato d'esercizio  & 5'255.04  & 4'181.30  & 4'115.56 \\
+ &  &  & \\
+Conto degli investimenti  &  &  & \\
+Uscite per investimenti  & 0.00  & 0.00  & 29'237.31 \\
+Entrate per investimenti  & 0.00  & 0.00  & 0.00 \\
+Investimenti netti  & 0.00  & 0.00  & 29'237.31 \\
+ &  &  & \\
+Conto di chiusura  &  &  & \\
+Investimenti netti  & 0.00  & 0.00  & 29'237.31 \\
+ &  &  & \\
+Ammortamenti ordinari  & 11'283.26  & 9'000.00  & 14'760.17 \\
+Ammortamenti straordinari  & 6'000.00  & 6'000.00  & 2'000.00 \\
+Risultato d'esercizio  & 5'255.04  & 4'181.30  & 4'115.56 \\
+Autofinanziamento  & 22'538.30  & 19'181.30  & 20'875.73 \\
+ &  &  & \\
+Risultato totale  & 22'538.30  & 19'181.30  & -8'361.58 \\
+\end{longtable}
+Banana Accounting, v. 9.0.3, Script v. 2018-04-04,  Seite  \\
+\end{reportvalue}
+\keyvalue{Result}{Passed}
+\end{test}
+\end{testcase}
+\end{document}

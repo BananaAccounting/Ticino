@@ -1,0 +1,241 @@
+%%info_test_name{bilancioabbellito.test}
+\documentclass{report}
+\usepackage{longtable}
+\usepackage{color}
+\usepackage{listings}
+\usepackage[margin=1cm]{geometry}
+\begin{document}
+\newenvironment{tablevalue}[2]{\textbf{Table: #1}\begin{longtable}[l]{#2}}{\end{longtable}}
+\newenvironment{reportvalue}[1]{\textbf{Report: #1}\\}{}
+\lstnewenvironment{jsonvalue}[1]{\textbf{Json: #1}\lstset{language=Java}}{}
+\lstnewenvironment{xmlvalue}[1]{\textbf{Xml: #1}\lstset{language=Xml}}{}
+\newcommand{\info}[2]{\textit{#1: #2}\\}
+\newcommand{\fatalerror}[1]{\textbf{\textcolor[rgb]{1,0,0}{Fatal error: #1}}\\}
+\newcommand{\keyvalue}[2]{\textbf{Keyvalue: #1} #2\\}
+\newcommand{\textvalue}[1]{#1\\}
+\newcommand{\excltest}[1]{\\Excluded from compare: #1}
+\newcommand{\lognewpage}{\newpage}
+\newenvironment{testcase}[1]{\section*{Test: #1}}{\newpage}
+\newenvironment{test}[1]{\section*{Test case: #1}}{}
+%Begin test data
+%%SCRIPT{/Users/lorenzo/Programmazione/GitHub/BananaAccounting/Ticino/Patriziati/Contabilita/test/bilancioabbellito.test.js}
+%
+\begin{testcase}{TestBilancioAbbellito}
+\begin{test}{testReport}
+\begin{reportvalue}{Consuntivo (Bilancio)}
+Patriziato di Bironico \\
+Consuntivo \\
+2017 \\
+BILANCIO \\
+\begin{longtable}[l]{ l  l  l  l }
+\multicolumn{4}{l}{ATTIVI }\\
+ &  & 31.12.2017 \newline  & 31.12.2016 \newline \\
+1002.00  & Banca Conto Immobili  & 10'483.95  & 6'330.47 \\
+1002.01  & Banca Conto Risparmio  & 17'298.60  & 17'298.60 \\
+1002.02  & Banca Conto Riserva forestale  & 5'137.55  & 5'137.55 \\
+100  & Liquidità  & 32'920.10  & 28'766.62 \\
+1040  & Delimitazioni contabili attive del conto di gestione corrente  & 2'403.40  & 2'486.06 \\
+104  & Ratei e risconti attivi  & 2'403.40  & 2'486.06 \\
+1070.00  & Azioni monte tamaro  & 1.00  & 1.00 \\
+107  & Investimenti finanziari  & 1.00  & 1.00 \\
+1080.00  & Giardino casa patriziale  & 107'390.00  & 107'390.00 \\
+1084.00  & Casa patriziale  & 579'984.17  & 579'984.17 \\
+108  & Investimenti materiali - beni patrimoniali  & 687'374.17  & 687'374.17 \\
+10  & BENI PATRIMONIALI  & 722'698.67  & 718'627.85 \\
+1405  & Boschi  & 1.00  & 1.00 \\
+140  & Investimenti materiali - beni amministrativi  & 1.00  & 1.00 \\
+14  & BENI AMMINISTRATIVI  & 1.00  & 1.00 \\
+1  & ATTIVI  & 722'699.67  & 718'628.85 \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l }
+\multicolumn{4}{l}{PASSIVI }\\
+ &  & 31.12.2017 \newline  & 31.12.2016 \newline \\
+2040  & Delimitazioni contabili passive del conto di gestione corrente  & 110.00  & 5'783.81 \\
+204  & Ratei e risconti passivi  & 110.00  & 5'783.81 \\
+2010.00  & Banca Conto Prestito  & 357'000.00  & 363'750.00 \\
+206  & Impegni a lungo termine  & 357'000.00  & 363'750.00 \\
+20  & CAPITALE DEI TERZI  & 357'110.00  & 369'533.81 \\
+2990  & Risultato annuale  & 16'494.63  & 16'534.65 \\
+2999  & Risultati cumulati degli anni precedenti  & 349'095.04  & 332'560.39 \\
+299  & Eccedenze / Disavanzi di bilancio  & 365'589.67  & 349'095.04 \\
+29  & CAPITALE PROPRIO  & 365'589.67  & 349'095.04 \\
+2  & PASSIVI  & 722'699.67  & 718'628.85 \\
+\end{longtable}
+\end{reportvalue}
+\lognewpage
+\begin{reportvalue}{Consuntivo (Conto Economico)}
+Patriziato di Bironico \\
+Consuntivo \\
+2017 \\
+CONTO DI GESTIONE CORRENTE \\
+\begin{longtable}[l]{ l  l  l  l  l }
+\multicolumn{5}{l}{SPESE }\\
+ &  & Consuntivo \newline 2017 \newline  & Preventivo \newline 2017 \newline  & Consuntivo \newline 2016 \newline \\
+3000  & Stipendi di autorità  & 0.00  & 180.00  & 180.00 \\
+3001  & Retribuzioni ad autorità  & 80.00  & 300.00  & 190.00 \\
+300  & Autorità e commissioni  & 80.00  & 480.00  & 370.00 \\
+3010  & Stipendi del personale amministrativo e d'esercizio  & 0.00  & 500.00  & 500.00 \\
+301  & Stipendi del personale amministrativo e d'esercizio  & 0.00  & 500.00  & 500.00 \\
+30  & SPESE PER IL PERSONALE  & 80.00  & 980.00  & 870.00 \\
+3101  & Materiale d'esercizio e di consumo  & 87.00  & 270.00  & 63.00 \\
+3102  & Stampati, pubblicazioni  & 14.00  & 0.00  & 0.00 \\
+3105  & Derrate alimentari  & 30.70  & 0.00  & 0.00 \\
+310  & Spese per materiale e merci  & 131.70  & 270.00  & 63.00 \\
+3120  & Approvvigionamento e smaltimento  & 0.00  & 730.00  & 1'509.42 \\
+312  & Approvvigionamento e smaltimento  & 0.00  & 730.00  & 1'509.42 \\
+3130  & Prestazioni di servizi di terzi  & 972.45  & 206.00  & 206.00 \\
+3134  & Premi per assicurazione cose  & 141.70  & 120.00  & 111.80 \\
+313  & Prestazioni di servizi e onorari  & 1'114.15  & 326.00  & 317.80 \\
+3144  & Manutenzione immobili  & 968.50  & 1'500.00  & 5'023.35 \\
+3145  & Manutenzione boschi  & 0.00  & 1'000.00  & 1'000.00 \\
+314  & Grosse manutenzioni e manutenzioni correnti  & 968.50  & 2'500.00  & 6'023.35 \\
+3151  & Manutenzione macchine, apparecchiature, veicoli  & 0.00  & 200.00  & 0.00 \\
+315  & Manutenzione beni mobili e investimenti immateriali  & 0.00  & 200.00  & 0.00 \\
+3170  & Spese di viaggio e altre spese  & 130.00  & 500.00  & 100.00 \\
+317  & Indennità per il rimborso spese  & 130.00  & 500.00  & 100.00 \\
+31  & SPESE PER BENI E SERVIZI E ALTRE SPESE D'ESERCIZIO  & 2'344.35  & 4'526.00  & 8'013.57 \\
+3320  & Ammortamenti pianificati di investimenti amministrativi immateriali  & 0.00  & 0.00  & -14'104.07 \\
+332  & Ammortamenti di investimenti immateriali - beni amministrativi  & 0.00  & 0.00  & -14'104.07 \\
+3340  & Ammortamenti pianificati di investimenti patrimoniali materiali  & 0.00  & 11'283.26  & 14'104.07 \\
+3341  & Ammortamenti non pianificati di investimenti patrimoniali materiali  & 0.00  & 0.00  & 1'100.00 \\
+334  & Ammortamenti di investimenti materiali - beni patrimoniali  & 0.00  & 11'283.26  & 15'204.07 \\
+33  & AMMORTAMENTI  & 0.00  & 11'283.26  & 1'100.00 \\
+3406  & Interessi passivi per impegni finanziari a lungo termine  & 4'338.00  & 5'920.00  & 5'910.00 \\
+340  & Spese per interessi  & 4'338.00  & 5'920.00  & 5'910.00 \\
+3431  & Manutenzione non edile di immobili - beni patrimoniali  & 2'160.10  & 500.00  & 1'020.33 \\
+3439.01  & Altre spese per immobili - Assicurazione  & 3'021.90  & 1'937.70  & 1'967.60 \\
+3439.02  & Altre spese per immobili - Elettricità, Acqua, Gas, Canalizzazioni  & 3'719.20  & 5'760.00  & 6'516.75 \\
+343  & Spese per immobili - beni patrimoniali  & 8'901.20  & 8'197.70  & 9'504.68 \\
+3499  & Altre spese finanziarie  & 171.85  & 60.00  & 210.85 \\
+349  & Altre spese finanziarie  & 171.85  & 60.00  & 210.85 \\
+34  & SPESE FINANZIARIE  & 13'411.05  & 14'177.70  & 15'625.53 \\
+3622  & Contributi al Fondo di aiuto patriziale  & 0.00  & 800.00  & 630.35 \\
+362  & Perequazione finanziaria  & 0.00  & 800.00  & 630.35 \\
+3632  & Contributi ad enti privati  & 0.00  & 50.00  & 50.00 \\
+363  & Contributi ad enti pubblici e terzi  & 0.00  & 50.00  & 50.00 \\
+36  & SPESE DI TRASFERIMENTO  & 0.00  & 850.00  & 680.35 \\
+3850  & Ammortamenti straordinari investimenti materiali - beni patrimoniali  & 0.00  & 6'000.00  & 1'000.00 \\
+385  & Ammortamenti straordinari - beni patrimoniali  & 0.00  & 6'000.00  & 1'000.00 \\
+38  & SPESE STRAORDINARIE  & 0.00  & 6'000.00  & 1'000.00 \\
+3  & SPESE  & 15'835.40  & 37'816.96  & 27'289.45 \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l  l }
+\multicolumn{5}{l}{RICAVI }\\
+ &  & Consuntivo \newline 2017 \newline  & Preventivo \newline 2017 \newline  & Consuntivo \newline 2016 \newline \\
+4290  & Diversi ricavi e tasse  & -19.97  & 0.00  & 0.00 \\
+429  & Diversi ricavi e tasse  & -19.97  & 0.00  & 0.00 \\
+42  & RICAVI PER TASSE  & -19.97  & 0.00  & 0.00 \\
+4400  & Interessi liquidità  & 0.00  & 0.00  & 6.85 \\
+4401  & Interessi crediti e conti correnti  & 0.00  & 112.00  & 0.50 \\
+440  & Ricavi finanziari  & 0.00  & 112.00  & 7.35 \\
+4430  & Affitti e pigioni di immobili beni patrimoniali  & 28'010.00  & 37'200.00  & 37'300.00 \\
+4439  & Altri redditi immobiliari da beni patrimoniali  & 4'340.00  & 5'760.00  & 6'516.75 \\
+443  & Redditi immobiliari beni patrimoniali  & 32'350.00  & 42'960.00  & 43'816.75 \\
+44  & RICAVI FINANZIARI  & 32'350.00  & 43'072.00  & 43'824.10 \\
+4  & RICAVI  & 32'330.03  & 43'072.00  & 43'824.10 \\
+02  & Avanzo d'esercizio  & 16'494.63  & 5'255.04  & 16'534.65 \\
+\end{longtable}
+\end{reportvalue}
+\lognewpage
+\begin{reportvalue}{Preventivo}
+Patriziato di Bironico \\
+Conto Preventivo \\
+2017 \\
+CONTO DI GESTIONE CORRENTE \\
+\begin{longtable}[l]{ l  l  l  l  l }
+\multicolumn{5}{l}{SPESE }\\
+ &  & Preventivo \newline 2017 \newline  & Preventivo \newline 2016 \newline  & Consuntivo \newline 2015 \newline \\
+3000  & Stipendi di autorità  & 180.00  & 360.00  & 180.00 \\
+3001  & Retribuzioni ad autorità  & 300.00  & 300.00  & 210.00 \\
+300  & Autorità e commissioni  & 480.00  & 660.00  & 390.00 \\
+3010  & Stipendi del personale amministrativo e d'esercizio  & 500.00  & 500.00  & 500.00 \\
+301  & Stipendi del personale amministrativo e d'esercizio  & 500.00  & 500.00  & 500.00 \\
+30  & SPESE PER IL PERSONALE  & 980.00  & 1'160.00  & 890.00 \\
+3101  & Materiale d'esercizio e di consumo  & 270.00  & 270.00  & 140.00 \\
+3102  & Stampati, pubblicazioni  & 0.00  & 0.00  & 50.00 \\
+310  & Spese per materiale e merci  & 270.00  & 270.00  & 190.00 \\
+3111  & Macchine, apparecchiature, veicoli  & 0.00  & 0.00  & 297.27 \\
+311  & Investimenti non attivabili  & 0.00  & 0.00  & 297.27 \\
+3120  & Approvvigionamento e smaltimento  & 730.00  & 550.00  & 799.10 \\
+312  & Approvvigionamento e smaltimento  & 730.00  & 550.00  & 799.10 \\
+3130  & Prestazioni di servizi di terzi  & 206.00  & 206.00  & 206.00 \\
+3134  & Premi per assicurazione cose  & 120.00  & 120.00  & 112.60 \\
+313  & Prestazioni di servizi e onorari  & 326.00  & 326.00  & 318.60 \\
+3144  & Manutenzione immobili  & 1'500.00  & 4'000.00  & 1'250.00 \\
+3145  & Manutenzione boschi  & 1'000.00  & 1'000.00  & 1'000.00 \\
+314  & Grosse manutenzioni e manutenzioni correnti  & 2'500.00  & 5'000.00  & 2'250.00 \\
+3151  & Manutenzione macchine, apparecchiature, veicoli  & 200.00  & 0.00  & 655.50 \\
+315  & Manutenzione beni mobili e investimenti immateriali  & 200.00  & 0.00  & 655.50 \\
+3170  & Spese di viaggio e altre spese  & 500.00  & 280.00  & 230.00 \\
+317  & Indennità per il rimborso spese  & 500.00  & 280.00  & 230.00 \\
+31  & SPESE PER BENI E SERVIZI E ALTRE SPESE D'ESERCIZIO  & 4'526.00  & 6'426.00  & 4'740.47 \\
+3340  & Ammortamenti pianificati di investimenti patrimoniali materiali  & 11'283.26  & 9'000.00  & 14'104.07 \\
+3341  & Ammortamenti non pianificati di investimenti patrimoniali materiali  & 0.00  & 0.00  & 656.10 \\
+334  & Ammortamenti di investimenti materiali - beni patrimoniali  & 11'283.26  & 9'000.00  & 14'760.17 \\
+33  & AMMORTAMENTI  & 11'283.26  & 9'000.00  & 14'760.17 \\
+3406  & Interessi passivi per impegni finanziari a lungo termine  & 5'920.00  & 7'497.00  & 7'184.25 \\
+340  & Spese per interessi  & 5'920.00  & 7'497.00  & 7'184.25 \\
+3431  & Manutenzione non edile di immobili - beni patrimoniali  & 500.00  & 0.00  & 649.75 \\
+3439.01  & Altre spese per immobili - Assicurazione  & 1'937.70  & 1'937.70  & 1'960.80 \\
+3439.02  & Altre spese per immobili - Elettricità, Acqua, Gas, Canalizzazioni  & 5'760.00  & 5'760.00  & 0.00 \\
+343  & Spese per immobili - beni patrimoniali  & 8'197.70  & 7'697.70  & 2'610.55 \\
+3499  & Altre spese finanziarie  & 60.00  & 60.00  & 215.75 \\
+349  & Altre spese finanziarie  & 60.00  & 60.00  & 215.75 \\
+34  & SPESE FINANZIARIE  & 14'177.70  & 15'254.70  & 10'010.55 \\
+3622  & Contributi al Fondo di aiuto patriziale  & 800.00  & 1'000.00  & 586.50 \\
+362  & Perequazione finanziaria  & 800.00  & 1'000.00  & 586.50 \\
+3632  & Contributi ad enti privati  & 50.00  & 50.00  & 150.00 \\
+363  & Contributi ad enti pubblici e terzi  & 50.00  & 50.00  & 150.00 \\
+36  & SPESE DI TRASFERIMENTO  & 850.00  & 1'050.00  & 736.50 \\
+3850  & Ammortamenti straordinari investimenti materiali - beni patrimoniali  & 6'000.00  & 6'000.00  & 2'000.00 \\
+385  & Ammortamenti straordinari - beni patrimoniali  & 6'000.00  & 6'000.00  & 2'000.00 \\
+38  & SPESE STRAORDINARIE  & 6'000.00  & 6'000.00  & 2'000.00 \\
+3920  & Affitti, pigioni, noli, costi di utilizzazione  & 0.00  & 0.00  & 6'362.45 \\
+392  & Affitti, pigioni, noli, costi di utilizzazione  & 0.00  & 0.00  & 6'362.45 \\
+39  & ADDEBITI INTERNI PER SPESE E CONTRIBUTI CORRENTI  & 0.00  & 0.00  & 6'362.45 \\
+3  & SPESE  & 37'816.96  & 38'890.70  & 39'500.14 \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l  l }
+\multicolumn{5}{l}{RICAVI }\\
+ &  & Preventivo \newline 2017 \newline  & Preventivo \newline 2016 \newline  & Consuntivo \newline 2015 \newline \\
+4401  & Interessi crediti e conti correnti  & 112.00  & 112.00  & 53.25 \\
+440  & Ricavi finanziari  & 112.00  & 112.00  & 53.25 \\
+4430  & Affitti e pigioni di immobili beni patrimoniali  & 37'200.00  & 37'200.00  & 37'200.00 \\
+4439  & Altri redditi immobiliari da beni patrimoniali  & 5'760.00  & 5'760.00  & 0.00 \\
+443  & Redditi immobiliari beni patrimoniali  & 42'960.00  & 42'960.00  & 37'200.00 \\
+44  & RICAVI FINANZIARI  & 43'072.00  & 43'072.00  & 37'253.25 \\
+4920  & Affitti, pigioni, noli, costi di utilizzazione  & 0.00  & 0.00  & 6'362.45 \\
+492  & Affitti, pigioni, noli, costi di utilizzazione  & 0.00  & 0.00  & 6'362.45 \\
+49  & ACCREDITI INTERNI PER SPESE E CONTRIBUTI  & 0.00  & 0.00  & 6'362.45 \\
+4  & RICAVI  & 43'072.00  & 43'072.00  & 43'615.70 \\
+02  & Avanzo d'esercizio (Utile e Perdita)  & 5'255.04  & 4'181.30  & 4'115.56 \\
+\end{longtable}
+\end{reportvalue}
+\lognewpage
+\begin{reportvalue}{Conto Investimenti}
+Patriziato di Bironico \\
+Consuntivo \\
+2017 \\
+CONTO DEGLI INVESTIMENTI \\
+\begin{longtable}[l]{ l  l  l  l }
+\multicolumn{4}{l}{USCITE PER INVESTIMENTI }\\
+ &  & 2017 \newline  & 2016 \newline \\
+.5040.01  & Contributi di costruzione supplementari  & 0.00  & 3'687.95 \\
+504  & Immobili  & 0.00  & 3'687.95 \\
+50  & INVESTIMENTI MATERIALI  & 0.00  & 3'687.95 \\
+5  & USCITE PER INVESTIMENTI  & 0.00  & 3'687.95 \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l }
+\multicolumn{4}{l}{ENTRATE PER INVESTIMENTI }\\
+ &  & 2017 \newline  & 2016 \newline \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l }
+\multicolumn{4}{l}{AUMENTO BENI AMMINISTRATIVI }\\
+ &  & 2017 \newline  & 2016 \newline \\
+03  & Aumento beni amministrativi  & 0.00  & 3'687.95 \\
+\end{longtable}
+\end{reportvalue}
+\keyvalue{Result}{Passed}
+\end{test}
+\end{testcase}
+\end{document}
