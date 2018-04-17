@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.app.patriziato.riassuntoconsuntivo
 // @api = 1.0
-// @pubdate = 2018-04-13
+// @pubdate = 2018-04-17
 // @publisher = Banana.ch SA
 // @description = Riassunto del consuntivo
 // @task = app.command
@@ -514,7 +514,7 @@ function add_footer(report, param) {
    report.getFooter().addClass("footer");
    var versionLine = report.getFooter().addText(param.bananaVersion + ", " + param.scriptVersion + ", ", "description");
    //versionLine.excludeFromTest();
-   report.getFooter().addText("Seite ", "description");
+   report.getFooter().addText("Pagina ", "description");
    report.getFooter().addFieldPageNr();
 }
 
