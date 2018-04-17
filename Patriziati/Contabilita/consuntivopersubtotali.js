@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.app.patriziato.consuntivopersubtotali
 // @api = 1.0
-// @pubdate = 2018-04-13
+// @pubdate = 2018-04-17
 // @publisher = Banana.ch SA
 // @description = Consuntivo per subtotali
 // @task = app.command
@@ -63,8 +63,10 @@ function load_form(banDoc, param) {
    var form = [];
    param.form = form;
 
-   form.push({"id":"", "type":"header", "description":"", "values":["Consuntivo", "Preventivo", "Consuntivo"]});
-   form.push({"id":"", "type":"header", "description":"", "values":[param.currentYear, param.currentYear, param.previousYear]});
+   form.push({"id":"", "type":"newtable"});
+
+   form.push({"id":"", "type":"header", "description":"", "values":["Consuntivo", "Consuntivo", ""]});
+   form.push({"id":"", "type":"header", "description":"", "values":[param.currentYear, param.previousYear, ""]});
 
    form.push({"id":"CE", "type":"title", "description":"BILANCIO"});
 
@@ -82,6 +84,10 @@ function load_form(banDoc, param) {
    else
       form.push({"id":"", "type":"empty"});
 
+   form.push({"id":"", "type":"newtable"});
+
+   form.push({"id":"", "type":"header", "description":"", "values":["Consuntivo", "Preventivo", "Consuntivo"]});
+   form.push({"id":"", "type":"header", "description":"", "values":[param.currentYear, param.currentYear, param.previousYear]});
 
    form.push({"id":"CE", "type":"title", "description":"CONTO ECONOMICO"});
 
@@ -94,9 +100,9 @@ function load_form(banDoc, param) {
    fill_form(banDoc, form, "4", param.subtotalLevel);
 
    form.push({"id":"", "type":"empty"});
-   form.push({"id":"", "type":"total", "description":"TOTALE SPESE", "account":"Gr=3"});
-   form.push({"id":"", "type":"total", "description":"TOTALE RICAVI", "account":"Gr=4"});
-   form.push({"id":"", "type":"total", "description":"SALDO", "account":"Gr=4|3"});
+   form.push({"id":"", "type":"total", "description":"TOTALE SPESE", "account":"Gr=3", "bclass":"3"});
+   form.push({"id":"", "type":"total", "description":"TOTALE RICAVI", "account":"Gr=4", "bclass":"4"});
+   form.push({"id":"", "type":"total", "description":"SALDO", "account":"Gr=4|3",  "bclass":"4"});
 
 
    if (param.subtotalLevel > 1)
@@ -104,6 +110,11 @@ function load_form(banDoc, param) {
    else
       form.push({"id":"", "type":"empty"});
 
+
+   form.push({"id":"", "type":"newtable"});
+
+   form.push({"id":"", "type":"header", "description":"", "values":["Consuntivo", "Consuntivo", ""]});
+   form.push({"id":"", "type":"header", "description":"", "values":[param.currentYear, param.previousYear, ""]});
 
    form.push({"id":"CE", "type":"title", "description":"CONTO DEGLI INVESTIMENTI"});
 
@@ -129,10 +140,15 @@ function load_form(banDoc, param) {
    param.amountColumns = function(formObj, rowIndex, decimals) {
       try {
          var values = [];
-         var value =
-               values.push(Banana.Converter.toLocaleNumberFormat(formObj["currentBalance"]["amount"], decimals));
-         values.push(Banana.Converter.toLocaleNumberFormat(formObj["currentBudget"]["amount"], decimals));
-         values.push(Banana.Converter.toLocaleNumberFormat(formObj["previousBalance"]["amount"], decimals));
+         if (formObj.bclass === "3" || formObj.bclass === "4") {
+            values.push(Banana.Converter.toLocaleNumberFormat(formObj["currentBalance"]["amount"], decimals));
+            values.push(Banana.Converter.toLocaleNumberFormat(formObj["currentBudget"]["amount"], decimals));
+            values.push(Banana.Converter.toLocaleNumberFormat(formObj["previousBalance"]["amount"], decimals));
+         } else {
+            values.push(Banana.Converter.toLocaleNumberFormat(formObj["currentBalance"]["amount"], decimals));
+            values.push(Banana.Converter.toLocaleNumberFormat(formObj["previousBalance"]["amount"], decimals));
+            values.push("");
+         }
          return values;
       } catch (err) {
          return ["error","error","error"];
@@ -255,6 +271,7 @@ function create_report(banDoc, startDate, endDate, detailLevel) {
    add_footer(report, param);
 
    //Variables used for the report's style.
+   var styleTable = "dataTable"
    var styleAccount= "account";
    var styleDescription = "description";
    var stylePageHeader1 = "pageHeader1";
@@ -278,7 +295,7 @@ function create_report(banDoc, startDate, endDate, detailLevel) {
    pageHeader.addParagraph(param.reportName + " " + param.currentYear, stylePageHeader2);
 
    //Table with basic informations
-   var table = report.addTable("table");
+   var table = null;
 
    // Rows
    var rowIndex = 0;
@@ -287,7 +304,10 @@ function create_report(banDoc, startDate, endDate, detailLevel) {
       var columnValues = formObj.values ? formObj.values : param.amountColumns(formObj, rowIndex, param.rounding.decimals);
       var tableRow = null;
 
-      if (param.form[i].type === "header") {
+      if (!table || param.form[i].type === "newtable") {
+         table = report.addTable("table");
+         table.addClass(styleTable);
+      } else if (param.form[i].type === "header") {
          tableRow = table.getHeader().addRow("headerRow");
          if (param.printId)
             tableRow.addCell();
@@ -400,6 +420,7 @@ function fill_form(banDoc, form, bClass, level) {
             formObj.id = groupId;
             formObj.description = accountTable.value(i, "Description");
             formObj.account = "Gr=" + groupId;
+            formObj.bclass = bClass;
 
             if (groupId.length < level)
                formObj.type = "total";
@@ -412,6 +433,7 @@ function fill_form(banDoc, form, bClass, level) {
                formObj.styles = ["level2"];
 
             form.push(formObj);
+
          }
       } else if (level === 4) {  // Account
          var accountId = accountTable.value(i, "Account");
@@ -422,6 +444,7 @@ function fill_form(banDoc, form, bClass, level) {
             formObj.account = accountId;
             formObj.type = "amount";
             formObj.styles = ["level3"];
+            formObj.bclass = bClass;
             form.push(formObj);
 
          }
@@ -595,7 +618,7 @@ function add_footer(report, param) {
    report.getFooter().addClass("footer");
    var versionLine = report.getFooter().addText(param.bananaVersion + ", " + param.scriptVersion + ", ", "description");
    //versionLine.excludeFromTest();
-   report.getFooter().addText("Seite ", "description");
+   report.getFooter().addText("Pagina ", "description");
    report.getFooter().addFieldPageNr();
 }
 
@@ -671,6 +694,9 @@ function create_styleSheet() {
    style = stylesheet.addStyle("table");
    style.setAttribute("width", "100%");
    style.setAttribute("font-size", "9px");
+
+   style = stylesheet.addStyle("table.dataTable");
+   style.setAttribute("layout-sym", "datatable");
 
    return stylesheet;
 }
