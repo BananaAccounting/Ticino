@@ -67,7 +67,7 @@ BILANCIO \\
 Patriziato di Bironico \\
 Consuntivo \\
 2017 \\
-CONTO DI GESTIONE CORRENTE \\
+CONTO ECONOMICO \\
 \begin{longtable}[l]{ l  l  l  l  l }
 \multicolumn{5}{l}{SPESE }\\
  &  & Consuntivo \newline 2017 \newline  & Preventivo \newline 2017 \newline  & Consuntivo \newline 2016 \newline \\
@@ -141,7 +141,7 @@ CONTO DI GESTIONE CORRENTE \\
 Patriziato di Bironico \\
 Conto Preventivo \\
 2017 \\
-CONTO DI GESTIONE CORRENTE \\
+CONTO ECONOMICO \\
 \begin{longtable}[l]{ l  l  l  l  l }
 \multicolumn{5}{l}{SPESE }\\
  &  & Preventivo \newline 2017 \newline  & Preventivo \newline 2016 \newline  & Consuntivo \newline 2015 \newline \\

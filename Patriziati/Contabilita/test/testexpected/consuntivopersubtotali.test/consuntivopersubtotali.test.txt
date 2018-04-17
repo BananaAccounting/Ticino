@@ -26,15 +26,19 @@
 Patriziato di XYZ \\
 Consuntivo per subtotali 2017 \\
 \begin{longtable}[l]{ l  l  l  l  l }
- &  & Consuntivo  & Preventivo  & Consuntivo \\
- &  & 2017  & 2017  & 2016 \\
+ &  & Consuntivo  & Consuntivo  & \\
+ &  & 2017  & 2016  & \\
  & BILANCIO  &  &  & \\
  & ATTIVI  &  &  & \\
-1  & ATTIVI  & 722'699.67  & 714'883.89  & 718'628.85 \\
+1  & ATTIVI  & 722'699.67  & 718'628.85  & \\
  &  &  &  & \\
  & PASSIVI  &  &  & \\
-2  & PASSIVI  & 722'699.67  & 714'883.89  & 718'628.85 \\
+2  & PASSIVI  & 722'699.67  & 718'628.85  & \\
  &  &  &  & \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l  l }
+ &  & Consuntivo  & Preventivo  & Consuntivo \\
+ &  & 2017  & 2017  & 2016 \\
  & CONTO ECONOMICO  &  &  & \\
  & SPESE  &  &  & \\
 3  & SPESE  & 15'835.40  & 37'816.96  & 27'289.45 \\
@@ -46,35 +50,43 @@ Consuntivo per subtotali 2017 \\
  & TOTALE RICAVI  & 32'330.03  & 43'072.00  & 43'824.10 \\
  & SALDO  & 16'494.63  & 5'255.04  & 16'534.65 \\
  &  &  &  & \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l  l }
+ &  & Consuntivo  & Consuntivo  & \\
+ &  & 2017  & 2016  & \\
  & CONTO DEGLI INVESTIMENTI  &  &  & \\
  & USCITE PER INVESTIMENTI  &  &  & \\
-5  & USCITE PER INVESTIMENTI  & 0.00  & 0.00  & 3'687.95 \\
+5  & USCITE PER INVESTIMENTI  & 0.00  & 3'687.95  & \\
  &  &  &  & \\
  & ENTRATE PER INVESTIMENTI  &  &  & \\
-6  & ENTRATE PER INVESTIMENTI  & 0.00  & 0.00  & 0.00 \\
+6  & ENTRATE PER INVESTIMENTI  & 0.00  & 0.00  & \\
  &  &  &  & \\
- & ONERE NETTO DI INVESTIMENTO  & 0.00  & 0.00  & 3'687.95 \\
+ & ONERE NETTO DI INVESTIMENTO  & 0.00  & 3'687.95  & \\
 \end{longtable}
-Banana Accounting, v. 9.0.3, Script v. 2018-04-04,  Seite  \\
+Banana Accounting, v. 9.0.3, Script v. 2018-04-04,  Pagina  \\
 \end{reportvalue}
 \lognewpage
 \begin{reportvalue}{Details Level 2}
 Patriziato di XYZ \\
 Consuntivo per subtotali 2017 \\
 \begin{longtable}[l]{ l  l  l  l  l }
- &  & Consuntivo  & Preventivo  & Consuntivo \\
- &  & 2017  & 2017  & 2016 \\
+ &  & Consuntivo  & Consuntivo  & \\
+ &  & 2017  & 2016  & \\
  & BILANCIO  &  &  & \\
  & ATTIVI  &  &  & \\
-10  & BENI PATRIMONIALI  & 722'698.67  & 714'882.89  & 718'627.85 \\
-14  & BENI AMMINISTRATIVI  & 1.00  & 1.00  & 1.00 \\
-1  & ATTIVI  & 722'699.67  & 714'883.89  & 718'628.85 \\
+10  & BENI PATRIMONIALI  & 722'698.67  & 718'627.85  & \\
+14  & BENI AMMINISTRATIVI  & 1.00  & 1.00  & \\
+1  & ATTIVI  & 722'699.67  & 718'628.85  & \\
  &  &  &  & \\
  & PASSIVI  &  &  & \\
-20  & CAPITALE DEI TERZI  & 357'110.00  & 360'533.81  & 369'533.81 \\
-29  & CAPITALE PROPRIO  & 365'589.67  & 354'350.08  & 349'095.04 \\
-2  & PASSIVI  & 722'699.67  & 714'883.89  & 718'628.85 \\
+20  & CAPITALE DEI TERZI  & 357'110.00  & 369'533.81  & \\
+29  & CAPITALE PROPRIO  & 365'589.67  & 349'095.04  & \\
+2  & PASSIVI  & 722'699.67  & 718'628.85  & \\
  &  &  &  & \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l  l }
+ &  & Consuntivo  & Preventivo  & Consuntivo \\
+ &  & 2017  & 2017  & 2016 \\
  & CONTO ECONOMICO  &  &  & \\
  & SPESE  &  &  & \\
 30  & SPESE PER IL PERSONALE  & 80.00  & 980.00  & 870.00 \\
@@ -102,61 +114,69 @@ Consuntivo per subtotali 2017 \\
  & TOTALE RICAVI  & 32'330.03  & 43'072.00  & 43'824.10 \\
  & SALDO  & 16'494.63  & 5'255.04  & 16'534.65 \\
  &  &  &  & \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l  l }
+ &  & Consuntivo  & Consuntivo  & \\
+ &  & 2017  & 2016  & \\
  & CONTO DEGLI INVESTIMENTI  &  &  & \\
  & USCITE PER INVESTIMENTI  &  &  & \\
-50  & INVESTIMENTI MATERIALI  & 0.00  & 0.00  & 3'687.95 \\
-52  & INVESTIMENTI IMMATERIALI  & 0.00  & 0.00  & 0.00 \\
-58  & INVESTIMENTI STRAORDINARI  & 0.00  & 0.00  & 0.00 \\
-5  & USCITE PER INVESTIMENTI  & 0.00  & 0.00  & 3'687.95 \\
+50  & INVESTIMENTI MATERIALI  & 0.00  & 3'687.95  & \\
+52  & INVESTIMENTI IMMATERIALI  & 0.00  & 0.00  & \\
+58  & INVESTIMENTI STRAORDINARI  & 0.00  & 0.00  & \\
+5  & USCITE PER INVESTIMENTI  & 0.00  & 3'687.95  & \\
  &  &  &  & \\
  & ENTRATE PER INVESTIMENTI  &  &  & \\
-60  & TRASFERIMENTI DI INVESTIMENTI MATERIALI IN BENI PATRIMONIALI  & 0.00  & 0.00  & 0.00 \\
-62  & ALIENAZIONE DI INVESTIMENTI IMMATERIALI  & 0.00  & 0.00  & 0.00 \\
-63  & CONTRIBUTI PER INVESTIMENTI PROPRI  & 0.00  & 0.00  & 0.00 \\
-65  & TRASFERIMENTO DI PARTECIPAZIONI NEI BENI PATRIMONIALI  & 0.00  & 0.00  & 0.00 \\
-68  & ENTRATE STRAORDINARIE PER INVESTIMENTI  & 0.00  & 0.00  & 0.00 \\
-6  & ENTRATE PER INVESTIMENTI  & 0.00  & 0.00  & 0.00 \\
+60  & TRASFERIMENTI DI INVESTIMENTI MATERIALI IN BENI PATRIMONIALI  & 0.00  & 0.00  & \\
+62  & ALIENAZIONE DI INVESTIMENTI IMMATERIALI  & 0.00  & 0.00  & \\
+63  & CONTRIBUTI PER INVESTIMENTI PROPRI  & 0.00  & 0.00  & \\
+65  & TRASFERIMENTO DI PARTECIPAZIONI NEI BENI PATRIMONIALI  & 0.00  & 0.00  & \\
+68  & ENTRATE STRAORDINARIE PER INVESTIMENTI  & 0.00  & 0.00  & \\
+6  & ENTRATE PER INVESTIMENTI  & 0.00  & 0.00  & \\
  &  &  &  & \\
- & ONERE NETTO DI INVESTIMENTO  & 0.00  & 0.00  & 3'687.95 \\
+ & ONERE NETTO DI INVESTIMENTO  & 0.00  & 3'687.95  & \\
 \end{longtable}
-Banana Accounting, v. 9.0.3, Script v. 2018-04-04,  Seite  \\
+Banana Accounting, v. 9.0.3, Script v. 2018-04-04,  Pagina  \\
 \end{reportvalue}
 \lognewpage
 \begin{reportvalue}{Details Level 3}
 Patriziato di XYZ \\
 Consuntivo per subtotali 2017 \\
 \begin{longtable}[l]{ l  l  l  l  l }
- &  & Consuntivo  & Preventivo  & Consuntivo \\
- &  & 2017  & 2017  & 2016 \\
+ &  & Consuntivo  & Consuntivo  & \\
+ &  & 2017  & 2016  & \\
  & BILANCIO  &  &  & \\
  & ATTIVI  &  &  & \\
-100  & Liquidità  & 32'920.10  & 42'304.92  & 28'766.62 \\
-101  & Crediti  & 0.00  & 0.00  & 0.00 \\
-104  & Ratei e risconti attivi  & 2'403.40  & 2'486.06  & 2'486.06 \\
-107  & Investimenti finanziari  & 1.00  & 1.00  & 1.00 \\
-108  & Investimenti materiali - beni patrimoniali  & 687'374.17  & 670'090.91  & 687'374.17 \\
-10  & BENI PATRIMONIALI  & 722'698.67  & 714'882.89  & 718'627.85 \\
-140  & Investimenti materiali - beni amministrativi  & 1.00  & 1.00  & 1.00 \\
-142  & Investimenti immateriali  & 0.00  & 0.00  & 0.00 \\
-144  & Prestiti  & 0.00  & 0.00  & 0.00 \\
-145  & Partecipazioni, capitali sociali  & 0.00  & 0.00  & 0.00 \\
-146  & Contributi agli investimenti  & 0.00  & 0.00  & 0.00 \\
-14  & BENI AMMINISTRATIVI  & 1.00  & 1.00  & 1.00 \\
-1  & ATTIVI  & 722'699.67  & 714'883.89  & 718'628.85 \\
+100  & Liquidità  & 32'920.10  & 28'766.62  & \\
+101  & Crediti  & 0.00  & 0.00  & \\
+104  & Ratei e risconti attivi  & 2'403.40  & 2'486.06  & \\
+107  & Investimenti finanziari  & 1.00  & 1.00  & \\
+108  & Investimenti materiali - beni patrimoniali  & 687'374.17  & 687'374.17  & \\
+10  & BENI PATRIMONIALI  & 722'698.67  & 718'627.85  & \\
+140  & Investimenti materiali - beni amministrativi  & 1.00  & 1.00  & \\
+142  & Investimenti immateriali  & 0.00  & 0.00  & \\
+144  & Prestiti  & 0.00  & 0.00  & \\
+145  & Partecipazioni, capitali sociali  & 0.00  & 0.00  & \\
+146  & Contributi agli investimenti  & 0.00  & 0.00  & \\
+14  & BENI AMMINISTRATIVI  & 1.00  & 1.00  & \\
+1  & ATTIVI  & 722'699.67  & 718'628.85  & \\
  &  &  &  & \\
  & PASSIVI  &  &  & \\
-200  & Impegni correnti  & 0.00  & 0.00  & 0.00 \\
-201  & Impegni a breve termine  & 0.00  & 0.00  & 0.00 \\
-204  & Ratei e risconti passivi  & 110.00  & 5'783.81  & 5'783.81 \\
-205  & Accantonamenti a breve termine  & 0.00  & 0.00  & 0.00 \\
-206  & Impegni a lungo termine  & 357'000.00  & 354'750.00  & 363'750.00 \\
-208  & Accantonamenti a lungo termine  & 0.00  & 0.00  & 0.00 \\
-209  & Crediti nei confronti di finanziamenti speciali e di fondi  & 0.00  & 0.00  & 0.00 \\
-20  & CAPITALE DEI TERZI  & 357'110.00  & 360'533.81  & 369'533.81 \\
-299  & Eccedenze / Disavanzi di bilancio  & 365'589.67  & 354'350.08  & 349'095.04 \\
-29  & CAPITALE PROPRIO  & 365'589.67  & 354'350.08  & 349'095.04 \\
-2  & PASSIVI  & 722'699.67  & 714'883.89  & 718'628.85 \\
+200  & Impegni correnti  & 0.00  & 0.00  & \\
+201  & Impegni a breve termine  & 0.00  & 0.00  & \\
+204  & Ratei e risconti passivi  & 110.00  & 5'783.81  & \\
+205  & Accantonamenti a breve termine  & 0.00  & 0.00  & \\
+206  & Impegni a lungo termine  & 357'000.00  & 363'750.00  & \\
+208  & Accantonamenti a lungo termine  & 0.00  & 0.00  & \\
+209  & Crediti nei confronti di finanziamenti speciali e di fondi  & 0.00  & 0.00  & \\
+20  & CAPITALE DEI TERZI  & 357'110.00  & 369'533.81  & \\
+299  & Eccedenze / Disavanzi di bilancio  & 365'589.67  & 349'095.04  & \\
+29  & CAPITALE PROPRIO  & 365'589.67  & 349'095.04  & \\
+2  & PASSIVI  & 722'699.67  & 718'628.85  & \\
  &  &  &  & \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l  l }
+ &  & Consuntivo  & Preventivo  & Consuntivo \\
+ &  & 2017  & 2017  & 2016 \\
  & CONTO ECONOMICO  &  &  & \\
  & SPESE  &  &  & \\
 300  & Autorità e commissioni  & 80.00  & 480.00  & 370.00 \\
@@ -254,156 +274,164 @@ Consuntivo per subtotali 2017 \\
  & TOTALE RICAVI  & 32'330.03  & 43'072.00  & 43'824.10 \\
  & SALDO  & 16'494.63  & 5'255.04  & 16'534.65 \\
  &  &  &  & \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l  l }
+ &  & Consuntivo  & Consuntivo  & \\
+ &  & 2017  & 2016  & \\
  & CONTO DEGLI INVESTIMENTI  &  &  & \\
  & USCITE PER INVESTIMENTI  &  &  & \\
-500  & Terreni  & 0.00  & 0.00  & 0.00 \\
-501  & Strade / Vie di comunicazione  & 0.00  & 0.00  & 0.00 \\
-502  & Sistemazione dei corsi d'acqua e laghi  & 0.00  & 0.00  & 0.00 \\
-503  & Altre opere del genio civile  & 0.00  & 0.00  & 0.00 \\
-504  & Immobili  & 0.00  & 0.00  & 3'687.95 \\
-505  & Boschi  & 0.00  & 0.00  & 0.00 \\
-506  & Beni mobili  & 0.00  & 0.00  & 0.00 \\
-509  & Altri investimenti materiali  & 0.00  & 0.00  & 0.00 \\
-50  & INVESTIMENTI MATERIALI  & 0.00  & 0.00  & 3'687.95 \\
-520  & Software  & 0.00  & 0.00  & 0.00 \\
-521  & Brevetti / Licenze  & 0.00  & 0.00  & 0.00 \\
-529  & Altri investimenti immateriali  & 0.00  & 0.00  & 0.00 \\
-52  & INVESTIMENTI IMMATERIALI  & 0.00  & 0.00  & 0.00 \\
-580  & Investimenti materiali straordinari  & 0.00  & 0.00  & 0.00 \\
-582  & Investimenti immateriali straordinari  & 0.00  & 0.00  & 0.00 \\
-585  & Investimenti straordinari per partecipazioni e capitali sociali  & 0.00  & 0.00  & 0.00 \\
-586  & Contributi per investimenti straordinari  & 0.00  & 0.00  & 0.00 \\
-589  & Altri investimenti materiali straordinari  & 0.00  & 0.00  & 0.00 \\
-58  & INVESTIMENTI STRAORDINARI  & 0.00  & 0.00  & 0.00 \\
-5  & USCITE PER INVESTIMENTI  & 0.00  & 0.00  & 3'687.95 \\
+500  & Terreni  & 0.00  & 0.00  & \\
+501  & Strade / Vie di comunicazione  & 0.00  & 0.00  & \\
+502  & Sistemazione dei corsi d'acqua e laghi  & 0.00  & 0.00  & \\
+503  & Altre opere del genio civile  & 0.00  & 0.00  & \\
+504  & Immobili  & 0.00  & 3'687.95  & \\
+505  & Boschi  & 0.00  & 0.00  & \\
+506  & Beni mobili  & 0.00  & 0.00  & \\
+509  & Altri investimenti materiali  & 0.00  & 0.00  & \\
+50  & INVESTIMENTI MATERIALI  & 0.00  & 3'687.95  & \\
+520  & Software  & 0.00  & 0.00  & \\
+521  & Brevetti / Licenze  & 0.00  & 0.00  & \\
+529  & Altri investimenti immateriali  & 0.00  & 0.00  & \\
+52  & INVESTIMENTI IMMATERIALI  & 0.00  & 0.00  & \\
+580  & Investimenti materiali straordinari  & 0.00  & 0.00  & \\
+582  & Investimenti immateriali straordinari  & 0.00  & 0.00  & \\
+585  & Investimenti straordinari per partecipazioni e capitali sociali  & 0.00  & 0.00  & \\
+586  & Contributi per investimenti straordinari  & 0.00  & 0.00  & \\
+589  & Altri investimenti materiali straordinari  & 0.00  & 0.00  & \\
+58  & INVESTIMENTI STRAORDINARI  & 0.00  & 0.00  & \\
+5  & USCITE PER INVESTIMENTI  & 0.00  & 3'687.95  & \\
  &  &  &  & \\
  & ENTRATE PER INVESTIMENTI  &  &  & \\
-600  & ALIENAZIONE DI INVESTIMENTI IMMATERIALI  & 0.00  & 0.00  & 0.00 \\
-601  & TRASFERIMENTO DI PARTECIPAZIONI NEI BENI PATRIMONIALI  & 0.00  & 0.00  & 0.00 \\
-602  & Trasferimento sistemazione corsi d'acqua  & 0.00  & 0.00  & 0.00 \\
-603  & Trasferimento altre opere del genio civile  & 0.00  & 0.00  & 0.00 \\
-604  & Trasferimento immobili  & 0.00  & 0.00  & 0.00 \\
-605  & Trasferimento boschi  & 0.00  & 0.00  & 0.00 \\
-606  & Trasferimento beni mobili  & 0.00  & 0.00  & 0.00 \\
-609  & Trasferimento altri investimenti materiali  & 0.00  & 0.00  & 0.00 \\
-60  & TRASFERIMENTI DI INVESTIMENTI MATERIALI IN BENI PATRIMONIALI  & 0.00  & 0.00  & 0.00 \\
-620  & Alienazione software  & 0.00  & 0.00  & 0.00 \\
-621  & Alienazione di brevetti / licenze  & 0.00  & 0.00  & 0.00 \\
-629  & Alienazione di altri investimenti immateriali  & 0.00  & 0.00  & 0.00 \\
-62  & ALIENAZIONE DI INVESTIMENTI IMMATERIALI  & 0.00  & 0.00  & 0.00 \\
-630  & Contributi dalla Confederazione  & 0.00  & 0.00  & 0.00 \\
-631  & Contributi dal Cantone  & 0.00  & 0.00  & 0.00 \\
-632  & Contributi da Comuni e altri enti locali  & 0.00  & 0.00  & 0.00 \\
-633  & Contributi da assicurazioni sociali pubbliche  & 0.00  & 0.00  & 0.00 \\
-634  & Contributi da imprese pubbliche  & 0.00  & 0.00  & 0.00 \\
-635  & Contributi da imprese private  & 0.00  & 0.00  & 0.00 \\
-636  & Contributi da organizzazioni private senza scopo di lucro  & 0.00  & 0.00  & 0.00 \\
-637  & Contributi da economie domestiche private  & 0.00  & 0.00  & 0.00 \\
-638  & Contributi dall'estero  & 0.00  & 0.00  & 0.00 \\
-63  & CONTRIBUTI PER INVESTIMENTI PROPRI  & 0.00  & 0.00  & 0.00 \\
-654  & Trasferimento di partecipazioni nelle imprese pubbliche  & 0.00  & 0.00  & 0.00 \\
-655  & Trasferimento di partecipazioni nelle imprese private  & 0.00  & 0.00  & 0.00 \\
-656  & Trasferimento di partecipazioni nelle organizzazioni private senza scopo di lucro  & 0.00  & 0.00  & 0.00 \\
-65  & TRASFERIMENTO DI PARTECIPAZIONI NEI BENI PATRIMONIALI  & 0.00  & 0.00  & 0.00 \\
-680  & Entrate straordinarie per investimenti materiali  & 0.00  & 0.00  & 0.00 \\
-682  & Entrate straordinarie per investimenti immateriali  & 0.00  & 0.00  & 0.00 \\
-683  & Contributi straordinari per investimenti propri  & 0.00  & 0.00  & 0.00 \\
-685  & Trasferimento straordinario di partecipazioni  & 0.00  & 0.00  & 0.00 \\
-689  & Altre entrate straordinarie per investimenti  & 0.00  & 0.00  & 0.00 \\
-68  & ENTRATE STRAORDINARIE PER INVESTIMENTI  & 0.00  & 0.00  & 0.00 \\
-6  & ENTRATE PER INVESTIMENTI  & 0.00  & 0.00  & 0.00 \\
+600  & ALIENAZIONE DI INVESTIMENTI IMMATERIALI  & 0.00  & 0.00  & \\
+601  & TRASFERIMENTO DI PARTECIPAZIONI NEI BENI PATRIMONIALI  & 0.00  & 0.00  & \\
+602  & Trasferimento sistemazione corsi d'acqua  & 0.00  & 0.00  & \\
+603  & Trasferimento altre opere del genio civile  & 0.00  & 0.00  & \\
+604  & Trasferimento immobili  & 0.00  & 0.00  & \\
+605  & Trasferimento boschi  & 0.00  & 0.00  & \\
+606  & Trasferimento beni mobili  & 0.00  & 0.00  & \\
+609  & Trasferimento altri investimenti materiali  & 0.00  & 0.00  & \\
+60  & TRASFERIMENTI DI INVESTIMENTI MATERIALI IN BENI PATRIMONIALI  & 0.00  & 0.00  & \\
+620  & Alienazione software  & 0.00  & 0.00  & \\
+621  & Alienazione di brevetti / licenze  & 0.00  & 0.00  & \\
+629  & Alienazione di altri investimenti immateriali  & 0.00  & 0.00  & \\
+62  & ALIENAZIONE DI INVESTIMENTI IMMATERIALI  & 0.00  & 0.00  & \\
+630  & Contributi dalla Confederazione  & 0.00  & 0.00  & \\
+631  & Contributi dal Cantone  & 0.00  & 0.00  & \\
+632  & Contributi da Comuni e altri enti locali  & 0.00  & 0.00  & \\
+633  & Contributi da assicurazioni sociali pubbliche  & 0.00  & 0.00  & \\
+634  & Contributi da imprese pubbliche  & 0.00  & 0.00  & \\
+635  & Contributi da imprese private  & 0.00  & 0.00  & \\
+636  & Contributi da organizzazioni private senza scopo di lucro  & 0.00  & 0.00  & \\
+637  & Contributi da economie domestiche private  & 0.00  & 0.00  & \\
+638  & Contributi dall'estero  & 0.00  & 0.00  & \\
+63  & CONTRIBUTI PER INVESTIMENTI PROPRI  & 0.00  & 0.00  & \\
+654  & Trasferimento di partecipazioni nelle imprese pubbliche  & 0.00  & 0.00  & \\
+655  & Trasferimento di partecipazioni nelle imprese private  & 0.00  & 0.00  & \\
+656  & Trasferimento di partecipazioni nelle organizzazioni private senza scopo di lucro  & 0.00  & 0.00  & \\
+65  & TRASFERIMENTO DI PARTECIPAZIONI NEI BENI PATRIMONIALI  & 0.00  & 0.00  & \\
+680  & Entrate straordinarie per investimenti materiali  & 0.00  & 0.00  & \\
+682  & Entrate straordinarie per investimenti immateriali  & 0.00  & 0.00  & \\
+683  & Contributi straordinari per investimenti propri  & 0.00  & 0.00  & \\
+685  & Trasferimento straordinario di partecipazioni  & 0.00  & 0.00  & \\
+689  & Altre entrate straordinarie per investimenti  & 0.00  & 0.00  & \\
+68  & ENTRATE STRAORDINARIE PER INVESTIMENTI  & 0.00  & 0.00  & \\
+6  & ENTRATE PER INVESTIMENTI  & 0.00  & 0.00  & \\
  &  &  &  & \\
- & ONERE NETTO DI INVESTIMENTO  & 0.00  & 0.00  & 3'687.95 \\
+ & ONERE NETTO DI INVESTIMENTO  & 0.00  & 3'687.95  & \\
 \end{longtable}
-Banana Accounting, v. 9.0.3, Script v. 2018-04-04,  Seite  \\
+Banana Accounting, v. 9.0.3, Script v. 2018-04-04,  Pagina  \\
 \end{reportvalue}
 \lognewpage
 \begin{reportvalue}{Details Level 4}
 Patriziato di XYZ \\
 Consuntivo per subtotali 2017 \\
 \begin{longtable}[l]{ l  l  l  l  l }
- &  & Consuntivo  & Preventivo  & Consuntivo \\
- &  & 2017  & 2017  & 2016 \\
+ &  & Consuntivo  & Consuntivo  & \\
+ &  & 2017  & 2016  & \\
  & BILANCIO  &  &  & \\
  & ATTIVI  &  &  & \\
-1000  & Cassa  & 0.00  & 0.00  & 0.00 \\
-1002.00  & Banca Conto Immobili  & 10'483.95  & 19'776.77  & 6'330.47 \\
-1002.01  & Banca Conto Risparmio  & 17'298.60  & 17'378.60  & 17'298.60 \\
-1002.02  & Banca Conto Riserva forestale  & 5'137.55  & 5'149.55  & 5'137.55 \\
-100  & Liquidità  & 32'920.10  & 42'304.92  & 28'766.62 \\
-1010  & Crediti per forniture e prestazioni verso terzi  & 0.00  & 0.00  & 0.00 \\
-1019  & Altri crediti  & 0.00  & 0.00  & 0.00 \\
-101  & Crediti  & 0.00  & 0.00  & 0.00 \\
-1040  & Delimitazioni contabili attive del conto di gestione corrente  & 2'403.40  & 2'486.06  & 2'486.06 \\
-1046  & Delimitazioni contabili attive del conto degli investimenti  & 0.00  & 0.00  & 0.00 \\
-104  & Ratei e risconti attivi  & 2'403.40  & 2'486.06  & 2'486.06 \\
-1070.00  & Azioni monte tamaro  & 1.00  & 1.00  & 1.00 \\
-1071  & Investimenti a reddito  & 0.00  & 0.00  & 0.00 \\
-1072  & Crediti a lungo termine  & 0.00  & 0.00  & 0.00 \\
-1079  & Altri investimenti finanziari a lungo termine  & 0.00  & 0.00  & 0.00 \\
-107  & Investimenti finanziari  & 1.00  & 1.00  & 1.00 \\
-1080.00  & Giardino casa patriziale  & 107'390.00  & 107'390.00  & 107'390.00 \\
-1084.00  & Casa patriziale  & 579'984.17  & 562'700.91  & 579'984.17 \\
-1086  & Beni mobili - beni patrimoniali  & 0.00  & 0.00  & 0.00 \\
-1089  & Altri investimenti materiali - beni patrimoniali  & 0.00  & 0.00  & 0.00 \\
-108  & Investimenti materiali - beni patrimoniali  & 687'374.17  & 670'090.91  & 687'374.17 \\
-10  & BENI PATRIMONIALI  & 722'698.67  & 714'882.89  & 718'627.85 \\
-1400  & Giardino casa Patriziale  & 0.00  & 0.00  & 0.00 \\
-1401  & Strade / Vie di comunicazione - beni amministrativi  & 0.00  & 0.00  & 0.00 \\
-1402  & Sistemazione dei corsi d'acqua e laghi - beni amministrativi  & 0.00  & 0.00  & 0.00 \\
-1403  & Altri opere del genio civile - beni amministrativi  & 0.00  & 0.00  & 0.00 \\
-1404  & Immobili  & 0.00  & 0.00  & 0.00 \\
-1405  & Boschi  & 1.00  & 1.00  & 1.00 \\
-1406  & Beni mobili - beni amministrativi  & 0.00  & 0.00  & 0.00 \\
-1409  & Altri investimenti materiali - beni amministrativi  & 0.00  & 0.00  & 0.00 \\
-140  & Investimenti materiali - beni amministrativi  & 1.00  & 1.00  & 1.00 \\
-1420  & Software - beni amministrativi  & 0.00  & 0.00  & 0.00 \\
-1429  & Altri investimenti immateriali - beni amministrativi  & 0.00  & 0.00  & 0.00 \\
-142  & Investimenti immateriali  & 0.00  & 0.00  & 0.00 \\
-1441  & Prestiti ad altri enti pubblici  & 0.00  & 0.00  & 0.00 \\
-1442  & Prestiti ad enti privati  & 0.00  & 0.00  & 0.00 \\
-144  & Prestiti  & 0.00  & 0.00  & 0.00 \\
-1454  & Partecipazioni ad imprese pubbliche  & 0.00  & 0.00  & 0.00 \\
-1455  & Azioni e quote di partecipazione  & 0.00  & 0.00  & 0.00 \\
-1456  & Partecipazioni ad organizzazioni private senza scopo di lucro  & 0.00  & 0.00  & 0.00 \\
-145  & Partecipazioni, capitali sociali  & 0.00  & 0.00  & 0.00 \\
-1461  & Contributi agli investimenti ad altri enti pubblici  & 0.00  & 0.00  & 0.00 \\
-1462  & Contributi agli investimenti ad enti privati  & 0.00  & 0.00  & 0.00 \\
-146  & Contributi agli investimenti  & 0.00  & 0.00  & 0.00 \\
-14  & BENI AMMINISTRATIVI  & 1.00  & 1.00  & 1.00 \\
-1  & ATTIVI  & 722'699.67  & 714'883.89  & 718'628.85 \\
+1000  & Cassa  & 0.00  & 0.00  & \\
+1002.00  & Banca Conto Immobili  & 10'483.95  & 6'330.47  & \\
+1002.01  & Banca Conto Risparmio  & 17'298.60  & 17'298.60  & \\
+1002.02  & Banca Conto Riserva forestale  & 5'137.55  & 5'137.55  & \\
+100  & Liquidità  & 32'920.10  & 28'766.62  & \\
+1010  & Crediti per forniture e prestazioni verso terzi  & 0.00  & 0.00  & \\
+1019  & Altri crediti  & 0.00  & 0.00  & \\
+101  & Crediti  & 0.00  & 0.00  & \\
+1040  & Delimitazioni contabili attive del conto di gestione corrente  & 2'403.40  & 2'486.06  & \\
+1046  & Delimitazioni contabili attive del conto degli investimenti  & 0.00  & 0.00  & \\
+104  & Ratei e risconti attivi  & 2'403.40  & 2'486.06  & \\
+1070.00  & Azioni monte tamaro  & 1.00  & 1.00  & \\
+1071  & Investimenti a reddito  & 0.00  & 0.00  & \\
+1072  & Crediti a lungo termine  & 0.00  & 0.00  & \\
+1079  & Altri investimenti finanziari a lungo termine  & 0.00  & 0.00  & \\
+107  & Investimenti finanziari  & 1.00  & 1.00  & \\
+1080.00  & Giardino casa patriziale  & 107'390.00  & 107'390.00  & \\
+1084.00  & Casa patriziale  & 579'984.17  & 579'984.17  & \\
+1086  & Beni mobili - beni patrimoniali  & 0.00  & 0.00  & \\
+1089  & Altri investimenti materiali - beni patrimoniali  & 0.00  & 0.00  & \\
+108  & Investimenti materiali - beni patrimoniali  & 687'374.17  & 687'374.17  & \\
+10  & BENI PATRIMONIALI  & 722'698.67  & 718'627.85  & \\
+1400  & Giardino casa Patriziale  & 0.00  & 0.00  & \\
+1401  & Strade / Vie di comunicazione - beni amministrativi  & 0.00  & 0.00  & \\
+1402  & Sistemazione dei corsi d'acqua e laghi - beni amministrativi  & 0.00  & 0.00  & \\
+1403  & Altri opere del genio civile - beni amministrativi  & 0.00  & 0.00  & \\
+1404  & Immobili  & 0.00  & 0.00  & \\
+1405  & Boschi  & 1.00  & 1.00  & \\
+1406  & Beni mobili - beni amministrativi  & 0.00  & 0.00  & \\
+1409  & Altri investimenti materiali - beni amministrativi  & 0.00  & 0.00  & \\
+140  & Investimenti materiali - beni amministrativi  & 1.00  & 1.00  & \\
+1420  & Software - beni amministrativi  & 0.00  & 0.00  & \\
+1429  & Altri investimenti immateriali - beni amministrativi  & 0.00  & 0.00  & \\
+142  & Investimenti immateriali  & 0.00  & 0.00  & \\
+1441  & Prestiti ad altri enti pubblici  & 0.00  & 0.00  & \\
+1442  & Prestiti ad enti privati  & 0.00  & 0.00  & \\
+144  & Prestiti  & 0.00  & 0.00  & \\
+1454  & Partecipazioni ad imprese pubbliche  & 0.00  & 0.00  & \\
+1455  & Azioni e quote di partecipazione  & 0.00  & 0.00  & \\
+1456  & Partecipazioni ad organizzazioni private senza scopo di lucro  & 0.00  & 0.00  & \\
+145  & Partecipazioni, capitali sociali  & 0.00  & 0.00  & \\
+1461  & Contributi agli investimenti ad altri enti pubblici  & 0.00  & 0.00  & \\
+1462  & Contributi agli investimenti ad enti privati  & 0.00  & 0.00  & \\
+146  & Contributi agli investimenti  & 0.00  & 0.00  & \\
+14  & BENI AMMINISTRATIVI  & 1.00  & 1.00  & \\
+1  & ATTIVI  & 722'699.67  & 718'628.85  & \\
  &  &  &  & \\
  & PASSIVI  &  &  & \\
-2000  & Impegni correnti da forniture e prestazioni di terzi  & 0.00  & 0.00  & 0.00 \\
-2002  & Creditori IVA (IVA trattenuta)  & 0.00  & 0.00  & 0.00 \\
-2003  & Acconti di terzi ricevuti  & 0.00  & 0.00  & 0.00 \\
-2009  & Altri impegni correnti  & 0.00  & 0.00  & 0.00 \\
-200  & Impegni correnti  & 0.00  & 0.00  & 0.00 \\
-2010  & Impegni verso intermediari finanziari  & 0.00  & 0.00  & 0.00 \\
-2019  & Altri impegni finanziari a breve termine nei confronti di terzi  & 0.00  & 0.00  & 0.00 \\
-201  & Impegni a breve termine  & 0.00  & 0.00  & 0.00 \\
-2040  & Delimitazioni contabili passive del conto di gestione corrente  & 110.00  & 5'783.81  & 5'783.81 \\
-2046  & Delimitazioni contabili passive del conto degli investimenti  & 0.00  & 0.00  & 0.00 \\
-204  & Ratei e risconti passivi  & 110.00  & 5'783.81  & 5'783.81 \\
-2050  & Accantonamenti a breve termine  & 0.00  & 0.00  & 0.00 \\
-205  & Accantonamenti a breve termine  & 0.00  & 0.00  & 0.00 \\
-2010.00  & Banca Conto Prestito  & 357'000.00  & 354'750.00  & 363'750.00 \\
-2063  & Prestiti obbligazionari  & 0.00  & 0.00  & 0.00 \\
-2064  & Mutui, riconoscimenti di debito  & 0.00  & 0.00  & 0.00 \\
-2067  & Contratti di leasing  & 0.00  & 0.00  & 0.00 \\
-2069  & Altri impegni a lungo termine  & 0.00  & 0.00  & 0.00 \\
-206  & Impegni a lungo termine  & 357'000.00  & 354'750.00  & 363'750.00 \\
-2080  & Accantonamenti a lungo termine  & 0.00  & 0.00  & 0.00 \\
-208  & Accantonamenti a lungo termine  & 0.00  & 0.00  & 0.00 \\
-2092  & Impegni verso legati e fondi  & 0.00  & 0.00  & 0.00 \\
-209  & Crediti nei confronti di finanziamenti speciali e di fondi  & 0.00  & 0.00  & 0.00 \\
-20  & CAPITALE DEI TERZI  & 357'110.00  & 360'533.81  & 369'533.81 \\
-2990  & Risultato annuale  & 16'494.63  & 5'255.04  & 16'534.65 \\
-2999  & Risultati cumulati degli anni precedenti  & 349'095.04  & 349'095.04  & 332'560.39 \\
-299  & Eccedenze / Disavanzi di bilancio  & 365'589.67  & 354'350.08  & 349'095.04 \\
-29  & CAPITALE PROPRIO  & 365'589.67  & 354'350.08  & 349'095.04 \\
-2  & PASSIVI  & 722'699.67  & 714'883.89  & 718'628.85 \\
+2000  & Impegni correnti da forniture e prestazioni di terzi  & 0.00  & 0.00  & \\
+2002  & Creditori IVA (IVA trattenuta)  & 0.00  & 0.00  & \\
+2003  & Acconti di terzi ricevuti  & 0.00  & 0.00  & \\
+2009  & Altri impegni correnti  & 0.00  & 0.00  & \\
+200  & Impegni correnti  & 0.00  & 0.00  & \\
+2010  & Impegni verso intermediari finanziari  & 0.00  & 0.00  & \\
+2019  & Altri impegni finanziari a breve termine nei confronti di terzi  & 0.00  & 0.00  & \\
+201  & Impegni a breve termine  & 0.00  & 0.00  & \\
+2040  & Delimitazioni contabili passive del conto di gestione corrente  & 110.00  & 5'783.81  & \\
+2046  & Delimitazioni contabili passive del conto degli investimenti  & 0.00  & 0.00  & \\
+204  & Ratei e risconti passivi  & 110.00  & 5'783.81  & \\
+2050  & Accantonamenti a breve termine  & 0.00  & 0.00  & \\
+205  & Accantonamenti a breve termine  & 0.00  & 0.00  & \\
+2010.00  & Banca Conto Prestito  & 357'000.00  & 363'750.00  & \\
+2063  & Prestiti obbligazionari  & 0.00  & 0.00  & \\
+2064  & Mutui, riconoscimenti di debito  & 0.00  & 0.00  & \\
+2067  & Contratti di leasing  & 0.00  & 0.00  & \\
+2069  & Altri impegni a lungo termine  & 0.00  & 0.00  & \\
+206  & Impegni a lungo termine  & 357'000.00  & 363'750.00  & \\
+2080  & Accantonamenti a lungo termine  & 0.00  & 0.00  & \\
+208  & Accantonamenti a lungo termine  & 0.00  & 0.00  & \\
+2092  & Impegni verso legati e fondi  & 0.00  & 0.00  & \\
+209  & Crediti nei confronti di finanziamenti speciali e di fondi  & 0.00  & 0.00  & \\
+20  & CAPITALE DEI TERZI  & 357'110.00  & 369'533.81  & \\
+2990  & Risultato annuale  & 16'494.63  & 16'534.65  & \\
+2999  & Risultati cumulati degli anni precedenti  & 349'095.04  & 332'560.39  & \\
+299  & Eccedenze / Disavanzi di bilancio  & 365'589.67  & 349'095.04  & \\
+29  & CAPITALE PROPRIO  & 365'589.67  & 349'095.04  & \\
+2  & PASSIVI  & 722'699.67  & 718'628.85  & \\
  &  &  &  & \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l  l }
+ &  & Consuntivo  & Preventivo  & Consuntivo \\
+ &  & 2017  & 2017  & 2016 \\
  & CONTO ECONOMICO  &  &  & \\
  & SPESE  &  &  & \\
 3000  & Stipendi di autorità  & 0.00  & 180.00  & 180.00 \\
@@ -663,113 +691,117 @@ Consuntivo per subtotali 2017 \\
  & TOTALE RICAVI  & 32'330.03  & 43'072.00  & 43'824.10 \\
  & SALDO  & 16'494.63  & 5'255.04  & 16'534.65 \\
  &  &  &  & \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l  l }
+ &  & Consuntivo  & Consuntivo  & \\
+ &  & 2017  & 2016  & \\
  & CONTO DEGLI INVESTIMENTI  &  &  & \\
  & USCITE PER INVESTIMENTI  &  &  & \\
-.5000  & Terreni  & 0.00  & 0.00  & 0.00 \\
-500  & Terreni  & 0.00  & 0.00  & 0.00 \\
-.5010  & Strade / Vie di comunicazione  & 0.00  & 0.00  & 0.00 \\
-501  & Strade / Vie di comunicazione  & 0.00  & 0.00  & 0.00 \\
-.5020  & Sistemazione dei corsi d'acqua e laghi  & 0.00  & 0.00  & 0.00 \\
-502  & Sistemazione dei corsi d'acqua e laghi  & 0.00  & 0.00  & 0.00 \\
-.5030  & Altre opere del genio civile  & 0.00  & 0.00  & 0.00 \\
-503  & Altre opere del genio civile  & 0.00  & 0.00  & 0.00 \\
-.5040.00  & Sostituzione impianto di riscaldamento (AP 3 marzo 2015, chf 28'000.-)  & 0.00  & 0.00  & 0.00 \\
-.5040.01  & Contributi di costruzione supplementari  & 0.00  & 0.00  & 3'687.95 \\
-504  & Immobili  & 0.00  & 0.00  & 3'687.95 \\
-.5050  & Boschi  & 0.00  & 0.00  & 0.00 \\
-505  & Boschi  & 0.00  & 0.00  & 0.00 \\
-.5060  & Beni mobili  & 0.00  & 0.00  & 0.00 \\
-506  & Beni mobili  & 0.00  & 0.00  & 0.00 \\
-.5090  & Altri investimenti materiali  & 0.00  & 0.00  & 0.00 \\
-509  & Altri investimenti materiali  & 0.00  & 0.00  & 0.00 \\
-50  & INVESTIMENTI MATERIALI  & 0.00  & 0.00  & 3'687.95 \\
-.5200  & Software  & 0.00  & 0.00  & 0.00 \\
-520  & Software  & 0.00  & 0.00  & 0.00 \\
-.5210  & Brevetti / Licenze  & 0.00  & 0.00  & 0.00 \\
-521  & Brevetti / Licenze  & 0.00  & 0.00  & 0.00 \\
-.5290  & Altri investimenti immateriali  & 0.00  & 0.00  & 0.00 \\
-529  & Altri investimenti immateriali  & 0.00  & 0.00  & 0.00 \\
-52  & INVESTIMENTI IMMATERIALI  & 0.00  & 0.00  & 0.00 \\
-.5800  & Investimenti materiali straordinari  & 0.00  & 0.00  & 0.00 \\
-580  & Investimenti materiali straordinari  & 0.00  & 0.00  & 0.00 \\
-.5820  & Investimenti immateriali straordinari  & 0.00  & 0.00  & 0.00 \\
-582  & Investimenti immateriali straordinari  & 0.00  & 0.00  & 0.00 \\
-.5850  & Investimenti straordinari per partecipazioni e capitali sociali  & 0.00  & 0.00  & 0.00 \\
-585  & Investimenti straordinari per partecipazioni e capitali sociali  & 0.00  & 0.00  & 0.00 \\
-.5860  & Contributi per investimenti straordinari  & 0.00  & 0.00  & 0.00 \\
-586  & Contributi per investimenti straordinari  & 0.00  & 0.00  & 0.00 \\
-.5890  & Altri investimenti materiali straordinari  & 0.00  & 0.00  & 0.00 \\
-589  & Altri investimenti materiali straordinari  & 0.00  & 0.00  & 0.00 \\
-58  & INVESTIMENTI STRAORDINARI  & 0.00  & 0.00  & 0.00 \\
-5  & USCITE PER INVESTIMENTI  & 0.00  & 0.00  & 3'687.95 \\
+.5000  & Terreni  & 0.00  & 0.00  & \\
+500  & Terreni  & 0.00  & 0.00  & \\
+.5010  & Strade / Vie di comunicazione  & 0.00  & 0.00  & \\
+501  & Strade / Vie di comunicazione  & 0.00  & 0.00  & \\
+.5020  & Sistemazione dei corsi d'acqua e laghi  & 0.00  & 0.00  & \\
+502  & Sistemazione dei corsi d'acqua e laghi  & 0.00  & 0.00  & \\
+.5030  & Altre opere del genio civile  & 0.00  & 0.00  & \\
+503  & Altre opere del genio civile  & 0.00  & 0.00  & \\
+.5040.00  & Sostituzione impianto di riscaldamento (AP 3 marzo 2015, chf 28'000.-)  & 0.00  & 0.00  & \\
+.5040.01  & Contributi di costruzione supplementari  & 0.00  & 3'687.95  & \\
+504  & Immobili  & 0.00  & 3'687.95  & \\
+.5050  & Boschi  & 0.00  & 0.00  & \\
+505  & Boschi  & 0.00  & 0.00  & \\
+.5060  & Beni mobili  & 0.00  & 0.00  & \\
+506  & Beni mobili  & 0.00  & 0.00  & \\
+.5090  & Altri investimenti materiali  & 0.00  & 0.00  & \\
+509  & Altri investimenti materiali  & 0.00  & 0.00  & \\
+50  & INVESTIMENTI MATERIALI  & 0.00  & 3'687.95  & \\
+.5200  & Software  & 0.00  & 0.00  & \\
+520  & Software  & 0.00  & 0.00  & \\
+.5210  & Brevetti / Licenze  & 0.00  & 0.00  & \\
+521  & Brevetti / Licenze  & 0.00  & 0.00  & \\
+.5290  & Altri investimenti immateriali  & 0.00  & 0.00  & \\
+529  & Altri investimenti immateriali  & 0.00  & 0.00  & \\
+52  & INVESTIMENTI IMMATERIALI  & 0.00  & 0.00  & \\
+.5800  & Investimenti materiali straordinari  & 0.00  & 0.00  & \\
+580  & Investimenti materiali straordinari  & 0.00  & 0.00  & \\
+.5820  & Investimenti immateriali straordinari  & 0.00  & 0.00  & \\
+582  & Investimenti immateriali straordinari  & 0.00  & 0.00  & \\
+.5850  & Investimenti straordinari per partecipazioni e capitali sociali  & 0.00  & 0.00  & \\
+585  & Investimenti straordinari per partecipazioni e capitali sociali  & 0.00  & 0.00  & \\
+.5860  & Contributi per investimenti straordinari  & 0.00  & 0.00  & \\
+586  & Contributi per investimenti straordinari  & 0.00  & 0.00  & \\
+.5890  & Altri investimenti materiali straordinari  & 0.00  & 0.00  & \\
+589  & Altri investimenti materiali straordinari  & 0.00  & 0.00  & \\
+58  & INVESTIMENTI STRAORDINARI  & 0.00  & 0.00  & \\
+5  & USCITE PER INVESTIMENTI  & 0.00  & 3'687.95  & \\
  &  &  &  & \\
  & ENTRATE PER INVESTIMENTI  &  &  & \\
-.6000  & Contributi per investimenti propri   & 0.00  & 0.00  & 0.00 \\
-600  & ALIENAZIONE DI INVESTIMENTI IMMATERIALI  & 0.00  & 0.00  & 0.00 \\
-.6010  & Entrate straordinarie per investimenti  & 0.00  & 0.00  & 0.00 \\
-601  & TRASFERIMENTO DI PARTECIPAZIONI NEI BENI PATRIMONIALI  & 0.00  & 0.00  & 0.00 \\
-.6020  & Trasferimento sistemazione corsi d'acqua  & 0.00  & 0.00  & 0.00 \\
-602  & Trasferimento sistemazione corsi d'acqua  & 0.00  & 0.00  & 0.00 \\
-.6030  & Trasferimento altre opere del genio civile  & 0.00  & 0.00  & 0.00 \\
-603  & Trasferimento altre opere del genio civile  & 0.00  & 0.00  & 0.00 \\
-.6040  & Trasferimento immobili  & 0.00  & 0.00  & 0.00 \\
-604  & Trasferimento immobili  & 0.00  & 0.00  & 0.00 \\
-.6050  & Trasferimento boschi  & 0.00  & 0.00  & 0.00 \\
-605  & Trasferimento boschi  & 0.00  & 0.00  & 0.00 \\
-.6060  & Trasferimento beni mobili  & 0.00  & 0.00  & 0.00 \\
-606  & Trasferimento beni mobili  & 0.00  & 0.00  & 0.00 \\
-.6090  & Trasferimento altri investimenti materiali  & 0.00  & 0.00  & 0.00 \\
-609  & Trasferimento altri investimenti materiali  & 0.00  & 0.00  & 0.00 \\
-60  & TRASFERIMENTI DI INVESTIMENTI MATERIALI IN BENI PATRIMONIALI  & 0.00  & 0.00  & 0.00 \\
-.6200  & Alienazione di software  & 0.00  & 0.00  & 0.00 \\
-620  & Alienazione software  & 0.00  & 0.00  & 0.00 \\
-.6210  & Alienazione di brevetti / licenze  & 0.00  & 0.00  & 0.00 \\
-621  & Alienazione di brevetti / licenze  & 0.00  & 0.00  & 0.00 \\
-.6290  & Alienazione di altri investimenti immateriali  & 0.00  & 0.00  & 0.00 \\
-629  & Alienazione di altri investimenti immateriali  & 0.00  & 0.00  & 0.00 \\
-62  & ALIENAZIONE DI INVESTIMENTI IMMATERIALI  & 0.00  & 0.00  & 0.00 \\
-.6300  & Contributi alla Confederazione  & 0.00  & 0.00  & 0.00 \\
-630  & Contributi dalla Confederazione  & 0.00  & 0.00  & 0.00 \\
-.6310  & Contributi dal Cantone  & 0.00  & 0.00  & 0.00 \\
-631  & Contributi dal Cantone  & 0.00  & 0.00  & 0.00 \\
-.6320  & Contributi da Comuni e consorzi comunali  & 0.00  & 0.00  & 0.00 \\
-632  & Contributi da Comuni e altri enti locali  & 0.00  & 0.00  & 0.00 \\
-.6330  & Contributi da assicurazioni sociali pubbliche  & 0.00  & 0.00  & 0.00 \\
-633  & Contributi da assicurazioni sociali pubbliche  & 0.00  & 0.00  & 0.00 \\
-.6340  & Contributi da imprese pubbliche  & 0.00  & 0.00  & 0.00 \\
-634  & Contributi da imprese pubbliche  & 0.00  & 0.00  & 0.00 \\
-.6350  & Contributi da imprese private  & 0.00  & 0.00  & 0.00 \\
-635  & Contributi da imprese private  & 0.00  & 0.00  & 0.00 \\
-.6360  & Contributi da organizzazioni private senza scopo di lucro  & 0.00  & 0.00  & 0.00 \\
-636  & Contributi da organizzazioni private senza scopo di lucro  & 0.00  & 0.00  & 0.00 \\
-.6370  & Contributi da economie domestiche private  & 0.00  & 0.00  & 0.00 \\
-637  & Contributi da economie domestiche private  & 0.00  & 0.00  & 0.00 \\
-.6380  & Contributi dall'estero  & 0.00  & 0.00  & 0.00 \\
-638  & Contributi dall'estero  & 0.00  & 0.00  & 0.00 \\
-63  & CONTRIBUTI PER INVESTIMENTI PROPRI  & 0.00  & 0.00  & 0.00 \\
-.6540  & Trasferimento di partecipazioni nelle imprese pubbliche  & 0.00  & 0.00  & 0.00 \\
-654  & Trasferimento di partecipazioni nelle imprese pubbliche  & 0.00  & 0.00  & 0.00 \\
-.6550  & Trasferimento di partecipazioni nelle imprese private  & 0.00  & 0.00  & 0.00 \\
-655  & Trasferimento di partecipazioni nelle imprese private  & 0.00  & 0.00  & 0.00 \\
-.6560  & Trasferimento di partecipazioni nelle organizzazioni private senza scopo di lucro  & 0.00  & 0.00  & 0.00 \\
-656  & Trasferimento di partecipazioni nelle organizzazioni private senza scopo di lucro  & 0.00  & 0.00  & 0.00 \\
-65  & TRASFERIMENTO DI PARTECIPAZIONI NEI BENI PATRIMONIALI  & 0.00  & 0.00  & 0.00 \\
-.6800  & Entrate straordinarie per investimenti materiali  & 0.00  & 0.00  & 0.00 \\
-680  & Entrate straordinarie per investimenti materiali  & 0.00  & 0.00  & 0.00 \\
-.6820  & Entrate straordinarie per investimenti immateriali  & 0.00  & 0.00  & 0.00 \\
-682  & Entrate straordinarie per investimenti immateriali  & 0.00  & 0.00  & 0.00 \\
-.6830  & Contributi straordinari per investimenti propri  & 0.00  & 0.00  & 0.00 \\
-683  & Contributi straordinari per investimenti propri  & 0.00  & 0.00  & 0.00 \\
-.6850  & Trasferimento straordinario di partecipazioni  & 0.00  & 0.00  & 0.00 \\
-685  & Trasferimento straordinario di partecipazioni  & 0.00  & 0.00  & 0.00 \\
-.6890  & Altre entrate straordinarie per investimenti  & 0.00  & 0.00  & 0.00 \\
-689  & Altre entrate straordinarie per investimenti  & 0.00  & 0.00  & 0.00 \\
-68  & ENTRATE STRAORDINARIE PER INVESTIMENTI  & 0.00  & 0.00  & 0.00 \\
-6  & ENTRATE PER INVESTIMENTI  & 0.00  & 0.00  & 0.00 \\
+.6000  & Contributi per investimenti propri   & 0.00  & 0.00  & \\
+600  & ALIENAZIONE DI INVESTIMENTI IMMATERIALI  & 0.00  & 0.00  & \\
+.6010  & Entrate straordinarie per investimenti  & 0.00  & 0.00  & \\
+601  & TRASFERIMENTO DI PARTECIPAZIONI NEI BENI PATRIMONIALI  & 0.00  & 0.00  & \\
+.6020  & Trasferimento sistemazione corsi d'acqua  & 0.00  & 0.00  & \\
+602  & Trasferimento sistemazione corsi d'acqua  & 0.00  & 0.00  & \\
+.6030  & Trasferimento altre opere del genio civile  & 0.00  & 0.00  & \\
+603  & Trasferimento altre opere del genio civile  & 0.00  & 0.00  & \\
+.6040  & Trasferimento immobili  & 0.00  & 0.00  & \\
+604  & Trasferimento immobili  & 0.00  & 0.00  & \\
+.6050  & Trasferimento boschi  & 0.00  & 0.00  & \\
+605  & Trasferimento boschi  & 0.00  & 0.00  & \\
+.6060  & Trasferimento beni mobili  & 0.00  & 0.00  & \\
+606  & Trasferimento beni mobili  & 0.00  & 0.00  & \\
+.6090  & Trasferimento altri investimenti materiali  & 0.00  & 0.00  & \\
+609  & Trasferimento altri investimenti materiali  & 0.00  & 0.00  & \\
+60  & TRASFERIMENTI DI INVESTIMENTI MATERIALI IN BENI PATRIMONIALI  & 0.00  & 0.00  & \\
+.6200  & Alienazione di software  & 0.00  & 0.00  & \\
+620  & Alienazione software  & 0.00  & 0.00  & \\
+.6210  & Alienazione di brevetti / licenze  & 0.00  & 0.00  & \\
+621  & Alienazione di brevetti / licenze  & 0.00  & 0.00  & \\
+.6290  & Alienazione di altri investimenti immateriali  & 0.00  & 0.00  & \\
+629  & Alienazione di altri investimenti immateriali  & 0.00  & 0.00  & \\
+62  & ALIENAZIONE DI INVESTIMENTI IMMATERIALI  & 0.00  & 0.00  & \\
+.6300  & Contributi alla Confederazione  & 0.00  & 0.00  & \\
+630  & Contributi dalla Confederazione  & 0.00  & 0.00  & \\
+.6310  & Contributi dal Cantone  & 0.00  & 0.00  & \\
+631  & Contributi dal Cantone  & 0.00  & 0.00  & \\
+.6320  & Contributi da Comuni e consorzi comunali  & 0.00  & 0.00  & \\
+632  & Contributi da Comuni e altri enti locali  & 0.00  & 0.00  & \\
+.6330  & Contributi da assicurazioni sociali pubbliche  & 0.00  & 0.00  & \\
+633  & Contributi da assicurazioni sociali pubbliche  & 0.00  & 0.00  & \\
+.6340  & Contributi da imprese pubbliche  & 0.00  & 0.00  & \\
+634  & Contributi da imprese pubbliche  & 0.00  & 0.00  & \\
+.6350  & Contributi da imprese private  & 0.00  & 0.00  & \\
+635  & Contributi da imprese private  & 0.00  & 0.00  & \\
+.6360  & Contributi da organizzazioni private senza scopo di lucro  & 0.00  & 0.00  & \\
+636  & Contributi da organizzazioni private senza scopo di lucro  & 0.00  & 0.00  & \\
+.6370  & Contributi da economie domestiche private  & 0.00  & 0.00  & \\
+637  & Contributi da economie domestiche private  & 0.00  & 0.00  & \\
+.6380  & Contributi dall'estero  & 0.00  & 0.00  & \\
+638  & Contributi dall'estero  & 0.00  & 0.00  & \\
+63  & CONTRIBUTI PER INVESTIMENTI PROPRI  & 0.00  & 0.00  & \\
+.6540  & Trasferimento di partecipazioni nelle imprese pubbliche  & 0.00  & 0.00  & \\
+654  & Trasferimento di partecipazioni nelle imprese pubbliche  & 0.00  & 0.00  & \\
+.6550  & Trasferimento di partecipazioni nelle imprese private  & 0.00  & 0.00  & \\
+655  & Trasferimento di partecipazioni nelle imprese private  & 0.00  & 0.00  & \\
+.6560  & Trasferimento di partecipazioni nelle organizzazioni private senza scopo di lucro  & 0.00  & 0.00  & \\
+656  & Trasferimento di partecipazioni nelle organizzazioni private senza scopo di lucro  & 0.00  & 0.00  & \\
+65  & TRASFERIMENTO DI PARTECIPAZIONI NEI BENI PATRIMONIALI  & 0.00  & 0.00  & \\
+.6800  & Entrate straordinarie per investimenti materiali  & 0.00  & 0.00  & \\
+680  & Entrate straordinarie per investimenti materiali  & 0.00  & 0.00  & \\
+.6820  & Entrate straordinarie per investimenti immateriali  & 0.00  & 0.00  & \\
+682  & Entrate straordinarie per investimenti immateriali  & 0.00  & 0.00  & \\
+.6830  & Contributi straordinari per investimenti propri  & 0.00  & 0.00  & \\
+683  & Contributi straordinari per investimenti propri  & 0.00  & 0.00  & \\
+.6850  & Trasferimento straordinario di partecipazioni  & 0.00  & 0.00  & \\
+685  & Trasferimento straordinario di partecipazioni  & 0.00  & 0.00  & \\
+.6890  & Altre entrate straordinarie per investimenti  & 0.00  & 0.00  & \\
+689  & Altre entrate straordinarie per investimenti  & 0.00  & 0.00  & \\
+68  & ENTRATE STRAORDINARIE PER INVESTIMENTI  & 0.00  & 0.00  & \\
+6  & ENTRATE PER INVESTIMENTI  & 0.00  & 0.00  & \\
  &  &  &  & \\
- & ONERE NETTO DI INVESTIMENTO  & 0.00  & 0.00  & 3'687.95 \\
+ & ONERE NETTO DI INVESTIMENTO  & 0.00  & 3'687.95  & \\
 \end{longtable}
-Banana Accounting, v. 9.0.3, Script v. 2018-04-04,  Seite  \\
+Banana Accounting, v. 9.0.3, Script v. 2018-04-04,  Pagina  \\
 \end{reportvalue}
 \keyvalue{Result}{Passed}
 \end{test}

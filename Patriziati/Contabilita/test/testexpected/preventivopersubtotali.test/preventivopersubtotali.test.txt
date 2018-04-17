@@ -72,7 +72,7 @@ Preventivo per subtotali 2017 \\
  &  &  &  & \\
  & ONERE NETTO DI INVESTIMENTO  & 0.00  & 0.00  & 29'237.31 \\
 \end{longtable}
-Banana Accounting, v. 9.0.3, Script v. 2018-04-04,  Seite  \\
+Banana Accounting, v. 9.0.3, Script v. 2018-04-04,  Pagina  \\
 \end{reportvalue}
 \keyvalue{Result}{Passed}
 \end{test}

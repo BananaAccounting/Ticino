@@ -60,7 +60,7 @@ Autofinanziamento  & 16'494.63  & 22'538.30  & 18'634.65 \\
  &  &  & \\
 Risultato totale  & 16'494.63  & 22'538.30  & 14'946.70 \\
 \end{longtable}
-Banana Accounting, v. 9.0.3, Script v. 2018-04-04,  Seite  \\
+Banana Accounting, v. 9.0.3, Script v. 2018-04-04,  Pagina  \\
 \end{reportvalue}
 \keyvalue{Result}{Passed}
 \end{test}
