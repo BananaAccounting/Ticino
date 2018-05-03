@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.app.patriziato.riassuntoconsuntivo
 // @api = 1.0
-// @pubdate = 2018-04-17
+// @pubdate = 2018-05-03
 // @publisher = Banana.ch SA
 // @description = Riassunto del consuntivo
 // @task = app.command
@@ -365,20 +365,27 @@ function load_form_balances(banDoc, banDocPrev, banDocPrev2, form) {
       emptyAmounts[a] = "";
    }
 
+   var banDocGroups = getExistingGroups(banDoc);
+   var banDocPrevGroups = getExistingGroups(banDocPrev);
+   var banDocPrev2Groups = getExistingGroups(banDocPrev2);
+
 	for (var i in form) {
       var formObj = form[i];
 
       if (formObj.account && formObj.account.length > 0) {
          // Get amounts from the accounting
 
-         formObj.currentBalance = banDoc.currentBalance(formObj.account);
-         formObj.currentBudget = banDoc.budgetBalance(formObj.account);
+         var filteredAccount = filterExistingGroups(formObj.account, banDocGroups);
+         formObj.currentBalance = banDoc.currentBalance(filteredAccount);
+         formObj.currentBudget = banDoc.budgetBalance(filteredAccount);
 
-         formObj.previousBalance = banDocPrev ? banDocPrev.currentBalance(formObj.account) : emptyAmounts;
-         formObj.previousBudget = banDocPrev ? banDocPrev.budgetBalance(formObj.account) : emptyAmounts;
+         var filteredAccountPrev = filterExistingGroups(formObj.account, banDocPrevGroups);
+         formObj.previousBalance = banDocPrev ? banDocPrev.currentBalance(filteredAccountPrev) : emptyAmounts;
+         formObj.previousBudget = banDocPrev ? banDocPrev.budgetBalance(filteredAccountPrev) : emptyAmounts;
 
-         formObj.previous2Balance = banDocPrev2 ? banDocPrev2.currentBalance(formObj.account) : emptyAmounts;
-         formObj.previous2Budget = banDocPrev2 ? banDocPrev2.budgetBalance(formObj.account) : emptyAmounts;
+         var filteredAccountPrev2 = filterExistingGroups(formObj.account, banDocPrev2Groups);
+         formObj.previous2Balance = banDocPrev2 ? banDocPrev2.currentBalance(filteredAccountPrev2) : emptyAmounts;
+         formObj.previous2Budget = banDocPrev2 ? banDocPrev2.budgetBalance(filteredAccountPrev2) : emptyAmounts;
 
          // Invert sign if requested by param
          var invertSign = false;
@@ -585,4 +592,39 @@ function create_styleSheet() {
    style.setAttribute("font-size", "9px");
 	
 	return stylesheet;
+}
+
+function getExistingGroups(banDoc) {
+   if (!banDoc)
+      return [];
+
+   var accountTable = banDoc.table("Accounts");
+   if (!accountTable)
+      return [];
+
+   var groups = [];
+   for (var ar = 0; ar < accountTable.rowCount; ar++) {
+      var groupId = accountTable.value(ar, "Group");
+      if (groupId && groupId.length > 0) {
+         groups.push(groupId);
+      }
+   }
+   return groups;
+}
+
+function filterExistingGroups(account, groups) {
+   if (account && account.substr(0,3) === "Gr=") {
+      // Remove the groups that are missing in the account's table
+      // Banana Accounting 9.0.3 or before would return 0, if a group doesn't exist in the account table
+      function groupExists(groupId) {
+         return this.indexOf(groupId) >= 0;
+      }
+
+      var accountGroups = account.substr(3).split("|");
+      accountGroups = accountGroups.filter(groupExists, groups);
+      return "Gr=" + accountGroups.join("|");
+
+   }
+
+   return account;
 }

@@ -62,6 +62,46 @@ Risultato totale  & 22'538.30  & 19'181.30  & -8'361.58 \\
 \end{longtable}
 Banana Accounting, v. 9.0.3, Script v. 2018-04-04,  Pagina  \\
 \end{reportvalue}
+\begin{reportvalue}{Report con gruppi mancanti}
+Patriziato di XYZ \\
+Riassunto del preventivo 2017 \\
+\begin{longtable}[l]{ l  l  l  l }
+ & Preventivo  & Preventivo  & Consuntivo \\
+ & 2017  & 2016  & 2015 \\
+Conto economico  &  &  & \\
+Spese operative  & 6'356.00  & 17'636.00  & 21'127.14 \\
+Ricavi operativi  & 0.00  & 0.00  & 0.00 \\
+Risultato operativo  & -6'356.00  & -17'636.00  & -21'127.14 \\
+ &  &  & \\
+Spese finanziarie  & 14'177.70  & 15'254.70  & 10'010.55 \\
+Ricavi finanziari  & 43'072.00  & 43'072.00  & 37'253.25 \\
+Risultato finanziario  & 28'894.30  & 27'817.30  & 27'242.70 \\
+ &  &  & \\
+Risultato ordinario  & 22'538.30  & 10'181.30  & 6'115.56 \\
+ &  &  & \\
+Spese straordinarie  & 6'000.00  & 6'000.00  & 2'000.00 \\
+Ricavi straordinari  & 0.00  & 0.00  & 0.00 \\
+Risultato straordinario  & -6'000.00  & -6'000.00  & -2'000.00 \\
+ &  &  & \\
+Risultato d'esercizio  & 16'538.30  & 4'181.30  & 4'115.56 \\
+ &  &  & \\
+Conto degli investimenti  &  &  & \\
+Uscite per investimenti  & 0.00  & 0.00  & 29'237.31 \\
+Entrate per investimenti  & 0.00  & 0.00  & 0.00 \\
+Investimenti netti  & 0.00  & 0.00  & 29'237.31 \\
+ &  &  & \\
+Conto di chiusura  &  &  & \\
+Investimenti netti  & 0.00  & 0.00  & 29'237.31 \\
+ &  &  & \\
+Ammortamenti ordinari  & 0.00  & 9'000.00  & 14'760.17 \\
+Ammortamenti straordinari  & 6'000.00  & 6'000.00  & 2'000.00 \\
+Risultato d'esercizio  & 16'538.30  & 4'181.30  & 4'115.56 \\
+Autofinanziamento  & 22'538.30  & 19'181.30  & 20'875.73 \\
+ &  &  & \\
+Risultato totale  & 22'538.30  & 19'181.30  & -8'361.58 \\
+\end{longtable}
+Banana Accounting, v. 9.0.3, Script v. 2018-04-04,  Pagina  \\
+\end{reportvalue}
 \keyvalue{Result}{Passed}
 \end{test}
 \end{testcase}
