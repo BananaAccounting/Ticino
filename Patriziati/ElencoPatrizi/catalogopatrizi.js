@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.app.patriziato.catalogopatrizi
 // @api = 1.0
-// @pubdate = 2018-04-09
+// @pubdate = 2018-06-27
 // @publisher = Banana.ch SA
 // @description = Catalogo Patrizi
 // @task = app.command
@@ -132,7 +132,9 @@ function printFullCatalog(banDoc, parametri) {
 
 	var date = new Date();
 	report.addParagraph(" ");
-	report.addParagraph("Data di stampa: " + Banana.Converter.toLocaleDateFormat(date));	
+   var para = report.addParagraph("Data di stampa: ");
+   var dateText = para.addText(Banana.Converter.toLocaleDateFormat(date));
+   dateText.excludeFromTest();
 
 	return report;
 }
