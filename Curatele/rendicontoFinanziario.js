@@ -1,4 +1,4 @@
-// Copyright [2015] [Banana.ch SA - Lugano Switzerland]
+// Copyright [2020] [Banana.ch SA - Lugano Switzerland]
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.script.rendicontofinanziario
 // @api = 1.0
-// @pubdate = 2015-09-21
+// @pubdate = 2020-12-09
 // @publisher = Banana.ch SA
 // @description = Rendiconto finanziario (art. 410 CC)
 // @task = app.command
@@ -71,9 +71,9 @@ function loadParam() {
 		"all" : Banana.document.table("Testi").findRowByValue("RowId","all").value("Testo"),
 
 		//Additional informations
-		"reportName":"Rendiconto finanziario - 2017",
+		"reportName":"Rendiconto finanziario",
 		"bananaVersion":"Banana Accounting, v. " + Banana.document.info("Base", "ProgramVersion"),
-		"scriptVersion":"script v. 2015-09-21 (TEST VERSION)",
+		"scriptVersion":"script v. 2020-12-09 (TEST VERSION)",
 		"pageCounterText":"Pagina",
 		"rounding" : 2,	
 		"formatNumber":true
@@ -98,6 +98,20 @@ function loadForm() {
 				"opening" : Banana.document.currentBalance(tRow.value("Account"), param.startDate, param.endDate).opening,
 				"balance" : Banana.document.currentBalance(tRow.value("Account"), param.startDate, param.endDate).balance,
 				"balanceNotConverted" : Banana.document.currentBalance(tRow.value("Account"), param.startDate, param.endDate).balance,
+				"docNumero" : tRow.value("DocNumero"),
+				"particellaNumero" : tRow.value("ParticellaNumero"),
+				"valoreStima" : tRow.value("ValoreStima")
+			});
+		}
+		if (tRow.value("Group") && (tRow.value("Gr") === "10" || tRow.value("Gr") === "20")) { //We take the rows with an existing Group with Gr=10 or Gr=20
+			form.push({
+				"account" : tRow.value("Account"),
+				"group" : tRow.value("Group"),
+				"description" : tRow.value("Description"),
+				"gr" : tRow.value("Gr"),
+				"opening" : Banana.document.currentBalance("Gr="+tRow.value("Group"), param.startDate, param.endDate).opening,
+				"balance" : Banana.document.currentBalance("Gr="+tRow.value("Group"), param.startDate, param.endDate).balance,
+				"balanceNotConverted" : Banana.document.currentBalance("Gr="+tRow.value("Group"), param.startDate, param.endDate).balance,
 				"docNumero" : tRow.value("DocNumero"),
 				"particellaNumero" : tRow.value("ParticellaNumero"),
 				"valoreStima" : tRow.value("ValoreStima")
@@ -923,45 +937,91 @@ function calcTotals() {
 	//Calcolo tot ATTIVO e PASSIVO
 	for (var i = 0; i < form.length; i++) {
 
-		//Conti con GR = 10
-		if (getObject(form, form[i].account).gr === "10") 
-		{
-			//Se il saldo >= 0, è un attivo
-			//Inizio somma dell'apertura/saldo dei beni mobili
-			if (Banana.SDecimal.sign(getObject(form, form[i].account).balance) >= 0) 
-			{
-				totaleBeniMobili = Banana.SDecimal.add(totaleBeniMobili, getObject(form, form[i].account).balance);
-				totaleBeniMobiliApertura = Banana.SDecimal.add(totaleBeniMobiliApertura, getObject(form, form[i].account).opening);
-			}
-			//Se il saldo < 0, è un passivo
-			//Inizio somma dell'apertura/saldo dei passivi
-			else if (Banana.SDecimal.sign(getObject(form, form[i].account).balance) < 0) 
-			{
-				totalePassivo = Banana.SDecimal.add(totalePassivo, getObject(form, form[i].account).balance);
-				totalePassivoApertura = Banana.SDecimal.add(totalePassivoApertura, getObject(form, form[i].account).opening);
-			}
-		}
+		if (form[i].account) {
 
-		//Conti con GR = 20
-		else if (getObject(form, form[i].account).gr === "20") 
-		{
-			//Se il saldo > 0, è un attivo
-			//Viene aggiunto nella somma dell'apertura/saldo dei beni mobili
-			//Inizio nuova somma del saldo dei "passivi positivi"
-			if (Banana.SDecimal.sign(getObject(form, form[i].account).balance) > 0) 
+			//Conti con GR = 10
+			if (getObject(form, form[i].account).gr === "10") 
 			{
-				totaleBeniMobili = Banana.SDecimal.add(totaleBeniMobili, getObject(form, form[i].account).balance);
-				totaleBeniMobiliApertura = Banana.SDecimal.add(totaleBeniMobiliApertura, getObject(form, form[i].account).opening);
-				totalePassivoP = Banana.SDecimal.add(totalePassivoP, getObject(form, form[i].account).balance);
+				//Se il saldo >= 0, è un attivo
+				//Inizio somma dell'apertura/saldo dei beni mobili
+				if (Banana.SDecimal.sign(getObject(form, form[i].account).balance) >= 0) 
+				{
+					totaleBeniMobili = Banana.SDecimal.add(totaleBeniMobili, getObject(form, form[i].account).balance);
+					totaleBeniMobiliApertura = Banana.SDecimal.add(totaleBeniMobiliApertura, getObject(form, form[i].account).opening);
+				}
+				//Se il saldo < 0, è un passivo
+				//Inizio somma dell'apertura/saldo dei passivi
+				else if (Banana.SDecimal.sign(getObject(form, form[i].account).balance) < 0) 
+				{
+					totalePassivo = Banana.SDecimal.add(totalePassivo, getObject(form, form[i].account).balance);
+					totalePassivoApertura = Banana.SDecimal.add(totalePassivoApertura, getObject(form, form[i].account).opening);
+				}
 			}
-			//Se il saldo <= 0, è un passivo
-			//Inizio nuova somma del saldo dei "passivi negativi"
-			else if (Banana.SDecimal.sign(getObject(form, form[i].account).balance) <= 0) 
+
+			//Conti con GR = 20
+			else if (getObject(form, form[i].account).gr === "20") 
 			{
-				totalePassivoN = Banana.SDecimal.add(totalePassivoN, getObject(form, form[i].account).balance);
+				//Se il saldo > 0, è un attivo
+				//Viene aggiunto nella somma dell'apertura/saldo dei beni mobili
+				//Inizio nuova somma del saldo dei "passivi positivi"
+				if (Banana.SDecimal.sign(getObject(form, form[i].account).balance) > 0) 
+				{
+					totaleBeniMobili = Banana.SDecimal.add(totaleBeniMobili, getObject(form, form[i].account).balance);
+					totaleBeniMobiliApertura = Banana.SDecimal.add(totaleBeniMobiliApertura, getObject(form, form[i].account).opening);
+					totalePassivoP = Banana.SDecimal.add(totalePassivoP, getObject(form, form[i].account).balance);
+				}
+				//Se il saldo <= 0, è un passivo
+				//Inizio nuova somma del saldo dei "passivi negativi"
+				else if (Banana.SDecimal.sign(getObject(form, form[i].account).balance) <= 0) 
+				{
+					totalePassivoN = Banana.SDecimal.add(totalePassivoN, getObject(form, form[i].account).balance);
+				}
+				//In ogni caso, sia che si tratti di un GR20>0 oppure di un GR20<=0, viene aggiunto alla somma dell'apertura dei passivi
+				totalePassivoApertura = Banana.SDecimal.add(totalePassivoApertura, getObject(form, form[i].account).opening);
+			}			
+		}
+		else if (form[i].group) {
+
+			//Gruppi con GR = 10
+			if (getObjectGroup(form, form[i].group).gr === "10")
+			{
+				//Se il saldo >= 0, è un attivo
+				//Inizio somma dell'apertura/saldo dei beni mobili
+				if (Banana.SDecimal.sign(getObjectGroup(form, form[i].group).balance) >= 0) 
+				{
+					totaleBeniMobili = Banana.SDecimal.add(totaleBeniMobili, getObjectGroup(form, form[i].group).balance);
+					totaleBeniMobiliApertura = Banana.SDecimal.add(totaleBeniMobiliApertura, getObjectGroup(form, form[i].group).opening);
+				}
+				//Se il saldo < 0, è un passivo
+				//Inizio somma dell'apertura/saldo dei passivi
+				else if (Banana.SDecimal.sign(getObjectGroup(form, form[i].group).balance) < 0) 
+				{
+					totalePassivo = Banana.SDecimal.add(totalePassivo, getObjectGroup(form, form[i].group).balance);
+					totalePassivoApertura = Banana.SDecimal.add(totalePassivoApertura, getObjectGroup(form, form[i].group).opening);
+				}
 			}
-			//In ogni caso, sia che si tratti di un GR20>0 oppure di un GR20<=0, viene aggiunto alla somma dell'apertura dei passivi
-			totalePassivoApertura = Banana.SDecimal.add(totalePassivoApertura, getObject(form, form[i].account).opening);
+
+			//Gruppi con GR = 20
+			else if (getObjectGroup(form, form[i].group).gr === "20")
+			{
+				//Se il saldo > 0, è un attivo
+				//Viene aggiunto nella somma dell'apertura/saldo dei beni mobili
+				//Inizio nuova somma del saldo dei "passivi positivi"
+				if (Banana.SDecimal.sign(getObjectGroup(form, form[i].group).balance) > 0) 
+				{
+					totaleBeniMobili = Banana.SDecimal.add(totaleBeniMobili, getObjectGroup(form, form[i].group).balance);
+					totaleBeniMobiliApertura = Banana.SDecimal.add(totaleBeniMobiliApertura, getObjectGroup(form, form[i].group).opening);
+					totalePassivoP = Banana.SDecimal.add(totalePassivoP, getObjectGroup(form, form[i].group).balance);
+				}
+				//Se il saldo <= 0, è un passivo
+				//Inizio nuova somma del saldo dei "passivi negativi"
+				else if (Banana.SDecimal.sign(getObjectGroup(form, form[i].group).balance) <= 0) 
+				{
+					totalePassivoN = Banana.SDecimal.add(totalePassivoN, getObjectGroup(form, form[i].group).balance);
+				}
+				//In ogni caso, sia che si tratti di un GR20>0 oppure di un GR20<=0, viene aggiunto alla somma dell'apertura dei passivi
+				totalePassivoApertura = Banana.SDecimal.add(totalePassivoApertura, getObjectGroup(form, form[i].group).opening);
+			}
 		}
 	}
 
@@ -1045,6 +1105,15 @@ function getObject(form, account) {
 	Banana.document.addMessage("Couldn't find object with account: " + account);
 }
 
+//The purpose of this function is to return a specific object of the form
+function getObjectGroup(form, group) {
+	for (var i = 0; i < form.length; i++) {
+		if (form[i]["group"] === group) {
+			return form[i];
+		}
+	}
+	Banana.document.addMessage("Couldn't find object with group: " + group);
+}
 
 //Funzione che verifica che non vi sia una differenza tra risultato d'esecizio da bilancio e risultato d'esercizio da conto economico
 function verificaImporti() {
@@ -1102,7 +1171,7 @@ function verificaGr() {
 //This function adds a Footer to the report
 function addFooter(report) {
    report.getFooter().addClass("footer");
-   var versionLine = report.getFooter().addText("Banana Contabilità 8" + ", ", "description");
+   var versionLine = report.getFooter().addText("Banana Contabilità" + ", ", "description");
    report.getFooter().addText(param.pageCounterText + " ", "description");
    report.getFooter().addFieldPageNr();
 }
