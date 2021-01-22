@@ -18,7 +18,7 @@
 \newenvironment{testcase}[1]{\section*{Test: #1}}{\newpage}
 \newenvironment{test}[1]{\section*{Test case: #1}}{}
 %Begin test data
-%%SCRIPT{/Users/lorenzo/Programmazione/GitHub/BananaAccounting/Ticino/Patriziati/Contabilita/test/preventivopersubtotali.test.js}
+%%SCRIPT{/Users/ivan/Documents/GitHub/Ticino/Patriziati/Contabilita/test/preventivopersubtotali.test.js}
 %
 \begin{testcase}{TestPreventivoPerSubtotali}
 \begin{test}{testReport}
@@ -66,14 +66,14 @@ Preventivo per subtotali 2017 \\
 60  & TRASFERIMENTI DI INVESTIMENTI MATERIALI IN BENI PATRIMONIALI  & 0.00  & 0.00  & 0.00 \\
 62  & ALIENAZIONE DI INVESTIMENTI IMMATERIALI  & 0.00  & 0.00  & 0.00 \\
 63  & CONTRIBUTI PER INVESTIMENTI PROPRI  & 0.00  & 0.00  & 0.00 \\
+64  & Rimborso di prestiti  & 0.00  & 0.00  & 0.00 \\
 65  & TRASFERIMENTO DI PARTECIPAZIONI NEI BENI PATRIMONIALI  & 0.00  & 0.00  & 0.00 \\
 68  & ENTRATE STRAORDINARIE PER INVESTIMENTI  & 0.00  & 0.00  & 0.00 \\
 6  & ENTRATE PER INVESTIMENTI  & 0.00  & 0.00  & 0.00 \\
  &  &  &  & \\
  & ONERE NETTO DI INVESTIMENTO  & 0.00  & 0.00  & 29'237.31 \\
 \end{longtable}
-Banana Accounting, v. 9.0.3, Script v. 2018-04-04,  Pagina  \\
-\end{reportvalue}
+Banana Accounting, v. 10.0.3.201027, Script v. 2018-04-04,  Pagina  \#page-nr \end{reportvalue}
 \keyvalue{Result}{Passed}
 \end{test}
 \end{testcase}
