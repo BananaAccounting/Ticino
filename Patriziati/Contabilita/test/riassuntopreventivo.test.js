@@ -64,12 +64,12 @@ TestRiassuntoPreventivo.prototype.testReport = function() {
    var document = null;
    var report = null;
 
-   document = Banana.application.openDocument("file:script/testcases/Contabilità Patriziato MCA2 2017.ac2");
+   document = Banana.application.openDocument("file:script/testcases/Contabilita Patriziato MCA2 2017.ac2");
    Test.assert(document);
    report = create_report(document, "", "", false);
    Test.logger.addReport("Report", report);
 
-   document = Banana.application.openDocument("file:script/testcases/Contabilità Patriziato MCA2 2017 con gruppi mancanti.ac2");
+   document = Banana.application.openDocument("file:script/testcases/Contabilita Patriziato MCA2 2017 con gruppi mancanti.ac2");
    Test.assert(document);
    report = create_report(document, "", "", false);
    Test.logger.addReport("Report con gruppi mancanti", report);

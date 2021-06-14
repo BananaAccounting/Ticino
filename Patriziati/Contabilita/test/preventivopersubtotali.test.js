@@ -61,7 +61,7 @@ TestPreventivoPerSubtotali.prototype.cleanup = function() {
 
 TestPreventivoPerSubtotali.prototype.testReport = function() {
 
-   var document = Banana.application.openDocument("file:script/testcases/Contabilità Patriziato MCA2 2017.ac2");
+   var document = Banana.application.openDocument("file:script/testcases/Contabilita Patriziato MCA2 2017.ac2");
    Test.assert(document);
 
    var report = null;

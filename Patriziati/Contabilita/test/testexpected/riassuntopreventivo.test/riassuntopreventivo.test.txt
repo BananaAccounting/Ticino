@@ -18,7 +18,7 @@
 \newenvironment{testcase}[1]{\section*{Test: #1}}{\newpage}
 \newenvironment{test}[1]{\section*{Test case: #1}}{}
 %Begin test data
-%%SCRIPT{/Users/ivan/Documents/GitHub/Ticino/Patriziati/Contabilita/test/riassuntopreventivo.test.js}
+%%SCRIPT{C:/p/GitHub/BananaAccounting/Ticino/Patriziati/Contabilita/test/riassuntopreventivo.test.js}
 %
 \begin{testcase}{TestRiassuntoPreventivo}
 \begin{test}{testReport}
@@ -60,7 +60,7 @@ Autofinanziamento  & 22'538.30  & 19'181.30  & 20'875.73 \\
  &  &  & \\
 Risultato totale  & 22'538.30  & 19'181.30  & -8'361.58 \\
 \end{longtable}
-Banana Accounting, v. 10.0.3.201027, Script v. 2018-04-04,  Pagina  \#page-nr \end{reportvalue}
+\excltest{Banana Accounting, v. 10.0.9.21161, Script v. 2018-04-04, } Pagina  \#page-nr \end{reportvalue}
 \begin{reportvalue}{Report con gruppi mancanti}
 Patriziato di XYZ \\
 Riassunto del preventivo 2017 \\
@@ -99,7 +99,7 @@ Autofinanziamento  & 22'538.30  & 19'181.30  & 20'875.73 \\
  &  &  & \\
 Risultato totale  & 22'538.30  & 19'181.30  & -8'361.58 \\
 \end{longtable}
-Banana Accounting, v. 10.0.3.201027, Script v. 2018-04-04,  Pagina  \#page-nr \end{reportvalue}
+\excltest{Banana Accounting, v. 10.0.9.21161, Script v. 2018-04-04, } Pagina  \#page-nr \end{reportvalue}
 \keyvalue{Result}{Passed}
 \end{test}
 \end{testcase}

@@ -518,7 +518,7 @@ function get_object(source, id) {
 function add_footer(report, param) {
    report.getFooter().addClass("footer");
    var versionLine = report.getFooter().addText(param.bananaVersion + ", " + param.scriptVersion + ", ", "description");
-   //versionLine.excludeFromTest();
+   versionLine.excludeFromTest();
    report.getFooter().addText("Pagina ", "description");
    report.getFooter().addFieldPageNr();
 }
