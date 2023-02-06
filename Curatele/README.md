@@ -6,8 +6,8 @@ L'estensione [rendicontoFinanziario.js](https://raw.githubusercontent.com/Banana
 1. cliccare sul link del nome file
 2. click sul bottone **Row** oppure clic tasto destro del mouse sul bottone **"Row"** e fare "Salva con nome" 
 
-## 1. Come usare questa BananaApps
-Procedere come segue per installare la app:
+## 1. Come usare questa estensione
+Procedere come segue per installare l'estensione:
 
 1. Scaricare il file della contabiltà doppia o entrate/uscite e adattarlo alle proprie esigenze
 2. Installare l'estensione **Menu > Estensioni > Gestisci estensioni**.
