@@ -1,7 +1,5 @@
 # Rendiconto finanziario per curatele
-La BananaApp [rendicontoFinanziario.js](https://raw.githubusercontent.com/BananaAccounting/Ticino/master/Curatele/rendicontoFinanziario.js) prepara il rendiconto finanziario per le curatele (art. 410 Codice civile svizzero) secondo lo schema dell'autorità di vigilanza del Cantone Ticino.
-
-Se avete una contabilità esistente e volete convertirla seguite la [spiegazione importa file]  (http://doc8.banana.ch/it/node/5045).
+L'estensione [rendicontoFinanziario.js](https://raw.githubusercontent.com/BananaAccounting/Ticino/master/Curatele/rendicontoFinanziario.js) prepara il rendiconto finanziario per le curatele (art. 410 Codice civile svizzero) secondo lo schema dell'autorità di vigilanza del Cantone Ticino.
 
 **Attenzione per scaricare i file bisogna**
 
@@ -12,8 +10,8 @@ Se avete una contabilità esistente e volete convertirla seguite la [spiegazione
 Procedere come segue per installare la app:
 
 1. Scaricare il file della contabiltà doppia o entrate/uscite e adattarlo alle proprie esigenze
-2. Installare la BananaApp curatele come indicato su http://doc8.banana.ch/it/node/7685.
-3. Eseguire nel menu menu **Apps** il comando **Rendiconto finanziario (art. 410 CC)**
+2. Installare l'estensione **Menu > Estensioni > Gestisci estensioni**.
+3. Eseguire l'estension **Menu > Estensioni > Rendiconto finanziario (art. 410 CC)**
 
 A questo punto verrà creato il report del rendiconto finanziario e sarà possibile salvarlo in formato pdf.
 
