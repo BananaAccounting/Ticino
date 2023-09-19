@@ -1,0 +1,7 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource prefix="/">
+<file>manifest.json</file>
+<file>rendicontoFinanziario2023.js</file>
+<file>style.js</file>
+</qresource>
+</RCC>
