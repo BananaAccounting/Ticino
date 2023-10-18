@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(rendicontofinanziario)
+project(rendicontofinanziario2023)
 set(EXTENSION_ID "ch.banana.ch.app.rendicontofinanziario2023")
 
 # CMake options
@@ -8,15 +8,15 @@ set(EXTENSION_ID "ch.banana.ch.app.rendicontofinanziario2023")
 # adapt the path to your environment
 # {
 #     "cmake.configureSettings": {
-#         "BAN_QT_RCC": "C:/users/user_name/AppData/Local/Programs/BananaPlusDev/rcc.exe",
-#         "BAN_EXE_PATH": "C:/users/user_name/AppData/Local/Programs/BananaPlusDev/BananaPlusDev.exe",
+#         "BAN_QT_RCC": "/Applications/BananaPlus.app/Contents/MacOS/rcc",
+#         "BAN_EXE_PATH": "/Applications/BananaPlusDev.app/Contents/MacOS/BananaPlusDev",
 #     }
 # }
 set(BAN_QT_RCC $ENV{BAN_QT_RCC} CACHE FILEPATH "Path to Qt rcc executable")
 set(BAN_EXE_PATH $ENV{BAN_EXE_PATH} CACHE FILEPATH "Path to BananaPlus executable, used to run tests")
 
 # This target is used to build the extension to a sbaa package
-add_custom_target(rendicontofinanziario
+add_custom_target(rendicontofinanziario2023
     COMMAND ${BAN_QT_RCC} -o ${EXTENSION_ID}.sbaa --binary ${EXTENSION_ID}.qrc
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
     SOURCES ${EXTENSION_ID}.qrc

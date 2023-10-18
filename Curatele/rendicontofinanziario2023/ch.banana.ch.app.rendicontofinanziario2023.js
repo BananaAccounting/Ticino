@@ -23,7 +23,7 @@
 // @outputformat = none
 // @inputdataform = none
 // @timeout = -1
-// @includejs = style.js
+// @includejs = ch.banana.ch.app.style.js
 
 
 
@@ -31,6 +31,150 @@
 var param = {};
 var form = [];
 
+
+function checkParam(message) {
+
+    // search if every parameter there is a corresponding row in the table "Testi"
+    var table = Banana.document.table("Testi");
+
+    if (!table) {
+        var message = "Aggiorna il file alla nuova versione. La tabella Testi non esiste";
+        return message;
+    }
+    var row = table.findRowByValue("RowId", "tdr");
+    if (!row) {
+        var message = "Aggiorna il file alla nuova versione. La riga tdr non esiste";
+        return message;
+    }
+    row = table.findRowByValue("RowId", "npd");
+    if (!row) {
+        var message = "Aggiorna il file alla nuova versione. La riga npd non esiste";
+        return message;
+    }
+    row = table.findRowByValue("RowId", "cpd");
+    if (!row) {
+        var message = "Aggiorna il file alla nuova versione. La riga cpd non esiste";
+        return message;
+    }
+    row = table.findRowByValue("RowId", "ddn");
+    if (!row) {
+        var message = "Aggiorna il file alla nuova versione. La riga ddn non esiste";
+        return message;
+    }
+    row = table.findRowByValue("RowId", "dom");
+    if (!row) {
+        var message = "Aggiorna il file alla nuova versione. La riga dom non esiste";
+        return message;
+    }
+    row = table.findRowByValue("RowId", "iqd");
+    if (!row) {
+        var message = "Aggiorna il file alla nuova versione. La riga iqd non esiste";
+        return message;
+    }
+    row = table.findRowByValue("RowId", "art");
+    if (!row) {
+        var message = "Aggiorna il file alla nuova versione. La riga art non esiste";
+        return message;
+    }
+    row = table.findRowByValue("RowId", "arn");
+    if (!row) {
+        var message = "Aggiorna il file alla nuova versione. La riga arn non esiste";
+        return message;
+    }
+    row = table.findRowByValue("RowId", "ard");
+    if (!row) {
+        var message = "Aggiorna il file alla nuova versione. La riga ard non esiste";
+        return message;
+    }
+    row = table.findRowByValue("RowId", "ddp");
+    if (!row) {
+        var message = "Aggiorna il file alla nuova versione. La riga ddp non esiste";
+        return message;
+    }
+    row = table.findRowByValue("RowId", "grc");
+    if (!row) {
+        var message = "Aggiorna il file alla nuova versione. La riga grc non esiste";
+        return message;
+    }
+    row = table.findRowByValue("RowId", "icg");
+    if (!row) {
+        var message = "Aggiorna il file alla nuova versione. La riga icg non esiste";
+        return message;
+    }
+    row = table.findRowByValue("RowId", "pec");
+    if (!row) {
+        var message = "Aggiorna il file alla nuova versione. La riga pec non esiste";
+        return message;
+    }
+    row = table.findRowByValue("RowId", "alt");
+    if (!row) {
+        var message = "Aggiorna il file alla nuova versione. La riga alt non esiste";
+        return message;
+    }
+    row = table.findRowByValue("RowId", "oss");
+    if (!row) {
+        var message = "Aggiorna il file alla nuova versione. La riga oss non esiste";
+        return message;
+    }
+    row = table.findRowByValue("RowId", "all");
+    if (!row) {
+        var message = "Aggiorna il file alla nuova versione. La riga all non esiste";
+        return message;
+    }
+    row = table.findRowByValue("RowId", "mod");
+    if (!row) {
+        var message = "Aggiorna il file alla nuova versione. La riga mod non esiste";
+        return message;
+    }
+    row = table.findRowByValue("RowId", "tsr");
+    if (!row) {
+        var message = "Aggiorna il file alla nuova versione. La riga tsr non esiste";
+        return message;
+    }
+    row = table.findRowByValue("RowId", "ore");
+    if (!row) {
+        var message = "Aggiorna il file alla nuova versione. La riga ore non esiste";
+        return message;
+    }
+    row = table.findRowByValue("RowId", "kmp");
+    if (!row) {
+        var message = "Aggiorna il file alla nuova versione. La riga kmp non esiste";
+        return message;
+    }
+    row = table.findRowByValue("RowId", "spe");
+    if (!row) {
+        var message = "Aggiorna il file alla nuova versione. La riga spe non esiste";
+        return message;
+    }
+    row = table.findRowByValue("RowId", "asp");
+    if (!row) {
+        var message = "Aggiorna il file alla nuova versione. La riga asp non esiste";
+        return message;
+    }
+    row = table.findRowByValue("RowId", "akm");
+    if (!row) {
+        var message = "Aggiorna il file alla nuova versione. La riga akm non esiste";
+        return message;
+    }
+    row = table.findRowByValue("RowId", "ast");
+    if (!row) {
+        var message = "Aggiorna il file alla nuova versione. La riga ast non esiste";
+        return message;
+    }
+    row = table.findRowByValue("RowId", "acc");
+    if (!row) {
+        var message = "Aggiorna il file alla nuova versione. La riga acc non esiste";
+        return message;
+    }
+    row = table.findRowByValue("RowId", "zero");
+    if (!row) {
+        var message = "Aggiorna il file alla nuova versione. La riga zero non esiste";
+        return message;
+    }
+    return true;
+
+
+}
 
 //The purpose of this function is to get and load all the parameters saved into the .ac2 
 //In order to create the report some others parameters are stored here 
@@ -87,6 +231,7 @@ function loadParam() {
         "ast": Banana.document.table("Testi").findRowByValue("RowId", "ast").value("Testo"),
         "acc": Banana.document.table("Testi").findRowByValue("RowId", "acc").value("Testo"),
         "testoaltro": Banana.document.table("Testi").findRowByValue("RowId", "asp").value("Description"),
+        "zero": Banana.document.table("Testi").findRowByValue("RowId", "zero").value("Testo"),
 
         //Additional informations
         "reportName": "Rendiconto finanziario",
@@ -176,7 +321,13 @@ function exec(string) {
     //Check if we are on an opened document
     if (!Banana.document) { return; }
 
-    /** 1. CREATE AND LOAD THE PARAMETERS AND THE FORM */
+    /** 1. CHECK, CREATE AND LOAD THE PARAMETERS AND THE FORM */
+    var message = checkParam();
+    if ( message != true ) {
+        Banana.document.addMessage(message);
+        return;
+    }
+
     loadParam();
     loadForm();
 
@@ -375,11 +526,25 @@ function printReport() {
     for (var i = 0; i < form.length; i++) {
         if (getObject(form, form[i].account).gr === "10") {
 
-            tableRow = tableAttivo.addRow();
-            tableRow.addCell(getObject(form, form[i].account).note, "Left");
-            tableRow.addCell(getObject(form, form[i].account).description, "Left");
-            tableRow.addCell(getObject(form, form[i].account).balance, "Amount Right");
-            tableRow.addCell(getObject(form, form[i].account).docNumero, "Right");
+            if (param.zero != "") {
+                tableRow = tableAttivo.addRow();
+                tableRow.addCell(getObject(form, form[i].account).note, "Left");
+                tableRow.addCell(getObject(form, form[i].account).description, "Left");
+                tableRow.addCell(getObject(form, form[i].account).balance, "Amount Right");
+                tableRow.addCell(getObject(form, form[i].account).docNumero, "Right");
+            }
+
+            else if (param.zero === "" && getObject(form, form[i].account).balance != 0) {
+                tableRow = tableAttivo.addRow();
+                tableRow.addCell(getObject(form, form[i].account).note, "Left");
+                tableRow.addCell(getObject(form, form[i].account).description, "Left");
+                tableRow.addCell(getObject(form, form[i].account).balance, "Amount Right");
+                tableRow.addCell(getObject(form, form[i].account).docNumero, "Right");
+            }
+
+            else {
+                null;
+            }
         }
     }
 
@@ -446,11 +611,26 @@ function printReport() {
 
     for (var i = 0; i < form.length; i++) {
         if (getObject(form, form[i].account).gr === "20") {
-            tableRow = tablePassivo.addRow();
-            tableRow.addCell(getObject(form, form[i].account).note, "Left");
-            tableRow.addCell(getObject(form, form[i].account).description, "Left");
-            tableRow.addCell(getObject(form, form[i].account).balance, "Amount Right");
-            tableRow.addCell("Doc. no " + getObject(form, form[i].account).docNumero, "Right");
+
+            if (param.zero != "") {
+                tableRow = tablePassivo.addRow();
+                tableRow.addCell(getObject(form, form[i].account).note, "Left");
+                tableRow.addCell(getObject(form, form[i].account).description, "Left");
+                tableRow.addCell(getObject(form, form[i].account).balance, "Amount Right");
+                tableRow.addCell("Doc. no " + getObject(form, form[i].account).docNumero, "Right");
+            }
+
+            else if (param.zero === "" && getObject(form, form[i].account).balance != 0) {
+                tableRow = tablePassivo.addRow();
+                tableRow.addCell(getObject(form, form[i].account).note, "Left");
+                tableRow.addCell(getObject(form, form[i].account).description, "Left");
+                tableRow.addCell(getObject(form, form[i].account).balance, "Amount Right");
+                tableRow.addCell("Doc. no " + getObject(form, form[i].account).docNumero, "Right");
+            }
+
+            else {
+                null;
+            }
         }
     }
 
@@ -571,10 +751,27 @@ function printReport() {
     //Cerca tutti i FUORI BILANCIO (Gr=50 e Gr=60)
     for (var i = 0; i < form.length; i++) {
         if (getObject(form, form[i].account).gr === "50" || getObject(form, form[i].account).gr === "60") {
-            tableRow = tableFuoriBilancio.addRow();
-            tableRow.addCell(getObject(form, form[i].account).description);
-            tableRow.addCell(getObject(form, form[i].account).balance, "Amount Right");
-            tableRow.addCell("Doc. no " + getObject(form, form[i].account).docNumero);
+
+            if (param.zero != "") {
+                tableRow = tableFuoriBilancio.addRow();
+                tableRow.addCell(getObject(form, form[i].account).description);
+                tableRow.addCell(getObject(form, form[i].account).balance, "Amount Right");
+                tableRow.addCell("Doc. no " + getObject(form, form[i].account).docNumero);
+
+            }
+
+            else if (param.zero === "" && getObject(form, form[i].account).balance != 0) {
+                tableRow = tableFuoriBilancio.addRow();
+                tableRow.addCell(getObject(form, form[i].account).description);
+                tableRow.addCell(getObject(form, form[i].account).balance, "Amount Right");
+                tableRow.addCell("Doc. no " + getObject(form, form[i].account).docNumero);
+
+            }
+
+            else {
+                null;
+            }
+
         }
     }
 
@@ -593,8 +790,8 @@ function printReport() {
     for (var i = 0; i < param.ossParam.length; i++) {
         sezioneOss.addCell(param.ossParam[i].testo, "bordoSinistra");
     }
-    sezioneOss.addCell(" "," ");
-    sezioneOss.addCell(" "," ");
+    sezioneOss.addCell(" ", " ");
+    sezioneOss.addCell(" ", " ");
 
 
     //------------------------------------------------------------------------------//
@@ -622,7 +819,7 @@ function printReport() {
     tableRow.addCell("CHF", "borderleft intestazioneStyle Left borderbottom");
     tableRow.addCell(getObject(form, "totEntrate").balance, "intestazioneStyle Amount Right borderbottom");
     tableRow = tableMovimentiFinanziari.addRow();
-    tableRow.addCell(" ","noborder Left borderbottom",3);
+    tableRow.addCell(" ", "noborder Left borderbottom", 3);
     tableRow = tableMovimentiFinanziari.addRow();
     tableRow.addCell("Totale uscite", "intestazioneStyle Left borderbottom");
     tableRow.addCell("CHF", "borderleft bold Left borderbottom");
@@ -636,7 +833,7 @@ function printReport() {
     tableRow.addCell("CHF", "borderleft bold Left borderbottom");
     tableRow.addCell(getObject(form, "totUscite").balance, "Amount totalStyle Right borderbottom");
     tableRow = tableMovimentiFinanziari.addRow();
-    tableRow.addCell(" ","noborder Left borderbottom",3);
+    tableRow.addCell(" ", "noborder Left borderbottom", 3);
     tableRow = tableMovimentiFinanziari.addRow();
     tableRow.addCell("Utile/perdita d'esercizio", "borderbold Left borderbottom");
     tableRow.addCell("CHF", "borderleft borderbold testoBold Left borderbottom");
@@ -791,13 +988,13 @@ function printReport() {
     tableRow = tableFirma.addRow();
     tableRow.addCell("", "bordoSinistra");
     tableRow.addCell("", "");
-    
+
     tableRow = tableFirma.addRow();
     var tableFirma = report.addTable("tableFirma");
     tableRow = tableFirma.addRow();
     tableRow.addCell("In caso di minorenni, firma dei genitori", "bordoSinistraSopra");
-    tableRow.addCell("","bordoSopra");
-    tableRow.addCell("","bordoSopra");
+    tableRow.addCell("", "bordoSopra");
+    tableRow.addCell("", "bordoSopra");
     tableRow = tableFirma.addRow();
     tableRow.addCell("Nome e Cognome", "bordoSinistra");
     tableRow.addCell("Padre/Madre", "");
@@ -1094,7 +1291,7 @@ function printReport() {
     tableRow = tableIstruzioni.addRow();
     tableRow.addCell("15.");
     tableRow.addCell("Gli ammortamenti ipotecari o di altri debiti non vanno iscritti alle uscite come spesa di esercizio inquanto sono operazioni neutrali da un punto di vista economico e alla diminuzione di liquiditàcorrisponde una identica diminuzione del debito.", "testoBold");
-    
+
     report.addPageBreak();
 
     //Aggiunge tabella per le Norme legali
