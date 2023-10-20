@@ -1,4 +1,4 @@
-// Copyright [2020] [Banana.ch SA - Lugano Switzerland]
+// Copyright [2023] [Banana.ch SA - Lugano Switzerland]
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,9 +14,9 @@
 //
 // @id = ch.banana.ch.app.rendicontofinanziario2023
 // @api = 1.0
-// @pubdate = 2023-09-12
+// @pubdate = 2023-10-20
 // @publisher = Banana.ch SA
-// @description = Rendiconto finanziario 2023 (art. 410 CC)
+// @description = Rendiconto finanziario (art. 410 CC)
 // @task = app.command
 // @doctype = 100.*;110.*;130.*
 // @docproperties = curatele
