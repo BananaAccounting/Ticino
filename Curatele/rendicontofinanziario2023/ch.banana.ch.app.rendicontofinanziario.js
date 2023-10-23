@@ -783,15 +783,14 @@ function printReport() {
     // 9.	OSSERVAZIONI
     //------------------------------------------------------------------------------//
     //Creazione dello spazio riservato alle eventuali osservazioni, da inserire manualmente nella tabella "Testi"
-    var sezioneOss = report.addTable("table", "bottom1em");
+    report.addParagraph(" ", "bottom1em");
 
-    sezioneOss.getCaption().addText("Osservazioni", "intestazioneStyle");
-
+    report.addParagraph("Osservazioni", "intestazioneStyle");
+    report.addParagraph(" ","bordoSinistraSopra");
     for (var i = 0; i < param.ossParam.length; i++) {
-        sezioneOss.addCell(param.ossParam[i].testo, "bordoSinistra");
+        report.addParagraph(param.ossParam[i].testo, "bordoSinistra");
     }
-    sezioneOss.addCell(" ", " ");
-    sezioneOss.addCell(" ", " ");
+    report.addParagraph(" ", "bordoSinistraSotto");
 
 
     //------------------------------------------------------------------------------//

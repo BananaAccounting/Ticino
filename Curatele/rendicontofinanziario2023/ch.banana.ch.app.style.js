@@ -103,6 +103,15 @@ function createStyleSheet() {
     style = docStyles.addStyle(".bordoSopra");
     style.setAttribute("border-top", "thin solid black");
 
+    //Bordo sotto
+    style = docStyles.addStyle(".bordoSotto");
+    style.setAttribute("border-bottom", "thin solid black");
+
+    //Bordo sinistra sotto
+    style = docStyles.addStyle(".bordoSinistraSotto");
+    style.setAttribute("border-left", "thin solid black");
+    style.setAttribute("border-bottom", "thin solid black");
+
     //Titoli retro pagina firme
     style = docStyles.addStyle(".titoliCentrali");
     style.setAttribute("font-size", "10pt");
@@ -169,6 +178,8 @@ function createStyleSheet() {
     tableStyle.setAttribute("padding", "5px");
     tableStyle.setAttribute("margin-top", "10px");
     tableStyle.setAttribute("margin-bottom", "10px");
+    tableStyle.setAttribute("margin-left", "0px");
+    tableStyle.setAttribute("margin-right", "0px");
 
     //Tabella titoli
     var tableStyle = docStyles.addStyle(".tableNoBorder");

@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-// @id = ch.banana.ch.app.rendicontofinanziario2023
+// @id = ch.banana.ch.app.balanceupdater
 // @api = 1.0
 // @pubdate = 2023-10-20
 // @publisher = Banana.ch SA

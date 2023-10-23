@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-// @id = ch.banana.ch.app.rendicontofinanziario2023
+// @id = ch.banana.ch.app.textsupdater
 // @api = 1.0
 // @pubdate = 2023-10-20
 // @publisher = Banana.ch SA
@@ -432,7 +432,7 @@ function UpdateTesti() {
     row.operation.sequence = '';
     row.fields["RowId"] = "zero";
     row.fields["Description"] = "Stampa importi a zero (Sì = 1, No = cella vuota)"
-    row.fields["Testo"] = "1";
+    row.fields["Testo"] = "";
     rows.push(row);
 
 
