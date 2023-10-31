@@ -1,0 +1,19 @@
+{ 
+"category": "productivity",
+    "country":"switzerland",
+    "countryCode":"ch",
+    "description": "Rendiconto finanziario (art. 410 CCS)",
+    "description.en": "Rendiconto finanziario (art. 410 CCS)",
+    "description.it": "Rendiconto finanziario (art. 410 CCS)",
+    "description.fr": "Rendiconto finanziario (art. 410 CCS)",
+    "description.de": "Rendiconto finanziario (art. 410 CCS)",
+    "id": "ch.banana.ch.app.rendicontofinanziario2023",
+    "language":"it",
+    "publisher": "Banana.ch SA",
+    "title": "Rendiconto finanziario (art. 410 CCS)",
+    "title.en": "Rendiconto finanziario (art. 410 CCS)",
+    "title.it": "Rendiconto finanziario (art. 410 CCS)",
+    "title.fr": "Rendiconto finanziario (art. 410 CCS)",
+    "title.de": "Rendiconto finanziario (art. 410 CCS)",
+    "version": "1.0"
+}

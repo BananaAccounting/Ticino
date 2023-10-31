@@ -1,0 +1,9 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource prefix="/">
+<file>manifest.json</file>
+<file>ch.banana.ch.app.rendicontofinanziario.js</file>
+<file>ch.banana.ch.app.textsupdater.js</file>
+<file>ch.banana.ch.app.balanceupdater.js</file>
+<file>ch.banana.ch.app.style.js</file>
+</qresource>
+</RCC>
