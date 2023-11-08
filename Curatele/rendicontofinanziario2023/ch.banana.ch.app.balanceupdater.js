@@ -292,6 +292,15 @@ function UpdateFuoriBilancio() {
 
 
 
+    // Se file Entrate - Uscite
+    if ( Banana.document.table("Categories") ) {
+    // remove row.fields["BClass"] reference for every row of rows
+    for (var i = 0; i < rows.length; i++) {
+        delete rows[i].fields["BClass"];
+    }
+    }
+
+
     //table
     var dataUnitTransactions = {};
     dataUnitTransactions.nameXml = 'Accounts';
