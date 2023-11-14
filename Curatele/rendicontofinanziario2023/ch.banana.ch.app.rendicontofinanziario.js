@@ -870,12 +870,14 @@ function printReport() {
     var tableIndennità = report.addTable("table", "bottom1em");
     tableIndennità.getCaption().addText("Richiesta indennità per il periodo di riferimento (allegare nota dettagliata, e giustificativi per il rimborso delle spese)", "intestazioneStyle");
 
+    let tot = 0;
     tableRow = tableIndennità.addRow();
     tableRow.addCell("Tariffa stabilita/richiesta:", "Left");
     tableRow.addCell(Banana.Converter.toLocaleNumberFormat(param.tsr, 2, true) + " CHF/h", "bold Right");
     tableRow.addCell("");
     tableRow.addCell("");
     tableRow = tableIndennità.addRow();
+    if (param.ore != "") {
     tableRow.addCell("Ore", "Left");
     tableRow.addCell(Banana.Converter.toLocaleNumberFormat(param.ore, 2, true) + " h", "bold Right");
     tableRow.addCell("");
@@ -885,13 +887,15 @@ function printReport() {
     tableRow.addCell("");
     tableRow.addCell("CHF", "bold Right");
     tableRow.addCell(Banana.Converter.toLocaleNumberFormat(param.ore * param.tsr, 2, true), "Right");
-    let tot = Number(Banana.Converter.toLocaleNumberFormat(param.ore, 2, true) * Banana.Converter.toLocaleNumberFormat(param.tsr, 2, true));
+    tot = Number(Banana.Converter.toLocaleNumberFormat(param.ore, 2, true) * Banana.Converter.toLocaleNumberFormat(param.tsr, 2, true));
     tableRow = tableIndennità.addRow();
+    }
     tableRow.addCell("Trasferte", "bold Left");
     tableRow.addCell("");
     tableRow.addCell("");
     tableRow.addCell("");
     tableRow = tableIndennità.addRow();
+    if (param.kmp != "") {
     tableRow.addCell("Domicilio curatore-domicilio curatelato", "bold Left");
     tableRow.addCell("");
     tableRow.addCell("");
@@ -903,23 +907,31 @@ function printReport() {
     tableRow.addCell(Banana.Converter.toLocaleNumberFormat(param.kmp * 0.60, 2, true), "Right");
     tot = tot + Number(Banana.Converter.toLocaleNumberFormat(param.kmp, 2, true) * 0.60);
     tableRow = tableIndennità.addRow();
+    }
+    if (tot > 0) {
     tableRow.addCell("Totale indennità", "bold Left");
     tableRow.addCell("");
     tableRow.addCell("CHF", "bold Right");
     tableRow.addCell(Banana.Converter.toLocaleNumberFormat(tot, 2, true), "Right");
     tableRow = tableIndennità.addRow();
+    }
+    if (param.spe != "") {
     tableRow.addCell("Spese (postali, cancelleria, ecc.)", "Left");
     tableRow.addCell("");
     tableRow.addCell("CHF", "bold Right");
     tableRow.addCell(Banana.Converter.toLocaleNumberFormat(param.spe, 2, true), "Right");
     tot = tot + Number(Banana.Converter.toLocaleNumberFormat(param.spe, 2, true));
     tableRow = tableIndennità.addRow();
+    }
+    if (param.asp != "") {
     tableRow.addCell(param.testoaltro, "Left");
     tableRow.addCell("");
     tableRow.addCell("CHF", "bold Right");
     tableRow.addCell(Banana.Converter.toLocaleNumberFormat(param.asp, 2, true), "Right");
     tot = tot + Number(Banana.Converter.toLocaleNumberFormat(param.asp, 2, true));
     tableRow = tableIndennità.addRow();
+    }
+    if (param.akm != "") {
     tableRow.addCell("Altre trasferte", "bold Left");
     tableRow.addCell("");
     tableRow.addCell("");
@@ -931,22 +943,29 @@ function printReport() {
     tableRow.addCell(Banana.Converter.toLocaleNumberFormat(param.akm * 0.60, 2, true), "Right");
     tot = tot + Number(Banana.Converter.toLocaleNumberFormat(param.akm, 2, true) * 0.60);
     tableRow = tableIndennità.addRow();
+    }
+    if (param.ast != "") {
     tableRow.addCell("Altre spese di trasporto", "Left");
     tableRow.addCell("");
     tableRow.addCell("CHF", "bold Right");
     tableRow.addCell(Banana.Converter.toLocaleNumberFormat(param.ast, 2, true), "Right");
     tot = tot + Number(Banana.Converter.toLocaleNumberFormat(param.ast, 2, true));
     tableRow = tableIndennità.addRow();
+    }
+    if (tot > 0) {
     tableRow.addCell("");
     tableRow.addCell("TOTALE", "bold Right");
     tableRow.addCell("CHF", "bold Right");
     tableRow.addCell(Banana.Converter.toLocaleNumberFormat(tot, 2, true), "Right  totalStyle");
     tableRow = tableIndennità.addRow();
+    }
+    if (param.acc != "") {
     tableRow.addCell("Acconti percepiti previa autorizzazione dell’ARP", "bold Left");
     tableRow.addCell("");
     tableRow.addCell("CHF", "bold Right");
     tableRow.addCell(Banana.Converter.toLocaleNumberFormat(param.acc, 2, true), "Right");
     tableRow = tableIndennità.addRow();
+    }
     report.addParagraph(" ");
 
 
