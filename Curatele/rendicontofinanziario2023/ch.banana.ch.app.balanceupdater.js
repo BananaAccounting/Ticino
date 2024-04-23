@@ -73,6 +73,35 @@ function UpdateFuoriBilancio() {
     //rows
     var rows = [];
 
+
+    // POSIZIONI FUORI BILANCIO
+
+    //row operation
+    var row = {};
+
+    //campi riga
+    row.fields = {};
+    row.operation = {};
+    row.operation.name = 'add';
+    row.operation.sequence = '';
+    row.fields["Section"] = "*";
+    row.fields["Description"] = "Posizioni fuori bilancio";
+    row.style = {};
+    row.style.bold = "true";
+    rows.push(row);
+
+    //row operation
+    var row = {};
+
+    //campi riga
+    row.fields = {};
+    row.operation = {};
+    row.operation.name = 'add';
+    row.operation.sequence = '';
+    rows.push(row);
+
+    // SEZIONE 5
+
     //row operation
     var row = {};
 
@@ -83,6 +112,8 @@ function UpdateFuoriBilancio() {
     row.operation.sequence = '';
     row.fields["Section"] = "5";
     row.fields["Description"] = "Fuori bilancio attivi";
+    row.style = {};
+    row.style.bold = "true";
     rows.push(row);
 
 
@@ -180,7 +211,23 @@ function UpdateFuoriBilancio() {
     row.operation.sequence = '';
     row.fields["Group"] = "50";
     row.fields["Description"] = "Totale fuori bilancio attività";
+    row.fields["Gr"] = "100";
+    row.style = {};
+    row.style.bold = "true";
     rows.push(row);
+
+
+    //row operation
+    var row = {};
+
+    //campi riga
+    row.fields = {};
+    row.operation = {};
+    row.operation.name = 'add';
+    row.operation.sequence = '';
+    rows.push(row);
+
+    // SEZIONE 6
 
     //row operation
     var row = {};
@@ -192,6 +239,8 @@ function UpdateFuoriBilancio() {
     row.operation.sequence = '';
     row.fields["Section"] = "6";
     row.fields["Description"] = "Fuori bilancio passivi";
+    row.style = {};
+    row.style.bold = "true";
     rows.push(row);
 
     //row operation
@@ -288,6 +337,88 @@ function UpdateFuoriBilancio() {
     row.operation.sequence = '';
     row.fields["Group"] = "60";
     row.fields["Description"] = "Totale fuori bilancio passività";
+    row.fields["Gr"] = "100";
+    row.style = {};
+    row.style.bold = "true";
+    rows.push(row);
+
+
+    //row operation
+    var row = {};
+
+    //campi riga
+    row.fields = {};
+    row.operation = {};
+    row.operation.name = 'add';
+    row.operation.sequence = '';
+    rows.push(row);
+
+    // SEZIONE 7
+
+    //row operation
+    var row = {};
+
+    //campi riga
+    row.fields = {};
+    row.operation = {};
+    row.operation.name = 'add';
+    row.operation.sequence = '';
+    row.fields["Section"] = "7";
+    row.fields["Description"] = "Contropartite conti fuori bilancio";
+    row.style = {};
+    row.style.bold = "true";
+    rows.push(row);
+
+    //row operation
+    var row = {};
+
+    //campi riga
+    row.fields = {};
+    row.operation = {};
+    row.operation.name = 'add';
+    row.operation.sequence = '';
+    row.fields["Account"] = "7000";
+    row.fields["Description"] = "Contropartite conti fuori bilancio";
+    row.fields["BClass"] = "7";
+    row.fields["Gr"] = "70";
+    rows.push(row);
+
+    //row operation
+    var row = {};
+
+    //campi riga
+    row.fields = {};
+    row.operation = {};
+    row.operation.name = 'add';
+    row.operation.sequence = '';
+    row.fields["Group"] = "70";
+    row.fields["Description"] = "Totale Contropartite conti fuori bilancio";
+    row.fields["Gr"] = "100";
+    row.style = {};
+    row.style.bold = "true";
+    rows.push(row);
+
+
+    //row operation
+    var row = {};
+
+    //campi riga
+    row.fields = {};
+    row.operation = {};
+    row.operation.name = 'add';
+    row.operation.sequence = '';
+    rows.push(row);
+
+    //row operation
+    var row = {};
+
+    //campi riga
+    row.fields = {};
+    row.operation = {};
+    row.operation.name = 'add';
+    row.operation.sequence = '';
+    row.fields["Group"] = "100";
+    row.fields["Description"] = "Differenza deve essere 0 (= cella vuota)";
     rows.push(row);
 
 
