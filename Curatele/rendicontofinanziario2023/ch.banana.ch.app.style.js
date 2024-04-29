@@ -50,7 +50,7 @@ function createStyleSheet() {
     //Paragrafo intestazione
     style = docStyles.addStyle(".paragrafoStyle");
     style.setAttribute("font-size", "10pt");
-    style.setAttribute("text-aling", "left");
+    style.setAttribute("text-align", "left");
     style.setAttribute("font-weight", "normal");
     style.setAttribute("font-family", "Arial");
     style.setAttribute("border-left", "thin solid black");
@@ -205,7 +205,7 @@ function createStyleSheet() {
     docStyles.addStyle("table.tableMF td .margintop", "padding-top: 20px;");
 
     docStyles.addStyle(".borderbold", "font-weight: bold; border-bottom: 2px solid black;");
-    docStyles.addStyle(".borderboldleft", "font-wieight: bold; border-left: 2px solid black; border-right: thin solid black;");
+    docStyles.addStyle(".borderboldleft", "font-weight: bold; border-left: 2px solid black; border-right: thin solid black;");
     docStyles.addStyle(".borderleft", "border-left: thin solid black;");
     docStyles.addStyle(".borderbottom", "border-bottom: thin solid black;");
 

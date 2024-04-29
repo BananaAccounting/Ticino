@@ -867,9 +867,9 @@ function printReport() {
     //------------------------------------------------------------------------------//
 
     //Aggiunge la tabella Richiesta Indennità al report
-    var tableIndennità = report.addTable("table", "bottom1em");
-    tableIndennità.getCaption().addText("Richiesta indennità per il periodo di riferimento (allegare nota dettagliata, e giustificativi per il rimborso delle spese)", "intestazioneStyle");
-
+    var tableIndennità = report.addTable("table");
+    var caption = tableIndennità.getCaption();
+    caption.addText("Richiesta indennità per il periodo di riferimento (allegare nota dettagliata, e giustificativi per il rimborso delle spese)", "intestazioneStyle");
     let tot = 0;
     tableRow = tableIndennità.addRow();
     tableRow.addCell("Tariffa stabilita/richiesta:", "Left");
@@ -1316,7 +1316,7 @@ function printReport() {
     report.addParagraph(" ", "bordoSinistra");
     report.addParagraph("Norme legali pertinenti alla compilazione del rendiconto", "underline bordoSinistra testoBold");
     report.addParagraph(" ", "bordoSinistra");
-    var table = report.addTable("tableNormeLegali", "bordoSinistra");
+    var table = report.addTable("tableNormeLegali");
     tableRow = table.addRow();
     tableRow.addCell("Codice civile svizzero = CC;", "testoNormale");
     tableRow = table.addRow();
@@ -1325,7 +1325,7 @@ function printReport() {
     tableRow.addCell("Regolamento della legge sull’organizzazione e la procedura in materia di protezione del minore e dell’adulto (ROPMA).", "testoNormale");
     tableRow = table.addRow();
     report.addParagraph(" ", "bordoSinistra");
-    var table = report.addTable("tableNormeLegali", "bordoSinistra");
+    var table = report.addTable("tableNormeLegali");
     tableRow = table.addRow();
     tableRow.addCell("Rendiconti:", "testoNormale");
     tableRow.addCell("art. 410 CC, art. 24-25 ROPMA", "testoNormale");
