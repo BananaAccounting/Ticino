@@ -88,7 +88,7 @@ function load_form(param) {
 
    // Control amounts
    form.push({"id":"TB11", "type":"hidden", "description":"Risultato d'esercizio da contabilità", "account":"Gr=02"});
-   form.push({"id":"TB12", "type":"testifzero", "description":"Errore: differenza risultato d'esercizio con contabiltà", "sum":"M;-TB11"});
+   form.push({"id":"TB12", "type":"testifzero", "description":"Errore: differenza risultato d'esercizio con contabilità", "sum":"M;-TB11"});
    form.push({"id":"TB21", "type":"testifzero", "description":"Errore: differenza tra addebiti/accrediti interni in contabilità", "account":"Gr=39|49"});
    form.push({"id":"", "type":"empty"});
 
@@ -122,13 +122,12 @@ function load_form(param) {
 
 
    // The function amountColumns defines the columns printed for amount rows
-   param.amountColumns = function(formObj, rowIndex, decimals) {
+   param.amountColumns = function(formObj, rowIndex) {
       try {
          var values = [];
-         var value =
-         values.push(Banana.Converter.toLocaleNumberFormat(formObj["currentBudget"]["amount"], decimals));
-         values.push(Banana.Converter.toLocaleNumberFormat(formObj["previousBudget"]["amount"], decimals));
-         values.push(Banana.Converter.toLocaleNumberFormat(formObj["previous2Balance"]["amount"], decimals));
+         values.push(Banana.Converter.toLocaleNumberFormat(formObj["currentBudget"]["amount"]));
+         values.push(Banana.Converter.toLocaleNumberFormat(formObj["previousBudget"]["amount"]));
+         values.push(Banana.Converter.toLocaleNumberFormat(formObj["previous2Balance"]["amount"]));
          return values;
       } catch (err) {
          return ["error","error","error"];
@@ -242,7 +241,7 @@ function create_report(banDoc, startDate, endDate, isTest) {
    var rowIndex = 0;
    for (var i in param.form) {
       var formObj = param.form[i];
-      var columnValues = formObj.values ? formObj.values : param.amountColumns(formObj, rowIndex, param.rounding.decimals);
+      var columnValues = formObj.values ? formObj.values : param.amountColumns(formObj, rowIndex);
       var tableRow = null;
 
       if (param.form[i].type === "header") {
@@ -310,7 +309,7 @@ function create_report(banDoc, startDate, endDate, isTest) {
       } else if (param.form[i].type === "testifzero") {
          var printRow = false;
          for (var c in columnValues) {
-            if (!Banana.SDecimal.isZero(columnValues[c])) {
+            if (!Banana.SDecimal.isZero(Banana.Converter.toInternalNumberFormat(columnValues[c]))) {
                printRow = true;
                break;
             }
@@ -405,7 +404,7 @@ function load_form_balances(banDoc, banDocPrev, banDocPrev2, form) {
 
             for (var o in objList) {
                for (var a in amtList) {
-                  objList[o][a] = Banana.SDecimal.invert(objList[o][a]);
+                  objList[o][a] = Banana.SDecimal.invert(Banana.Converter.toInternalNumberFormat(objList[o][a]));
                }
             }
          }
@@ -479,8 +478,8 @@ function calc_form_total(form, id, rounding) {
                var fieldValue = get_object(form, entry)[amtGroupName][amtDetailName];
                if (fieldValue) {
                   if (isNegative) //Invert sign
-                     fieldValue = Banana.SDecimal.invert(fieldValue);
-                  formObj[amtGroupName][amtDetailName] = Banana.SDecimal.add(formObj[amtGroupName][amtDetailName], fieldValue, rounding);
+                     fieldValue = Banana.SDecimal.invert(Banana.Converter.toInternalNumberFormat(fieldValue));
+                  formObj[amtGroupName][amtDetailName] = Banana.SDecimal.add(Banana.Converter.toInternalNumberFormat(formObj[amtGroupName][amtDetailName]), Banana.Converter.toInternalNumberFormat(fieldValue), rounding);
                }
             }
          }
@@ -534,7 +533,7 @@ function create_styleSheet() {
 	style = stylesheet.addStyle(".footer");
 	style.setAttribute("text-align", "right");
 	style.setAttribute("font-size", "8px");
-	style.setAttribute("font", "Times New Roman");
+	style.setAttribute("font", "Arial");
 
    style = stylesheet.addStyle(".pageHeader1");
    style.setAttribute("font-size", "11px");
