@@ -63,53 +63,53 @@ function load_form(banDoc, param) {
    var form = [];
    param.form = form;
 
-   form.push({"id":"", "type":"header", "description":"", "values":["Preventivo", "Preventivo", "Consuntivo"]});
-   form.push({"id":"", "type":"header", "description":"", "values":[param.currentYear, param.previousYear, param.previous2Year]});
+   form.push({ "id": "", "type": "header", "description": "", "values": ["Preventivo", "Preventivo", "Consuntivo"] });
+   form.push({ "id": "", "type": "header", "description": "", "values": [param.currentYear, param.previousYear, param.previous2Year] });
 
-   form.push({"id":"CE", "type":"title", "description":"CONTO ECONOMICO"});
+   form.push({ "id": "CE", "type": "title", "description": "CONTO ECONOMICO" });
 
-   form.push({"id":"CE", "type":"title", "description":"SPESE"});
+   form.push({ "id": "CE", "type": "title", "description": "SPESE" });
    fill_form(banDoc, form, "3", param.subtotalLevel);
 
-   form.push({"id":"", "type":"empty"});
+   form.push({ "id": "", "type": "empty" });
 
-   form.push({"id":"CE", "type":"title", "description":"RICAVI"});
+   form.push({ "id": "CE", "type": "title", "description": "RICAVI" });
    fill_form(banDoc, form, "4", param.subtotalLevel);
 
-   form.push({"id":"", "type":"empty"});
-   form.push({"id":"", "type":"total", "description":"TOTALE SPESE", "account":"Gr=3"});
-   form.push({"id":"", "type":"total", "description":"TOTALE RICAVI", "account":"Gr=4"});
-   form.push({"id":"", "type":"total", "description":"SALDO", "account":"Gr=4|3"});
+   form.push({ "id": "", "type": "empty" });
+   form.push({ "id": "", "type": "total", "description": "TOTALE SPESE", "account": "Gr=3" });
+   form.push({ "id": "", "type": "total", "description": "TOTALE RICAVI", "account": "Gr=4" });
+   form.push({ "id": "", "type": "total", "description": "SALDO", "account": "Gr=4|3" });
 
 
    if (param.subtotalLevel > 1)
-      form.push({"id":"", "type":"pagebreak"});
+      form.push({ "id": "", "type": "pagebreak" });
    else
-      form.push({"id":"", "type":"empty"});
+      form.push({ "id": "", "type": "empty" });
 
 
-   form.push({"id":"CE", "type":"title", "description":"CONTO DEGLI INVESTIMENTI"});
+   form.push({ "id": "CE", "type": "title", "description": "CONTO DEGLI INVESTIMENTI" });
 
-   form.push({"id":"CE", "type":"title", "description":"USCITE PER INVESTIMENTI"});
+   form.push({ "id": "CE", "type": "title", "description": "USCITE PER INVESTIMENTI" });
    fill_form(banDoc, form, "5", param.subtotalLevel);
 
-   form.push({"id":"", "type":"empty"});
+   form.push({ "id": "", "type": "empty" });
 
-   form.push({"id":"CE", "type":"title", "description":"ENTRATE PER INVESTIMENTI"});
+   form.push({ "id": "CE", "type": "title", "description": "ENTRATE PER INVESTIMENTI" });
    fill_form(banDoc, form, "6", param.subtotalLevel);
 
-   form.push({"id":"", "type":"empty"});
-   form.push({"id":"", "type":"total", "description":"ONERE NETTO DI INVESTIMENTO", "account":"Gr=5|6"});
+   form.push({ "id": "", "type": "empty" });
+   form.push({ "id": "", "type": "total", "description": "ONERE NETTO DI INVESTIMENTO", "account": "Gr=5|6" });
 
 
 
    // The parameter rounding define the rounding of the amounts
-   param.rounding = {'decimals': 2};
+   param.rounding = { 'decimals': 2 };
 
 
 
    // The function amountColumns defines the columns printed for amount rows
-   param.amountColumns = function(formObj, rowIndex, decimals) {
+   param.amountColumns = function (formObj, rowIndex, decimals) {
       try {
          var values = [];
          values.push(Banana.Converter.toLocaleNumberFormat(formObj["currentBudget"]["amount"], decimals));
@@ -117,7 +117,7 @@ function load_form(banDoc, param) {
          values.push(Banana.Converter.toLocaleNumberFormat(formObj["previous2Balance"]["amount"], decimals));
          return values;
       } catch (err) {
-         return ["error","error","error"];
+         return ["error", "error", "error"];
       }
    }
 
@@ -129,6 +129,12 @@ function exec(string) {
    //Check if we are on an opened document
    if (!Banana.document) {
       return;
+   }
+
+   var isAdvanced = isBananaAdvanced();
+   if (!isAdvanced) {
+      Banana.document.addMessage("Questa funzione è disponibile solo in Banana Contabilità+ con il piano Advanced.");
+      return "@Cancel";
    }
 
    // Read script settings
@@ -147,9 +153,9 @@ function exec(string) {
    var userSelection = Banana.Ui.getItem(Banana.script.getParamValue("description"),
       "Seleziona il livello di dettaglio",
       ["1 - Subtotali a una cifra",
-       "2 - Subtotali a due cifre",
-       "3 - Subtotali a tre cifre",
-       "4 - Conti"],
+         "2 - Subtotali a due cifre",
+         "3 - Subtotali a tre cifre",
+         "4 - Conti"],
       settings.detailLevel - 1,
       false);
 
@@ -183,10 +189,10 @@ function create_report(banDoc, startDate, endDate, detailLevel) {
    // Previous year document
    var banDocPrev = null;
    if (banDoc) {
-      if (typeof(banDoc.previousYear) === 'function') {
+      if (typeof (banDoc.previousYear) === 'function') {
          banDocPrev = banDoc.previousYear();
       } else {
-         var banDocPrevFileName = banDoc.info("AccountingDataBase","FileNamePreviousYear");
+         var banDocPrevFileName = banDoc.info("AccountingDataBase", "FileNamePreviousYear");
          if (banDocPrevFileName.length > 0) {
             banDocPrev = Banana.application.openDocument(banDocPrevFileName);
          }
@@ -197,10 +203,10 @@ function create_report(banDoc, startDate, endDate, detailLevel) {
    // Previous 2 year document
    var banDocPrev2 = null;
    if (banDocPrev) {
-      if (typeof(banDocPrev.previousYear) === 'function') {
+      if (typeof (banDocPrev.previousYear) === 'function') {
          banDocPrev2 = banDocPrev.previousYear();
       } else {
-         var banDocPrev2FileName = banDocPrev.info("AccountingDataBase","FileNamePreviousYear");
+         var banDocPrev2FileName = banDocPrev.info("AccountingDataBase", "FileNamePreviousYear");
          if (banDocPrev2FileName.length > 0) {
             banDocPrev2 = Banana.application.openDocument(banDocPrev2FileName);
          }
@@ -208,12 +214,12 @@ function create_report(banDoc, startDate, endDate, detailLevel) {
    }
 
    var param = {
-      "bananaVersion":"Banana Accounting, v. " + banDoc.info("Base", "ProgramVersion"), //Save the version of Banana Accounting used
+      "bananaVersion": "Banana Accounting, v. " + banDoc.info("Base", "ProgramVersion"), //Save the version of Banana Accounting used
       "scriptVersion": "Script v. " + Banana.script.getParamValue("pubdate"),	//Save the version of the script
-      "company":banDoc.info("AccountingDataBase","Company"), //Save the company name
-      "currentYear": banDoc.info("AccountingDataBase", "ClosureDate").substr(0,4), //Save the current year
-      "previousYear": banDocPrev ? banDocPrev.info("AccountingDataBase", "ClosureDate").substr(0,4) : "", //Save the previous year
-                                   "previous2Year": banDocPrev2 ? banDocPrev2.info("AccountingDataBase", "ClosureDate").substr(0,4) : "", //Save the previous -2 year
+      "company": banDoc.info("AccountingDataBase", "Company"), //Save the company name
+      "currentYear": banDoc.info("AccountingDataBase", "ClosureDate").substr(0, 4), //Save the current year
+      "previousYear": banDocPrev ? banDocPrev.info("AccountingDataBase", "ClosureDate").substr(0, 4) : "", //Save the previous year
+      "previous2Year": banDocPrev2 ? banDocPrev2.info("AccountingDataBase", "ClosureDate").substr(0, 4) : "", //Save the previous -2 year
    };
 
    // Print account/group id column
@@ -237,7 +243,7 @@ function create_report(banDoc, startDate, endDate, detailLevel) {
    add_footer(report, param);
 
    //Variables used for the report's style.
-   var styleAccount= "account";
+   var styleAccount = "account";
    var styleDescription = "description";
    var stylePageHeader1 = "pageHeader1";
    var stylePageHeader2 = "pageHeader2";
@@ -373,7 +379,7 @@ function create_report(banDoc, startDate, endDate, detailLevel) {
 // The purpose of this function is to fill the from following the accounting plan
 function fill_form(banDoc, form, bClass, level) {
    var accountTable = banDoc.table("Accounts");
-   for (var i = 0; i < accountTable.rowCount; i ++) {
+   for (var i = 0; i < accountTable.rowCount; i++) {
       var groupId = accountTable.value(i, "Group");
       if (groupId.length > 0) {
          if (groupId[0] === bClass[0] && groupId.length <= level) {  // Group
@@ -420,9 +426,9 @@ function load_form_balances(banDoc, banDocPrev, banDocPrev2, form) {
    }
 
    var detailList = [
-         "opening", "debit", "credit", "total", "balance",
-         "openingCurrency", "openingDebit", "openingCredit", "totalCurrency", "balanceCurrency"
-         ];
+      "opening", "debit", "credit", "total", "balance",
+      "openingCurrency", "openingDebit", "openingCredit", "totalCurrency", "balanceCurrency"
+   ];
 
    var emptyAmounts = {};
    for (var a in detailList) {
@@ -449,16 +455,16 @@ function load_form_balances(banDoc, banDocPrev, banDocPrev2, form) {
             invertSign = true;
          } else if (formObj.sign === "normalize") {
             if (formObj.currentBalance.bclass === "2" || formObj.currentBalance.bclass === "4" ||
-                  formObj.currentBalance.bclass === "6") {
+               formObj.currentBalance.bclass === "6") {
                invertSign = true;
             }
          }
 
          if (invertSign) {
             var groupList = [
-                     "currentBalance", "currentBudget", "previousBalance", "previousBudget",
-                     "previous2Balance", "previous2Budget"
-                  ];
+               "currentBalance", "currentBudget", "previousBalance", "previousBudget",
+               "previous2Balance", "previous2Budget"
+            ];
 
             for (var group in groupList) {
                var groupName = groupList[group];
@@ -487,14 +493,14 @@ function calc_form_total(form, id, rounding) {
    var formObj = get_object(form, id);
 
    var amountGroupNames = [
-            "currentBalance", "currentBudget", "previousBalance", "previousBudget",
-            "previous2Balance", "previous2Budget"
-         ];
+      "currentBalance", "currentBudget", "previousBalance", "previousBudget",
+      "previous2Balance", "previous2Budget"
+   ];
 
    var amountDetailNames = [
-            "opening", "debit", "credit", "total", "balance", "amount",
-            "openingCurrency", "debitCurrency", "creditCurrency", "totalCurrency", "balanceCurrency", "amountCurrency",
-         ];
+      "opening", "debit", "credit", "total", "balance", "amount",
+      "openingCurrency", "debitCurrency", "creditCurrency", "totalCurrency", "balanceCurrency", "amountCurrency",
+   ];
 
    if (typeof formObj[amountGroupNames[0]] !== "undefined") { //first field is present
       return; //calc already done, return
@@ -620,7 +626,7 @@ function create_styleSheet() {
 
    style = stylesheet.addStyle(".account");
    style.setAttribute("padding-right", "0.8em");
-//   style.setAttribute("text-align", "right");
+   //   style.setAttribute("text-align", "right");
 
    style = stylesheet.addStyle(".horizontalLine");
    style.setAttribute("border-top", "1px solid black");
@@ -655,4 +661,18 @@ function create_styleSheet() {
    style.setAttribute("font-size", "9px");
 
    return stylesheet;
+}
+
+function isBananaAdvanced() {
+   /**
+    * Starting from version 10.0.7 it is possible to read the property Banana.application.license.isWithinMaxRowLimits 
+    * to check if all application functionalities are permitted
+    * the version Advanced returns isWithinMaxRowLimits always false
+    * other versions return isWithinMaxRowLimits true if the limit of transactions number has not been reached
+    */
+   var license = Banana.application.license;
+   if (license.licenseType === "advanced" || license.isWithinMaxFreeLines) {
+      return true;
+   }
+   return false;
 }
