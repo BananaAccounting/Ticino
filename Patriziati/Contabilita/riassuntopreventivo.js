@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.app.patriziato.riassuntopreventivo
 // @api = 1.0
-// @pubdate = 2018-05-03
+// @pubdate = 2024-10-15
 // @publisher = Banana.ch SA
 // @description = Riassunto del preventivo
 // @task = app.command
