@@ -56,7 +56,7 @@
 function load_form(banDoc, param) {
 
    // The name of report
-   param.reportName = "Preventivo per subtotali"
+   param.reportName = "Preventivo per subtotali";
 
 
    // The parameter form define the content of the report
@@ -109,12 +109,12 @@ function load_form(banDoc, param) {
 
 
    // The function amountColumns defines the columns printed for amount rows
-   param.amountColumns = function (formObj, rowIndex, decimals) {
+   param.amountColumns = function (formObj, rowIndex) {
       try {
          var values = [];
-         values.push(Banana.Converter.toLocaleNumberFormat(formObj["currentBudget"]["amount"], decimals));
-         values.push(Banana.Converter.toLocaleNumberFormat(formObj["previousBudget"]["amount"], decimals));
-         values.push(Banana.Converter.toLocaleNumberFormat(formObj["previous2Balance"]["amount"], decimals));
+         values.push(formObj["currentBudget"]["amount"]);
+         values.push(formObj["previousBudget"]["amount"]);
+         values.push(formObj["previous2Balance"]["amount"]);
          return values;
       } catch (err) {
          return ["error", "error", "error"];
@@ -139,7 +139,7 @@ function exec(string) {
 
    // Read script settings
    var settings = {};
-   var strSettings = Banana.document.scriptReadSettings();
+   var strSettings = Banana.document.getScriptSettings();
    if (strSettings.length > 0) {
       var objData = JSON.parse(strSettings);
       if (objData)
@@ -166,7 +166,7 @@ function exec(string) {
    // Save script settings
    settings.detailLevel = Number(userSelection[0]);
    strSettings = JSON.stringify(settings);
-   Banana.document.scriptSaveSettings(JSON.stringify(settings));
+   Banana.document.setScriptSettings(JSON.stringify(settings));
 
 
    //Function call to create the report
@@ -272,7 +272,7 @@ function create_report(banDoc, startDate, endDate, detailLevel) {
    var rowIndex = 0;
    for (var i in param.form) {
       var formObj = param.form[i];
-      var columnValues = formObj.values ? formObj.values : param.amountColumns(formObj, rowIndex, param.rounding.decimals);
+      var columnValues = formObj.values ? formObj.values : param.amountColumns(formObj, rowIndex);
       var tableRow = null;
 
       if (param.form[i].type === "header") {
@@ -307,7 +307,7 @@ function create_report(banDoc, startDate, endDate, detailLevel) {
             tableRow.addCell(formObj["id"], styleAccount);
          tableRow.addCell(formObj["description"], styleDescription);
          for (var c in columnValues) {
-            tableRow.addCell(columnValues[c], styleValueAmount);
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(columnValues[c]), styleValueAmount);
          }
          rowIndex++;
       } else if (param.form[i].type === "total") {
@@ -316,7 +316,7 @@ function create_report(banDoc, startDate, endDate, detailLevel) {
             tableRow.addCell(formObj["id"], styleAccount);
          tableRow.addCell(formObj["description"], styleDescription);
          for (var c in columnValues) {
-            tableRow.addCell(columnValues[c], styleValueAmount);
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(columnValues[c]), styleValueAmount);
          }
          rowIndex++;
       } else if (param.form[i].type === "empty") {
@@ -340,7 +340,7 @@ function create_report(banDoc, startDate, endDate, detailLevel) {
       } else if (param.form[i].type === "testifzero") {
          var printRow = false;
          for (var c in columnValues) {
-            if (!Banana.SDecimal.isZero(columnValues[c])) {
+            if (!Banana.SDecimal.isZero(Banana.Converter.toInternalNumberFormat(columnValues[c]))) {
                printRow = true;
                break;
             }
@@ -352,7 +352,7 @@ function create_report(banDoc, startDate, endDate, detailLevel) {
                tableRow.addCell();
             tableRow.addCell(formObj["description"]);
             for (var c in columnValues) {
-               var cell = tableRow.addCell(columnValues[c], styleValueAmount);
+               var cell = tableRow.addCell(Banana.Converter.toLocaleNumberFormat(columnValues[c]), styleValueAmount);
             }
          }
       } else {
@@ -362,7 +362,7 @@ function create_report(banDoc, startDate, endDate, detailLevel) {
             tableRow.addCell();
          tableRow.addCell();
          for (var c in columnValues) {
-            var cell = tableRow.addCell(columnValues[c], styleValueAmount);
+            var cell = tableRow.addCell(Banana.Converter.toLocaleNumberFormat(columnValues[c]), styleValueAmount);
          }
       }
 
@@ -470,7 +470,7 @@ function load_form_balances(banDoc, banDocPrev, banDocPrev2, form) {
                var groupName = groupList[group];
                for (var detail in detailList) {
                   var detailName = detailList[detail];
-                  formObj[groupName][detailName] = Banana.SDecimal.invert(formObj[groupName][detailName]);
+                  formObj[groupName][detailName] = Banana.SDecimal.invert(Banana.Converter.toInternalNumberFormat(formObj[groupName][detailName]));
                }
             }
          }
@@ -543,8 +543,8 @@ function calc_form_total(form, id, rounding) {
                var fieldValue = get_object(form, entry)[amtGroupName][amtDetailName];
                if (fieldValue) {
                   if (isNegative) //Invert sign
-                     fieldValue = Banana.SDecimal.invert(fieldValue);
-                  formObj[amtGroupName][amtDetailName] = Banana.SDecimal.add(formObj[amtGroupName][amtDetailName], fieldValue, rounding);
+                     fieldValue = Banana.SDecimal.invert(Banana.Converter.toInternalNumberFormat(fieldValue));
+                  formObj[amtGroupName][amtDetailName] = Banana.SDecimal.add(Banana.Converter.toInternalNumberFormat(formObj[amtGroupName][amtDetailName]), Banana.Converter.toInternalNumberFormat(fieldValue), rounding);
                }
             }
          }
@@ -598,7 +598,7 @@ function create_styleSheet() {
    style = stylesheet.addStyle(".footer");
    style.setAttribute("text-align", "right");
    style.setAttribute("font-size", "8px");
-   style.setAttribute("font", "Times New Roman");
+   style.setAttribute("font", "Helvetica");
 
    style = stylesheet.addStyle(".pageHeader1");
    style.setAttribute("font-size", "11px");
@@ -648,17 +648,20 @@ function create_styleSheet() {
    style.setAttribute("text-align", "right");
 
    style = stylesheet.addStyle(".level1 td.valueAmount");
-   style.setAttribute("padding-right", "1em");
+   // style.setAttribute("padding-right", "1em");
 
    style = stylesheet.addStyle(".level2 td.valueAmount");
-   style.setAttribute("padding-right", "2em");
+   // style.setAttribute("padding-right", "2em");
 
    style = stylesheet.addStyle(".level3 td.valueAmount");
-   style.setAttribute("padding-right", "3em");
+   // style.setAttribute("padding-right", "3em");
 
    style = stylesheet.addStyle("table");
    style.setAttribute("width", "100%");
    style.setAttribute("font-size", "9px");
+
+   style = stylesheet.addStyle("table.dataTable");
+   style.setAttribute("layout-sym", "datatable");
 
    return stylesheet;
 }

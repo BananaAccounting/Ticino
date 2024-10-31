@@ -56,7 +56,7 @@
 function load_form(banDoc, param) {
 
    // The name of report
-   param.reportName = "Consuntivo per subtotali"
+   param.reportName = "Consuntivo per subtotali";
 
 
    // The parameter form define the content of the report
@@ -173,7 +173,7 @@ function exec(string) {
 
    // Read script settings
    var settings = {};
-   var strSettings = Banana.document.scriptReadSettings();
+   var strSettings = Banana.document.getScriptSettings();
    if (strSettings.length > 0) {
       var objData = JSON.parse(strSettings);
       if (objData)
@@ -200,7 +200,7 @@ function exec(string) {
    // Save script settings
    settings.detailLevel = Number(userSelection[0]);
    strSettings = JSON.stringify(settings);
-   Banana.document.scriptSaveSettings(JSON.stringify(settings));
+   Banana.document.setScriptSettings(JSON.stringify(settings));
 
 
    //Function call to create the report
@@ -639,7 +639,7 @@ function create_styleSheet() {
    style = stylesheet.addStyle(".footer");
    style.setAttribute("text-align", "right");
    style.setAttribute("font-size", "8px");
-   style.setAttribute("font", "Times New Roman");
+   style.setAttribute("font", "Helvetica");
 
    style = stylesheet.addStyle(".pageHeader1");
    style.setAttribute("font-size", "11px");
@@ -689,13 +689,13 @@ function create_styleSheet() {
    style.setAttribute("text-align", "right");
 
    style = stylesheet.addStyle(".level1 td.valueAmount");
-   style.setAttribute("padding-right", "1em");
+   // style.setAttribute("padding-right", "1em");
 
    style = stylesheet.addStyle(".level2 td.valueAmount");
-   style.setAttribute("padding-right", "2em");
+   // style.setAttribute("padding-right", "2em");
 
    style = stylesheet.addStyle(".level3 td.valueAmount");
-   style.setAttribute("padding-right", "3em");
+   // style.setAttribute("padding-right", "3em");
 
    style = stylesheet.addStyle("table");
    style.setAttribute("width", "100%");

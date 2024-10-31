@@ -54,7 +54,7 @@
 function load_form(param) {
 
    // The name of report
-   param.reportName = "Riassunto del consuntivo"
+   param.reportName = "Riassunto del consuntivo";
 
 
    // The parameter form define the content of the report
@@ -122,13 +122,12 @@ function load_form(param) {
 
 
    // The function amountColumns defines the columns printed for amount rows
-   param.amountColumns = function (formObj, rowIndex, decimals) {
+   param.amountColumns = function (formObj, rowIndex) {
       try {
          var values = [];
-         var value =
-            values.push(Banana.Converter.toLocaleNumberFormat(formObj["currentBalance"]["amount"], decimals));
-         values.push(Banana.Converter.toLocaleNumberFormat(formObj["currentBudget"]["amount"], decimals));
-         values.push(Banana.Converter.toLocaleNumberFormat(formObj["previousBalance"]["amount"], decimals));
+            values.push(formObj["currentBalance"]["amount"]);
+         values.push(formObj["currentBudget"]["amount"]);
+         values.push(formObj["previousBalance"]["amount"]);
          return values;
       } catch (err) {
          return ["error", "error", "error"];
@@ -250,7 +249,7 @@ function create_report(banDoc, startDate, endDate, isTest) {
    var rowIndex = 0;
    for (var i in param.form) {
       var formObj = param.form[i];
-      var columnValues = formObj.values ? formObj.values : param.amountColumns(formObj, rowIndex, param.rounding.decimals);
+      var columnValues = formObj.values ? formObj.values : param.amountColumns(formObj, rowIndex);
       var tableRow = null;
 
       if (param.form[i].type === "header") {
@@ -285,7 +284,7 @@ function create_report(banDoc, startDate, endDate, isTest) {
             tableRow.addCell(formObj["id"], styleAccount);
          tableRow.addCell(formObj["description"], styleDescription);
          for (var c in columnValues) {
-            tableRow.addCell(columnValues[c], styleValueAmount);
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(columnValues[c]), styleValueAmount);
          }
          rowIndex++;
       } else if (param.form[i].type === "total") {
@@ -294,7 +293,7 @@ function create_report(banDoc, startDate, endDate, isTest) {
             tableRow.addCell(formObj["id"], styleAccount);
          tableRow.addCell(formObj["description"], styleDescription);
          for (var c in columnValues) {
-            tableRow.addCell(columnValues[c], styleValueAmount);
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(columnValues[c]), styleValueAmount);
          }
          rowIndex++;
       } else if (param.form[i].type === "empty") {
@@ -318,7 +317,7 @@ function create_report(banDoc, startDate, endDate, isTest) {
       } else if (param.form[i].type === "testifzero") {
          var printRow = false;
          for (var c in columnValues) {
-            if (!Banana.SDecimal.isZero(columnValues[c])) {
+            if (!Banana.SDecimal.isZero(Banana.Converter.toInternalNumberFormat(columnValues[c]))) {
                printRow = true;
                break;
             }
@@ -330,7 +329,7 @@ function create_report(banDoc, startDate, endDate, isTest) {
                tableRow.addCell();
             tableRow.addCell(formObj["description"]);
             for (var c in columnValues) {
-               var cell = tableRow.addCell(columnValues[c], styleValueAmount);
+               var cell = tableRow.addCell(Banana.Converter.toLocaleNumberFormat(columnValues[c]), styleValueAmount);
             }
          }
       } else {
@@ -340,7 +339,7 @@ function create_report(banDoc, startDate, endDate, isTest) {
             tableRow.addCell();
          tableRow.addCell();
          for (var c in columnValues) {
-            var cell = tableRow.addCell(columnValues[c], styleValueAmount);
+            var cell = tableRow.addCell(Banana.Converter.toLocaleNumberFormat(columnValues[c]), styleValueAmount);
          }
       }
 
@@ -413,7 +412,7 @@ function load_form_balances(banDoc, banDocPrev, banDocPrev2, form) {
 
             for (var o in objList) {
                for (var a in amtList) {
-                  objList[o][a] = Banana.SDecimal.invert(objList[o][a]);
+                  objList[o][a] = Banana.SDecimal.invert(Banana.Converter.toInternalNumberFormat(objList[o][a]));
                }
             }
          }
@@ -487,8 +486,8 @@ function calc_form_total(form, id, rounding) {
                var fieldValue = get_object(form, entry)[amtGroupName][amtDetailName];
                if (fieldValue) {
                   if (isNegative) //Invert sign
-                     fieldValue = Banana.SDecimal.invert(fieldValue);
-                  formObj[amtGroupName][amtDetailName] = Banana.SDecimal.add(formObj[amtGroupName][amtDetailName], fieldValue, rounding);
+                     fieldValue = Banana.SDecimal.invert(Banana.Converter.toInternalNumberFormat(fieldValue));
+                  formObj[amtGroupName][amtDetailName] = Banana.SDecimal.add(Banana.Converter.toInternalNumberFormat(formObj[amtGroupName][amtDetailName]), Banana.Converter.toInternalNumberFormat(fieldValue), rounding);
                }
             }
          }
@@ -542,7 +541,7 @@ function create_styleSheet() {
    style = stylesheet.addStyle(".footer");
    style.setAttribute("text-align", "right");
    style.setAttribute("font-size", "8px");
-   style.setAttribute("font", "Times New Roman");
+   style.setAttribute("font", "Helvetica");
 
    style = stylesheet.addStyle(".pageHeader1");
    style.setAttribute("font-size", "11px");
@@ -585,17 +584,20 @@ function create_styleSheet() {
    style.setAttribute("text-align", "right");
 
    style = stylesheet.addStyle(".level1 td.valueAmount");
-   style.setAttribute("padding-right", "1em");
+   // style.setAttribute("padding-right", "1em");
 
    style = stylesheet.addStyle(".level2 td.valueAmount");
-   style.setAttribute("padding-right", "2em");
+   // style.setAttribute("padding-right", "2em");
 
    style = stylesheet.addStyle(".level3 td.valueAmount");
-   style.setAttribute("padding-right", "3em");
+   // style.setAttribute("padding-right", "3em");
 
    style = stylesheet.addStyle("table");
    style.setAttribute("width", "100%");
    style.setAttribute("font-size", "9px");
+
+   style = stylesheet.addStyle("table.dataTable");
+   style.setAttribute("layout-sym", "datatable");
 
    return stylesheet;
 }

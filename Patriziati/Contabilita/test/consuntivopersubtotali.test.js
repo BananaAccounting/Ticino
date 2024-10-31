@@ -37,51 +37,67 @@ function TestConsuntivoPerSubtotali() {
 }
 
 // This method will be called at the beginning of the test case
-TestConsuntivoPerSubtotali.prototype.initTestCase = function() {
+TestConsuntivoPerSubtotali.prototype.initTestCase = function () {
    this.progressBar = Banana.application.progressBar;
 }
 
 // This method will be called at the end of the test case
-TestConsuntivoPerSubtotali.prototype.cleanupTestCase = function() {
+TestConsuntivoPerSubtotali.prototype.cleanupTestCase = function () {
 
 }
 
 // This method will be called before every test method is executed
-TestConsuntivoPerSubtotali.prototype.init = function() {
+TestConsuntivoPerSubtotali.prototype.init = function () {
 
 }
 
 // This method will be called after every test method is executed
-TestConsuntivoPerSubtotali.prototype.cleanup = function() {
+TestConsuntivoPerSubtotali.prototype.cleanup = function () {
 
 }
 
 // Every method with the prefix 'test' are executed automatically as test method
 // You can defiend as many test methods as you need
 
-TestConsuntivoPerSubtotali.prototype.testReport = function() {
+TestConsuntivoPerSubtotali.prototype.testReport = function () {
 
-   var document = Banana.application.openDocument("file:script/testcases/Contabilita Patriziato MCA2 2017.ac2");
-   Test.assert(document);
+   let document = [];
+   document[0] = Banana.application.openDocument("file:script/testcases/Contabilita Patriziato MCA2 2015.ac2");
+   document[1] = Banana.application.openDocument("file:script/testcases/Contabilita Patriziato MCA2 2016.ac2");
+   document[2] = Banana.application.openDocument("file:script/testcases/Contabilita Patriziato MCA2 2017 con gruppi mancanti.ac2");
+   document[3] = Banana.application.openDocument("file:script/testcases/Contabilita Patriziato MCA2 2017.ac2");
+   document[4] = Banana.application.openDocument("file:script/testcases/Contabilita Patriziato MCA2 2023.ac2");
+   document[5] = Banana.application.openDocument("file:script/testcases/Contabilita Patriziato MCA2 2024.ac2");
 
-   var report = null;
+   for (var i = 0; i < document.length; i++) {
 
-   report = create_report(document, "", "", 1);
-   Test.logger.addReport("Details Level 1", report);
+      Test.assert(document[i]);
+      
+      
+      let report;
+      Test.logger.addText("Document nr: " + i);
+      report = create_report(document[i], "", "", 1);
 
-   Test.logger.addPageBreak();
+      Test.logger.addReport("Details Level 1", report);
+      Test.logger.addText("Details Level 1");
+      Test.logger.addPageBreak();
 
-   report = create_report(document, "", "", 2);
-   Test.logger.addReport("Details Level 2", report);
+      report = create_report(document[i], "", "", 2);
+      Test.logger.addReport("Details Level 2", report);
+      Test.logger.addText("Details Level 2");
+      Test.logger.addPageBreak();
 
-   Test.logger.addPageBreak();
+      report = create_report(document[i], "", "", 3);
+      Test.logger.addReport("Details Level 3", report);
+      Test.logger.addText("Details Level 3");
+      Test.logger.addPageBreak();
 
-   report = create_report(document, "", "", 3);
-   Test.logger.addReport("Details Level 3", report);
-
-   Test.logger.addPageBreak();
-
-   report = create_report(document, "", "", 4);
-   Test.logger.addReport("Details Level 4", report);
+      report = create_report(document[i], "", "", 4);
+      Test.logger.addReport("Details Level 4", report);
+      Test.logger.addText("Details Level 4");
+      
+     
+   }
 }
+
 

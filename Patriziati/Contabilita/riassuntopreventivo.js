@@ -54,7 +54,7 @@
 function load_form(param) {
 
    // The name of report
-   param.reportName = "Riassunto del preventivo"
+   param.reportName = "Riassunto del preventivo";
 
 
    // The parameter form define the content of the report
@@ -125,9 +125,9 @@ function load_form(param) {
    param.amountColumns = function (formObj, rowIndex) {
       try {
          var values = [];
-         values.push(Banana.Converter.toLocaleNumberFormat(formObj["currentBudget"]["amount"]));
-         values.push(Banana.Converter.toLocaleNumberFormat(formObj["previousBudget"]["amount"]));
-         values.push(Banana.Converter.toLocaleNumberFormat(formObj["previous2Balance"]["amount"]));
+         values.push(formObj["currentBudget"]["amount"]);
+         values.push(formObj["previousBudget"]["amount"]);
+         values.push(formObj["previous2Balance"]["amount"]);
          return values;
       } catch (err) {
          return ["error", "error", "error"];
@@ -282,7 +282,7 @@ function create_report(banDoc, startDate, endDate, isTest) {
             tableRow.addCell(formObj["id"], styleAccount);
          tableRow.addCell(formObj["description"], styleDescription);
          for (var c in columnValues) {
-            tableRow.addCell(columnValues[c], styleValueAmount);
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(columnValues[c]), styleValueAmount);
          }
          rowIndex++;
       } else if (param.form[i].type === "total") {
@@ -291,7 +291,7 @@ function create_report(banDoc, startDate, endDate, isTest) {
             tableRow.addCell(formObj["id"], styleAccount);
          tableRow.addCell(formObj["description"], styleDescription);
          for (var c in columnValues) {
-            tableRow.addCell(columnValues[c], styleValueAmount);
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(columnValues[c]), styleValueAmount);
          }
          rowIndex++;
       } else if (param.form[i].type === "empty") {
@@ -327,7 +327,7 @@ function create_report(banDoc, startDate, endDate, isTest) {
                tableRow.addCell();
             tableRow.addCell(formObj["description"]);
             for (var c in columnValues) {
-               var cell = tableRow.addCell(columnValues[c], styleValueAmount);
+               var cell = tableRow.addCell(Banana.Converter.toLocaleNumberFormat(columnValues[c]), styleValueAmount);
             }
          }
       } else {
@@ -337,7 +337,7 @@ function create_report(banDoc, startDate, endDate, isTest) {
             tableRow.addCell();
          tableRow.addCell();
          for (var c in columnValues) {
-            var cell = tableRow.addCell(columnValues[c], styleValueAmount);
+            var cell = tableRow.addCell(Banana.Converter.toLocaleNumberFormat(columnValues[c]), styleValueAmount);
          }
       }
 
@@ -539,7 +539,7 @@ function create_styleSheet() {
    style = stylesheet.addStyle(".footer");
    style.setAttribute("text-align", "right");
    style.setAttribute("font-size", "8px");
-   style.setAttribute("font", "Arial");
+   style.setAttribute("font", "Helvetica");
 
    style = stylesheet.addStyle(".pageHeader1");
    style.setAttribute("font-size", "11px");
@@ -582,17 +582,20 @@ function create_styleSheet() {
    style.setAttribute("text-align", "right");
 
    style = stylesheet.addStyle(".level1 td.valueAmount");
-   style.setAttribute("padding-right", "1em");
+   //style.setAttribute("padding-right", "1em");
 
    style = stylesheet.addStyle(".level2 td.valueAmount");
-   style.setAttribute("padding-right", "2em");
+   //style.setAttribute("padding-right", "2em");
 
    style = stylesheet.addStyle(".level3 td.valueAmount");
-   style.setAttribute("padding-right", "3em");
+   //style.setAttribute("padding-right", "3em");
 
    style = stylesheet.addStyle("table");
    style.setAttribute("width", "100%");
    style.setAttribute("font-size", "9px");
+
+   style = stylesheet.addStyle("table.dataTable");
+   style.setAttribute("layout-sym", "datatable");
 
    return stylesheet;
 }
