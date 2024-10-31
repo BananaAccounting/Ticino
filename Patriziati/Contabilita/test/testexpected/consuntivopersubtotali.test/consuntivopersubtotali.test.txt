@@ -4276,11 +4276,11 @@ Consuntivo per subtotali 2024 \\
 3  & EVOLO  & 9'101.82  & 57'520.00  & \\
  &  &  &  & \\
  & RICAVI  &  &  & \\
-4  & PAVITE  & 21'100.00  & 57'700.00  & \\
+4  & PAVITE  & 21'100.00  & 57'650.00  & \\
  &  &  &  & \\
  & TOTALE SPESE  & 9'101.82  & 57'520.00  & \\
- & TOTALE RICAVI  & 21'100.00  & 57'700.00  & \\
- & SALDO  & 11'998.18  & 180.00  & \\
+ & TOTALE RICAVI  & 21'100.00  & 57'650.00  & \\
+ & SALDO  & 11'998.18  & 130.00  & \\
  &  &  &  & \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l  l  l }
@@ -4340,12 +4340,12 @@ Consuntivo per subtotali 2024 \\
 45  & DISIGENT DE HIURA A GLAVIT  & 0.00  & 0.00  & \\
 46  & SERVITAS A AQUATIONIS  & 4'000.00  & 40'000.00  & \\
 47  & AQUATIONIS DE POSTA DE VICALINEM  & 0.00  & 0.00  & \\
-49  & ETUDICURA APPASUB ATI EVOLO A AQUATIONIS  & 0.00  & 50.00  & \\
-4  & PAVITE  & 21'100.00  & 57'700.00  & \\
+49  & ETUDICURA APPASUB ATI EVOLO A AQUATIONIS  & 0.00  & 0.00  & \\
+4  & PAVITE  & 21'100.00  & 57'650.00  & \\
  &  &  &  & \\
  & TOTALE SPESE  & 9'101.82  & 57'520.00  & \\
- & TOTALE RICAVI  & 21'100.00  & 57'700.00  & \\
- & SALDO  & 11'998.18  & 180.00  & \\
+ & TOTALE RICAVI  & 21'100.00  & 57'650.00  & \\
+ & SALDO  & 11'998.18  & 130.00  & \\
  &  &  &  & \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l  l  l }
@@ -4503,16 +4503,16 @@ Consuntivo per subtotali 2024 \\
 491  & Opratingita os adionde  & 0.00  & 0.00  & \\
 492  & Esturra, famplar, type, hunda os salbulatuunti  & 0.00  & 0.00  & \\
 493  & Hunda w'forgendam a sanimagintagit  & 0.00  & 0.00  & \\
-494  & Secutanga pramortudo a evolo lamissimunt  & 0.00  & 50.00  & \\
+494  & Secutanga pramortudo a evolo lamissimunt  & 0.00  & 0.00  & \\
 495  & Suaesplutudo sterinavent a ulo sterinavent  & 0.00  & 0.00  & \\
 498  & Miropro  & 0.00  & 0.00  & \\
 499  & Vicat fecregaviavio terunam  & 0.00  & 0.00  & \\
-49  & ETUDICURA APPASUB ATI EVOLO A AQUATIONIS  & 0.00  & 50.00  & \\
-4  & PAVITE  & 21'100.00  & 57'700.00  & \\
+49  & ETUDICURA APPASUB ATI EVOLO A AQUATIONIS  & 0.00  & 0.00  & \\
+4  & PAVITE  & 21'100.00  & 57'650.00  & \\
  &  &  &  & \\
  & TOTALE SPESE  & 9'101.82  & 57'520.00  & \\
- & TOTALE RICAVI  & 21'100.00  & 57'700.00  & \\
- & SALDO  & 11'998.18  & 180.00  & \\
+ & TOTALE RICAVI  & 21'100.00  & 57'650.00  & \\
+ & SALDO  & 11'998.18  & 130.00  & \\
  &  &  &  & \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l  l  l }
@@ -5237,20 +5237,20 @@ Consuntivo per subtotali 2024 \\
 492  & Esturra, famplar, type, hunda os salbulatuunti  & 0.00  & 0.00  & \\
 4930  & Hunda w'forgendam a sanimagintagit  & 0.00  & 0.00  & \\
 493  & Hunda w'forgendam a sanimagintagit  & 0.00  & 0.00  & \\
-4940  & Secutanga pramortudo a evolo lamissimunt  & 0.00  & 50.00  & \\
-494  & Secutanga pramortudo a evolo lamissimunt  & 0.00  & 50.00  & \\
+4940  & Secutanga pramortudo a evolo lamissimunt  & 0.00  & 0.00  & \\
+494  & Secutanga pramortudo a evolo lamissimunt  & 0.00  & 0.00  & \\
 4950  & Suaesplutudo sterinavent a ulo sterinavent  & 0.00  & 0.00  & \\
 495  & Suaesplutudo sterinavent a ulo sterinavent  & 0.00  & 0.00  & \\
 4980  & Miropro  & 0.00  & 0.00  & \\
 498  & Miropro  & 0.00  & 0.00  & \\
 4990  & Vicat fecregaviavio terunam  & 0.00  & 0.00  & \\
 499  & Vicat fecregaviavio terunam  & 0.00  & 0.00  & \\
-49  & ETUDICURA APPASUB ATI EVOLO A AQUATIONIS  & 0.00  & 50.00  & \\
-4  & PAVITE  & 21'100.00  & 57'700.00  & \\
+49  & ETUDICURA APPASUB ATI EVOLO A AQUATIONIS  & 0.00  & 0.00  & \\
+4  & PAVITE  & 21'100.00  & 57'650.00  & \\
  &  &  &  & \\
  & TOTALE SPESE  & 9'101.82  & 57'520.00  & \\
- & TOTALE RICAVI  & 21'100.00  & 57'700.00  & \\
- & SALDO  & 11'998.18  & 180.00  & \\
+ & TOTALE RICAVI  & 21'100.00  & 57'650.00  & \\
+ & SALDO  & 11'998.18  & 130.00  & \\
  &  &  &  & \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l  l  l }
