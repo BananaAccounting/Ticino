@@ -4255,7 +4255,7 @@ Consuntivo per subtotali 2023 \\
 \textvalue{Details Level 4}\\
 \textvalue{Document nr: 5}\\
 \begin{reportvalue}{Details Level 1}
-Precell reamquonus os Lidendum \\
+Patriziato \\
 Consuntivo per subtotali 2024 \\
 \begin{longtable}[l]{ l  l  l  l  l }
  &  & Consuntivo  & Consuntivo  & \\
@@ -4299,7 +4299,7 @@ Consuntivo per subtotali 2024 \\
 \textvalue{Details Level 1}\\
 \lognewpage
 \begin{reportvalue}{Details Level 2}
-Precell reamquonus os Lidendum \\
+Patriziato \\
 Consuntivo per subtotali 2024 \\
 \begin{longtable}[l]{ l  l  l  l  l }
  &  & Consuntivo  & Consuntivo  & \\
@@ -4376,7 +4376,7 @@ Consuntivo per subtotali 2024 \\
 \textvalue{Details Level 2}\\
 \lognewpage
 \begin{reportvalue}{Details Level 3}
-Precell reamquonus os Lidendum \\
+Patriziato \\
 Consuntivo per subtotali 2024 \\
 \begin{longtable}[l]{ l  l  l  l  l }
  &  & Consuntivo  & Consuntivo  & \\
@@ -4591,7 +4591,7 @@ Consuntivo per subtotali 2024 \\
 \textvalue{Details Level 3}\\
 \lognewpage
 \begin{reportvalue}{Details Level 4}
-Precell reamquonus os Lidendum \\
+Patriziato \\
 Consuntivo per subtotali 2024 \\
 \begin{longtable}[l]{ l  l  l  l  l }
  &  & Consuntivo  & Consuntivo  & \\
