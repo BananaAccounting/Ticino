@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.app.patriziato.consuntivopersubtotali
 // @api = 1.0
-// @pubdate = 2018-04-17
+// @pubdate = 2024-10-31
 // @publisher = Banana.ch SA
 // @description = Consuntivo per subtotali
 // @task = app.command
