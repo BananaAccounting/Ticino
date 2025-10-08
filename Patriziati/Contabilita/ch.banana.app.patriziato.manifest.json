@@ -1,0 +1,19 @@
+{ 
+"category": "productivity",
+    "country":"switzerland",
+    "countryCode":"ch",
+    "description": "Stampe contabilità Patriziati Ticino",
+    "description.en": "Stampe contabilità Patriziati Ticino",
+    "description.it": "Stampe contabilità Patriziati Ticino",
+    "description.fr": "Stampe contabilità Patriziati Ticino",
+    "description.de": "Stampe contabilità Patriziati Ticino",
+    "id": "ch.banana.app.patriziato",
+    "language":"en",
+    "publisher": "Banana.ch",
+    "title": "Stampe contabilità Patriziati Ticino",
+    "title.en": "Stampe contabilità Patriziati Ticino",
+    "title.it": "Stampe contabilità Patriziati Ticino",
+    "title.fr": "Stampe contabilità Patriziati Ticino",
+    "title.de": "Stampe contabilità Patriziati Ticino",
+    "version": "1.0"
+}
