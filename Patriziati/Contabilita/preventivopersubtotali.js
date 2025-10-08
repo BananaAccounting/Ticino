@@ -133,7 +133,7 @@ function exec(string) {
 
    var isBanPlus = isBananaPlus();
    if (!isBanPlus) {
-      Banana.document.addMessage("Questa funzione è disponibile solo in Banana Contabilità+ con il piano Advanced.");
+      Banana.document.addMessage("Questa funzione è disponibile solo in Banana Contabilità Plus.");
       return "@Cancel";
    }
 
