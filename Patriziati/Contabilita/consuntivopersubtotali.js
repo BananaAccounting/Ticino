@@ -1,4 +1,4 @@
-// Copyright [2015] [Banana.ch SA - Lugano Switzerland]
+// Copyright [2025] [Banana.ch SA - Lugano Switzerland]
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.app.patriziato.consuntivopersubtotali
 // @api = 1.0
-// @pubdate = 2024-10-31
+// @pubdate = 2025-10-08
 // @publisher = Banana.ch SA
 // @description = Consuntivo per subtotali
 // @task = app.command
@@ -165,8 +165,8 @@ function exec(string) {
       return;
    }
 
-   var isAdvanced = isBananaAdvanced();
-   if (!isAdvanced) {
+   var isBanPlus = isBananaPlus();
+   if (!isBanPlus) {
       Banana.document.addMessage("Questa funzione è disponibile solo in Banana Contabilità+ con il piano Advanced.");
       return "@Cancel";
    }
@@ -707,16 +707,9 @@ function create_styleSheet() {
    return stylesheet;
 }
 
-function isBananaAdvanced() {
-   /**
-    * Starting from version 10.0.7 it is possible to read the property Banana.application.license.isWithinMaxRowLimits 
-    * to check if all application functionalities are permitted
-    * the version Advanced returns isWithinMaxRowLimits always false
-    * other versions return isWithinMaxRowLimits true if the limit of transactions number has not been reached
-    */
-   var license = Banana.application.license;
-   if (license.licenseType === "advanced" || license.isWithinMaxFreeLines) {
-      return true;
+function isBananaPlus() {
+   if (Banana.compareVersion && Banana.compareVersion(Banana.application.version, "10.0.1") < 0) {
+      return false;
    }
-   return false;
+   return true;
 }
