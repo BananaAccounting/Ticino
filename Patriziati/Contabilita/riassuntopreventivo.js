@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-// @id = ch.banana.app.patriziato.riassuntopreventivo
+// @id = ch.banana.app.patriziati
 // @api = 1.0
 // @pubdate = 2025-10-08
 // @publisher = Banana.ch SA

@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.16)
 
 project(contabilita)
-set(EXTENSION_ID "ch.banana.app.patriziato")
+set(EXTENSION_ID "contabilitapatriziati")
 
 # CMake options
 # Create a file .vscode/settings.json with the following content to set the options, 
